@@ -64,6 +64,9 @@ public class Register extends AppCompatActivity {
                 if(fullNameTxt.isEmpty() || emailTxt.isEmpty() || passwordTxt.isEmpty()){
                     Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
+                else if(passwordTxt.length() < 6){
+                    Toast.makeText(Register.this, "Password Must be 6 or More Characters", Toast.LENGTH_SHORT).show();
+                }
                 //Check if passwords are matching with each other
                 //If not matching with each other then show toast message
                 else if(!passwordTxt.equals(conPasswordTxt)){

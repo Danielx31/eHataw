@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Register">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05109489" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <EditText
+        android:id="@+id/EmailRegister"
+        android:layout_width="327dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="124dp"
+        android:ems="10"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/fullNameRegister"
+        android:layout_width="327dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Full Name"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="@+id/EmailRegister"
+        app:layout_constraintStart_toStartOf="@+id/EmailRegister"
+        app:layout_constraintTop_toBottomOf="@+id/EmailRegister" />
+
+    <EditText
+        android:id="@+id/confirmPasswordRegister"
+        android:layout_width="327dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/passwordRegister"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/passwordRegister"
+        app:layout_constraintTop_toBottomOf="@+id/passwordRegister" />
+
+    <EditText
+        android:id="@+id/passwordRegister"
+        android:layout_width="327dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/fullNameRegister"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/fullNameRegister"
+        app:layout_constraintTop_toBottomOf="@+id/fullNameRegister" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Register"
+        app:layout_constraintEnd_toEndOf="@+id/confirmPasswordRegister"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/confirmPasswordRegister"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordRegister" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:text="Already have an account?"
+        app:layout_constraintStart_toStartOf="@+id/confirmPasswordRegister"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+
+    <TextView
+        android:id="@+id/logInNowBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="LogIn Now"
+        app:layout_constraintEnd_toEndOf="@+id/confirmPasswordRegister"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class Login extends AppCompatActivity {
         final EditText password = findViewById(R.id.confirmPasswordRegister);
         final Button loginBtn = findViewById(R.id.btnRegister);
         final TextView registerNowBtn = findViewById(R.id.logInNowBtn);
+        final TextView forgotPasswordBtn = findViewById(R.id.forgotPassBtn);
         auth = FirebaseAuth.getInstance();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -36,8 +38,12 @@ public class Login extends AppCompatActivity {
                 final String emailTxt = email.getText().toString();
                 final String passwordTxt = password.getText().toString();
 
-                if(emailTxt.isEmpty() || passwordTxt.isEmpty()){
-                    Toast.makeText(Login.this, "Please enter your email or password", Toast.LENGTH_SHORT);
+                if(TextUtils.isEmpty(emailTxt)){
+                    email.setError("Email cannot be empty");
+                    email.requestFocus();
+                }else if(TextUtils.isEmpty(passwordTxt)){
+                    password.setError("Password cannot be empty");
+                    password.requestFocus();
                 }
                 else{
                     logIn(emailTxt, passwordTxt);
@@ -53,6 +59,13 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(Login.this, Register.class));
             }
         });
+
+        forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Login.this, ForgotPassword.class));
+            }
+        });
     }
 
     private void logIn(String emailTxt, String password){
@@ -64,7 +77,7 @@ public class Login extends AppCompatActivity {
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                 }else{
-                    Toast.makeText(Login.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Log In Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

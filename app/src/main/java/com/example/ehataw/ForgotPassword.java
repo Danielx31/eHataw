@@ -42,6 +42,13 @@ public class ForgotPassword extends AppCompatActivity {
                 validateData();
             }
         });
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void validateData() {

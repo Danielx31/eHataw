@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_2"
     tools:context=".Login">
 
     <androidx.constraintlayout.widget.Guideline
@@ -36,38 +37,53 @@
 
     <EditText
         android:id="@+id/EmailRegister"
-        android:layout_width="327dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="188dp"
-        android:ems="10"
-        android:hint="Email Address"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:textColorHint="#757575"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/confirmPasswordRegister"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="327dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="12dp"
         android:ems="10"
+        android:fontFamily="@font/arbutus"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColorHint="#4E342E"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <EditText
+        android:id="@+id/confirmPasswordRegister"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="327dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:fontFamily="@font/arbutus"
         android:hint="Password"
         android:inputType="textPassword"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColorHint="#4E342E"
         app:layout_constraintEnd_toEndOf="@+id/EmailRegister"
         app:layout_constraintStart_toStartOf="@+id/EmailRegister"
         app:layout_constraintTop_toBottomOf="@+id/EmailRegister" />
 
+
     <Button
         android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="165dp"
+        android:layout_height="51dp"
         android:layout_marginTop="36dp"
+        android:background="@drawable/bg_login"
+        android:fontFamily="@font/arbutus"
         android:text="Log In"
         app:layout_constraintEnd_toEndOf="@+id/confirmPasswordRegister"
         app:layout_constraintHorizontal_bias="0.497"
@@ -78,9 +94,11 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/arbutus"
         android:text="Don't have an account?"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/confirmPasswordRegister"
         app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
 
@@ -88,32 +106,39 @@
         android:id="@+id/logInNowBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/arbutus"
         android:text="Register Now!"
+        android:textColor="@android:color/holo_orange_light"
         app:layout_constraintEnd_toEndOf="@+id/confirmPasswordRegister"
-        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log In Here"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.13999999" />
 
     <TextView
         android:id="@+id/forgotPassBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/arbutus"
         android:text="Forgot Password?"
+        android:textColor="@android:color/holo_orange_light"
         app:layout_constraintEnd_toEndOf="@+id/logInNowBtn"
+        app:layout_constraintHorizontal_bias="0.455"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="258dp"
+        android:layout_height="169dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/logo_3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

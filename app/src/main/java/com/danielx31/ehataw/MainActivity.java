@@ -1,4 +1,4 @@
-package com.example.ehataw;
+package com.danielx31.ehataw;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, Login.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

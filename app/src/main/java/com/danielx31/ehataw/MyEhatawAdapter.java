@@ -1,4 +1,4 @@
-package com.example.ehataw;
+package com.danielx31.ehataw;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ public class MyEhatawAdapter extends RecyclerView.Adapter<MyEhatawAdapter.ViewHo
     MyEhatawData[] myEhatawData;
     Context context;
 
-    public MyEhatawAdapter(MyEhatawData[] myEhatawData,Home activity) {
+    public MyEhatawAdapter(MyEhatawData[] myEhatawData, HomeActivity activity) {
         this.myEhatawData = myEhatawData;
         this.context = activity;
     }
@@ -59,7 +59,7 @@ public class MyEhatawAdapter extends RecyclerView.Adapter<MyEhatawAdapter.ViewHo
         TextView textViewDescription;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            zumbaImage = itemView.findViewById(R.id.imageView);
+            zumbaImage = itemView.findViewById(R.id.imageview_logo);
             textViewName = itemView.findViewById(R.id.textName);
             textViewDescription = itemView.findViewById(R.id.textdescription);
         }

@@ -1,4 +1,4 @@
-package com.example.ehataw;
+package com.danielx31.ehataw;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ForgotPassword extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
 
     private Button forgetBtn, loginBtn;
     private EditText emailTxt;
@@ -66,11 +66,11 @@ public class ForgotPassword extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(ForgotPassword.this, "Check your Email", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ForgotPassword.this, Login.class));
+                    Toast.makeText(ForgotPasswordActivity.this, "Check your Email", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
                     finish();
                 }else{
-                    Toast.makeText(ForgotPassword.this, "Error "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPasswordActivity.this, "Error "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

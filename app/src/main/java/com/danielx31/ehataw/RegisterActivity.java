@@ -1,4 +1,4 @@
-package com.example.ehataw;
+package com.danielx31.ehataw;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,19 +17,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore;
     private FirebaseAuth auth;
@@ -39,12 +33,12 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final EditText fullName =  findViewById(R.id.fullNameRegister);
-        final EditText email = findViewById(R.id.EmailRegister);
+        final EditText email = findViewById(R.id.edittext_email1);
         final EditText password =  findViewById(R.id.passwordRegister);
-        final EditText conPassword = findViewById(R.id.confirmPasswordRegister);
+        final EditText conPassword = findViewById(R.id.edittext_password1);
 
-        final Button registerBtn = findViewById(R.id.btnRegister);
-        final TextView loginNowBtn =  findViewById(R.id.logInNowBtn);
+        final Button registerBtn = findViewById(R.id.button_login);
+        final TextView loginNowBtn =  findViewById(R.id.button_register);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -62,15 +56,15 @@ public class Register extends AppCompatActivity {
 
                 //Check if user fill all the fields before sending data to firebase
                 if(fullNameTxt.isEmpty() || emailTxt.isEmpty() || passwordTxt.isEmpty()){
-                    Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
                 else if(passwordTxt.length() < 6){
-                    Toast.makeText(Register.this, "Password Must be 6 or More Characters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Password Must be 6 or More Characters", Toast.LENGTH_SHORT).show();
                 }
                 //Check if passwords are matching with each other
                 //If not matching with each other then show toast message
                 else if(!passwordTxt.equals(conPasswordTxt)){
-                    Toast.makeText(Register.this, "Password are not matching", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Password are not matching", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     registerUser(fullNameTxt, emailTxt, passwordTxt);
@@ -88,7 +82,7 @@ public class Register extends AppCompatActivity {
 
     private void registerUser(String fullNameTxt, String emailTxt, String passwordTxt){
 
-        auth.createUserWithEmailAndPassword(emailTxt, passwordTxt).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(emailTxt, passwordTxt).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
@@ -101,20 +95,20 @@ public class Register extends AppCompatActivity {
                     firestore.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(Register.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Register.this, MainActivity.class);
+                            Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Register.this, "Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                 }else{
-                    Toast.makeText(Register.this, "Error..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Error..", Toast.LENGTH_SHORT).show();
                 }
             }
         });

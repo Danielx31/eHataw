@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_2"
-    tools:context=".Register">
+    tools:context=".RegisterActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -36,7 +36,7 @@
         app:layout_constraintGuide_percent="0.95" />
 
     <EditText
-        android:id="@+id/EmailRegister"
+        android:id="@+id/edittext_email1"
         android:layout_width="327dp"
         android:layout_height="48dp"
         android:ems="10"
@@ -70,12 +70,12 @@
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:textColorHint="#4E342E"
-        app:layout_constraintEnd_toEndOf="@+id/EmailRegister"
-        app:layout_constraintStart_toStartOf="@+id/EmailRegister"
-        app:layout_constraintTop_toBottomOf="@+id/EmailRegister" />
+        app:layout_constraintEnd_toEndOf="@+id/edittext_email1"
+        app:layout_constraintStart_toStartOf="@+id/edittext_email1"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_email1" />
 
     <EditText
-        android:id="@+id/confirmPasswordRegister"
+        android:id="@+id/edittext_password1"
         android:layout_width="327dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -115,20 +115,23 @@
         app:layout_constraintTop_toBottomOf="@+id/fullNameRegister" />
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:background="@drawable/bg_login"
         android:fontFamily="@font/arbutus"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:text="Register"
-        app:layout_constraintEnd_toEndOf="@+id/confirmPasswordRegister"
+        app:backgroundTint="#F4A022"
+        app:layout_constraintEnd_toEndOf="@+id/edittext_password1"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/confirmPasswordRegister"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordRegister" />
+        app:layout_constraintStart_toStartOf="@+id/edittext_password1"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_password1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textview_registerdesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -136,11 +139,11 @@
         android:fontFamily="@font/arbutus"
         android:text="Already have an account?"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/confirmPasswordRegister"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+        app:layout_constraintStart_toStartOf="@+id/edittext_password1"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <TextView
-        android:id="@+id/logInNowBtn"
+        android:id="@+id/button_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -148,10 +151,10 @@
         android:fontFamily="@font/arbutus"
         android:text="LogIn Now"
         android:textColor="@android:color/holo_orange_light"
-        app:layout_constraintEnd_toEndOf="@+id/confirmPasswordRegister"
+        app:layout_constraintEnd_toEndOf="@+id/edittext_password1"
         app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+        app:layout_constraintStart_toEndOf="@+id/textview_registerdesc"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <ImageView
         android:id="@+id/imageView2"

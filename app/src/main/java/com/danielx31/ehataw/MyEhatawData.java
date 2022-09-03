@@ -1,4 +1,4 @@
-package com.example.ehataw;
+package com.danielx31.ehataw;
 
 public class MyEhatawData {
     private String zumbaName;

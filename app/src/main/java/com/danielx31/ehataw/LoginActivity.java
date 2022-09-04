@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         emailTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
         passwordTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
 
-        //startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

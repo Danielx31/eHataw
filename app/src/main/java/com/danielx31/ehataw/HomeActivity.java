@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,23 +48,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-//        RecyclerView recyclerView = findViewById(R.id.recyclerview_zumba);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        MyEhatawData[] myEhatawData = new MyEhatawData[]{
-//                new MyEhatawData("Arms", "Exercise Arms", R.drawable.daniel_picture),
-//                new MyEhatawData("Ham & Cheese", "Pizza", R.drawable.ham_cheese),
-//                new MyEhatawData("Zumba Dance", "Exercise Zumba", R.drawable.ehataw),
-//                new MyEhatawData("Hawaiian", "Pizzarap", R.drawable.hawaiian),
-//                new MyEhatawData("Meeting", "Office Meeting", R.drawable.istockphoto_1369207279_170667a),
-//                new MyEhatawData("Peperoni", "Pizzarap you", R.drawable.pepperoni),
-//                new MyEhatawData("Strategy", "Random Pic", R.drawable.strategy),
-//        };
-//
-//        MyEhatawAdapter myEhatawAdapter =  new MyEhatawAdapter(myEhatawData, HomeActivity.this);
-//        recyclerView.setAdapter(myEhatawAdapter);
 
         List<Zumba> zumbaList = new ArrayList<>();
         zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny", "This is a Description Text"));
@@ -122,16 +106,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showPopup(View view) {
-        PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+        PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_save_to_watchlist:
-                        Toast.makeText(getApplicationContext(), "Save To Watchlist", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Save To Watchlist", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.item_download:
-                        Toast.makeText(getApplicationContext(), "Download", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Download", Toast.LENGTH_SHORT).show();
+                        startDownload();
                         return true;
                     default:
                         return false;
@@ -140,6 +125,12 @@ public class HomeActivity extends AppCompatActivity {
         });
         popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
         popupMenu.show();
+    }
+
+    private void startDownload() {
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("url", sampleUrl);
+        startService(intent);
     }
 
 }

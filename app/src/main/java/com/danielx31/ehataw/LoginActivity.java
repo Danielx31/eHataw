@@ -39,15 +39,15 @@ public class LoginActivity extends AppCompatActivity {
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
         emailTextInputLayout = findViewById(R.id.textinputlayout_email);
         passwordTextInputLayout = findViewById(R.id.textinputlayout_password);
-        loginButton = findViewById(R.id.button_login);
-        registerTextView = findViewById(R.id.button_register);
+        loginButton = findViewById(R.id.button_Register);
+        registerTextView = findViewById(R.id.button_Login);
         forgotPasswordTextView = findViewById(R.id.button_forgetpass);
         auth = FirebaseAuth.getInstance();
 
         emailTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
         passwordTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
 
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+//        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,12 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danielx31.ehataw.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,6 +30,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore;
     private FirebaseAuth auth;
+    ActivityMainBinding binding;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +45,14 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText password =  findViewById(R.id.passwordRegister);
         final EditText conPassword = findViewById(R.id.edittext_password1);
 
-        final Button registerBtn = findViewById(R.id.button_login);
-        final TextView loginNowBtn =  findViewById(R.id.button_register);
+        final Button registerBtn = findViewById(R.id.button_Register);
+        final TextView loginNowBtn =  findViewById(R.id.button_Login);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
 
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +80,10 @@ public class RegisterActivity extends AppCompatActivity {
                 else{
                     registerUser(fullNameTxt, emailTxt, passwordTxt);
                 }
+
+
+
+
             }
         });
 
@@ -87,25 +102,30 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("Email", emailTxt);
-                    user.put("Complete Name", fullNameTxt);
-                    user.put("Password", passwordTxt);
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("email", emailTxt);
+                    hashMap.put("name",fullNameTxt);
+                    hashMap.put("password",passwordTxt);
 
-                    firestore.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    databaseReference.child("Users")
+                            .child(fullNameTxt)
+                            .setValue(hashMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(RegisterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                 }else{
                     Toast.makeText(RegisterActivity.this, "Error..", Toast.LENGTH_SHORT).show();

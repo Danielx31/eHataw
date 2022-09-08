@@ -115,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fullNameRegister" />
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/button_Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -140,10 +140,10 @@
         android:text="Already have an account?"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/edittext_password1"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        app:layout_constraintTop_toBottomOf="@+id/button_Register" />
 
     <TextView
-        android:id="@+id/button_register"
+        android:id="@+id/button_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -154,7 +154,7 @@
         app:layout_constraintEnd_toEndOf="@+id/edittext_password1"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toEndOf="@+id/textview_registerdesc"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        app:layout_constraintTop_toBottomOf="@+id/button_Register" />
 
     <ImageView
         android:id="@+id/imageView2"

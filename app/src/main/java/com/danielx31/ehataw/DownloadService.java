@@ -54,9 +54,9 @@ public class DownloadService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-//        if(!PermissionManager.isAllowPermission(getApplicationContext(), PERMISSION)) {
-//            return;
-//        }
+        if(!PermissionManager.isAllowPermission(getApplicationContext(), PERMISSION)) {
+            return;
+        }
 
         url = intent.getStringExtra("url");
         filename = url.substring(url.lastIndexOf('/') + 1);
@@ -64,9 +64,10 @@ public class DownloadService extends IntentService {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_baseline_download_24)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setTicker("")
                 .setContentTitle("Save Video")
-                .setContentText("Saving")
+                .setContentText(filename)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                 .setProgress(100, 0, false);
@@ -94,6 +95,11 @@ public class DownloadService extends IntentService {
                 executor.execute(() -> {
                     //Background work here
                     boolean success = writeResponseBodyToDisk(response.body(), filename);
+                    if (!success) {
+                        onSaveFailedNotification();
+                        return;
+                    }
+                    onSaveCompleteNotification();
                     //Toast.makeText(getApplicationContext(), "Stream Success! = " + success, Toast.LENGTH_SHORT).show();
                     handler.post(() -> {
                         //UI Thread work here
@@ -146,12 +152,11 @@ public class DownloadService extends IntentService {
                     Long progressLong = (fileSizeDownloaded * 100) / fileSize;
                     int progress = progressLong.intValue();
                     sendNotification(progress);
-                    //Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
                 }
 
                 outputStream.flush();
 
-                onWriteComplete();
                 return true;
             } catch (IOException e) {
                 return false;
@@ -187,10 +192,19 @@ public class DownloadService extends IntentService {
         LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
     }
 
-    private void onWriteComplete() {
+    private void onSaveCompleteNotification() {
         notificationManager.cancel(0);
+        notificationBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
         notificationBuilder.setProgress(0,0,false);
-        notificationBuilder.setContentText("File Downloaded");
+        notificationBuilder.setContentTitle("Save Done");
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    private void onSaveFailedNotification() {
+        notificationManager.cancel(0);
+        notificationBuilder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+        notificationBuilder.setProgress(0,0,false);
+        notificationBuilder.setContentTitle("Save Failed");
         notificationManager.notify(0, notificationBuilder.build());
     }
 

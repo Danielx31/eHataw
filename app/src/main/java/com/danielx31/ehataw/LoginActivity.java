@@ -2,6 +2,7 @@ package com.danielx31.ehataw;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         emailTextInputEditText = findViewById(R.id.textinputedittext_email);
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
         emailTextInputLayout = findViewById(R.id.textinputlayout_email);
@@ -47,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         emailTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
         passwordTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
 
-//        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

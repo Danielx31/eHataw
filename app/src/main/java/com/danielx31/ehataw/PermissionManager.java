@@ -19,10 +19,6 @@ public class PermissionManager {
         this.activity = activity;
     }
 
-    public static boolean isVersionCompatible(int version) {
-        return Build.VERSION.SDK_INT >= version;
-    }
-
     public void setPermission(String permission, int requestCode)
     {
         if (!isAllowPermission(context, permission)) {

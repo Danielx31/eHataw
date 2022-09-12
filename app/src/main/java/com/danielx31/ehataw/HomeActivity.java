@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -36,20 +37,21 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ZumbaAdapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    List<Zumba> zumbaList = new ArrayList<>();
 
     public final String sampleUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
     public final String sampleThumbnailUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Big_Buck_Bunny_thumbnail_vlc.png";
 
-    BottomNavigationView bottomNavigationView;
-    HomeFragment homeFragment = new HomeFragment();
-    MenuFragment menuFragment = new MenuFragment();
+//    BottomNavigationView bottomNavigationView;
+//    HomeFragment homeFragment = new HomeFragment();
+//    MenuFragment menuFragment = new MenuFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        List<Zumba> zumbaList = new ArrayList<>();
+        zumbaList = new ArrayList<>();
         zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny", "This is a Description Text"));
         zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny2", "2This is a Description Text2"));
         zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny3", "3This is a Description Text3"));
@@ -57,7 +59,8 @@ public class HomeActivity extends AppCompatActivity {
 
         buildRecyclerView(zumbaList);
 
-        Log.d("EGG", zumbaList.get(0).getTitle());
+        PermissionManager permissionManager = new PermissionManager(getApplicationContext(), this);
+        permissionManager.setPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 41);
 //        bottomNavigationView = findViewById(R.id.bottom_navigation);
 //        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
 //
@@ -100,12 +103,12 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onPopupMenuImageButtonClick(View view, int position) {
-                showPopup(view);
+                showPopup(view, zumbaList.get(position));
             }
         });
     }
 
-    public void showPopup(View view) {
+    public void showPopup(View view, Zumba zumba) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -115,8 +118,9 @@ public class HomeActivity extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), "Save To Watchlist", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.item_download:
+                        Log.d("DLTEST1", "CLICKED");
                         //Toast.makeText(getApplicationContext(), "Download", Toast.LENGTH_SHORT).show();
-                        startDownload();
+                        startDownload(zumba.getVideoUrl());
                         return true;
                     default:
                         return false;
@@ -127,9 +131,9 @@ public class HomeActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    private void startDownload() {
+    private void startDownload(String url) {
         Intent intent = new Intent(this, DownloadService.class);
-        intent.putExtra("url", sampleUrl);
+        intent.putExtra("url", url);
         startService(intent);
     }
 

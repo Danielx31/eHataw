@@ -1,6 +1,8 @@
 package com.danielx31.ehataw;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,107 +36,37 @@ import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private ZumbaAdapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
-    List<Zumba> zumbaList = new ArrayList<>();
-
-    public final String sampleUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-    public final String sampleThumbnailUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Big_Buck_Bunny_thumbnail_vlc.png";
-
-//    BottomNavigationView bottomNavigationView;
-//    HomeFragment homeFragment = new HomeFragment();
-//    MenuFragment menuFragment = new MenuFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        zumbaList = new ArrayList<>();
-        zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny", "This is a Description Text"));
-        zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny2", "2This is a Description Text2"));
-        zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny3", "3This is a Description Text3"));
-        zumbaList.add(new Zumba(sampleUrl, sampleThumbnailUrl, "Big Buck Bunny4", "4This is a Description Text4"));
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(navigationListener);
 
-        buildRecyclerView(zumbaList);
-
-        PermissionManager permissionManager = new PermissionManager(getApplicationContext(), this);
-        permissionManager.setPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 41);
-//        bottomNavigationView = findViewById(R.id.bottom_navigation);
-//        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-//
-//        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(MenuItem item) {
-//                switch(item.getItemId()){
-//                    case R.id.home:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-//                        return true;
-//                    case R.id.menu:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.container, menuFragment).commit();
-//                        return true;
-//                }
-//
-//                return false;
-//            }
-//        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, new HomeFragment()).commit();
 
     }
 
-    public void buildRecyclerView(List list) {
-        recyclerView = findViewById(R.id.recyclerview_zumba);
-        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerViewAdapter = new ZumbaAdapter(list);
+    private NavigationBarView.OnItemSelectedListener navigationListener = new NavigationBarView.OnItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerView.setAdapter(recyclerViewAdapter);
-
-        recyclerViewAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                finish();
+            switch (item.getItemId()) {
+                case R.id.bottom_nav_home:
+                    selectedFragment = new HomeFragment();
+                    break;
+                case R.id.bottom_nav_menu:
+                    selectedFragment = new MenuFragment();
+                    break;
             }
 
-            @Override
-            public void onPopupMenuImageButtonClick(View view, int position) {
-                showPopup(view, zumbaList.get(position));
-            }
-        });
-    }
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, selectedFragment).commit();
 
-    public void showPopup(View view, Zumba zumba) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_save_to_watchlist:
-                        //Toast.makeText(getApplicationContext(), "Save To Watchlist", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.item_download:
-                        Log.d("DLTEST1", "CLICKED");
-                        //Toast.makeText(getApplicationContext(), "Download", Toast.LENGTH_SHORT).show();
-                        startDownload(zumba.getVideoUrl());
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
-        popupMenu.show();
-    }
-
-    private void startDownload(String url) {
-        Intent intent = new Intent(this, DownloadService.class);
-        intent.putExtra("url", url);
-        startService(intent);
-    }
+            return true;
+        }
+    };
 
 }

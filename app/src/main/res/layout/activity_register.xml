@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:background="@drawable/bg_login"
-        android:fontFamily="@font/arbutus"
+        android:fontFamily="@font/concert_one"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:text="Register"

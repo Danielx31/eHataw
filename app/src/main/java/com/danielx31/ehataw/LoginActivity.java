@@ -1,13 +1,17 @@
 package com.danielx31.ehataw;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +23,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -30,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private TextView registerTextView;
     private TextView forgotPasswordTextView;
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         emailTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
         passwordTextInputLayout.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.arbutus_regular));
 
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+//        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +69,16 @@ public class LoginActivity extends AppCompatActivity {
                 final String passwordTxt = passwordTextInputEditText.getText().toString();
 
                 if(TextUtils.isEmpty(emailTxt)){
-                    emailTextInputEditText.setError("Email cannot be empty");
+                    Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+                    emailTextInputEditText.setError("Email is required");
+                    emailTextInputEditText.requestFocus();
+                }else if(!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()){
+                    Toast.makeText(LoginActivity.this, "Please re-enter your email", Toast.LENGTH_SHORT).show();
+                    emailTextInputEditText.setError("Valid email is required");
                     emailTextInputEditText.requestFocus();
                 }else if(TextUtils.isEmpty(passwordTxt)){
-                    passwordTextInputEditText.setError("Password cannot be empty");
+                    Toast.makeText(LoginActivity.this, "Please enter your password", Toast.LENGTH_SHORT).show();
+                    passwordTextInputEditText.setError("Password is required");
                     passwordTextInputEditText.requestFocus();
                 }
                 else{
@@ -93,14 +109,76 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "logged In", Toast.LENGTH_SHORT).show();
+
+
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
+
+                    //Check if email is verified before user can access their profile
+                    if(firebaseUser.isEmailVerified()){
+                        Toast.makeText(getApplicationContext(), "You are logged in now", Toast.LENGTH_SHORT).show();
+                        //open User Profile
+                    }else{
+                        firebaseUser.sendEmailVerification();
+                        auth.signOut(); //Sign Out user
+                        showAlertDialog();
+                    }
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }else{
-                    Toast.makeText(getApplicationContext(), "Log In Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    try{
+                        throw task.getException();
+                    }catch (FirebaseAuthInvalidUserException e){
+                        emailTextInputEditText.setError("User does not exists or is no longer valid. Please register again");
+                        emailTextInputEditText.requestFocus();
+                    }catch (FirebaseAuthInvalidCredentialsException e){
+                        emailTextInputEditText.setError("Invalid credentials. Kindly, check and re-enter.");
+                        emailTextInputEditText.requestFocus();
+                    }catch (Exception e){
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
 
+    }
+
+    private void showAlertDialog() {
+        //Setup the Alert Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle("Email Not Verified");
+        builder.setMessage("Please verify your email now. You can not login without email verification");
+
+        //Open Email Apps if User clicks/taps Continue button
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //To email app in new window and not within our app
+                startActivity(intent);
+            }
+        });
+        //create the AlertDialog
+        AlertDialog alertDialog = builder.create();
+
+        //show the AlertDialog
+        alertDialog.show();
+    }
+
+    //Check if User is already Logged in. In such case, straightway take the user to the user's profile
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(auth.getCurrentUser() != null){
+            Toast.makeText(LoginActivity.this, "Already Logged In", Toast.LENGTH_SHORT).show();
+
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+            finish();
+            //Start the UserProfileActivity
+        }else{
+            Toast.makeText(LoginActivity.this, "You can login now!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

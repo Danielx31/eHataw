@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String text = adapterView.getItemAtPosition(i).toString();
-                //Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
             }
 
             @Override

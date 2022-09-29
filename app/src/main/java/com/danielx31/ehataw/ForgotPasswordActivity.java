@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -23,6 +27,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     FirebaseFirestore firestore;
+    private final static String TAG = "ForgotPasswordActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +59,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void validateData() {
         email = emailTxt.getText().toString();
 
-        if(email.isEmpty()){
-            emailTxt.setError("Required");
-        }else{
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(ForgotPasswordActivity.this, "Please enter your registered email", Toast.LENGTH_SHORT).show();
+            emailTxt.setError("Email is Required");
+            emailTxt.requestFocus();
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            Toast.makeText(ForgotPasswordActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
+            emailTxt.setError("Valid email is required");
+            emailTxt.requestFocus();
+
+        } else{
             forgetPass();
         }
     }
@@ -66,11 +78,21 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(ForgotPasswordActivity.this, "Check your Email", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+                    Toast.makeText(ForgotPasswordActivity.this, "Please check your inbox for password reset link", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     finish();
                 }else{
-                    Toast.makeText(ForgotPasswordActivity.this, "Error "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    try {
+                        throw task.getException();
+                    }catch (FirebaseAuthInvalidUserException e){
+                        emailTxt.setError("User does not exists or is no longer valid. Please register again.");
+                    }catch (Exception e){
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(ForgotPasswordActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(ForgotPasswordActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

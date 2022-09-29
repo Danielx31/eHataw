@@ -4,8 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,11 +32,24 @@ public class MenuFragment extends Fragment {
     private String fullName, name;
     private FirebaseAuth auth;
 
+    private Button btnSettings;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        btnSettings = root.findViewById(R.id.btn_Settings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment settingsFragment = new SettingsActivity();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, settingsFragment).commit();
+            }
+        });
+
 
         textViewWelcome = root.findViewById(R.id.textview_name);
         auth = FirebaseAuth.getInstance();
@@ -47,8 +64,9 @@ public class MenuFragment extends Fragment {
 
         return root;
 
-//        return inflater.inflate(R.layout.fragment_menu, container, false);
     }
+
+
 
 
     //Users coming to Menu after successful registration
@@ -103,45 +121,11 @@ public class MenuFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-
-
-
-//        name = getActivity().findViewById(R.id.textview_name);
-//        name.findViewById(R.id.textview_name);
-//        auth = FirebaseAuth.getInstance();
-//        FirebaseUser firebaseUser = auth.getCurrentUser();
-//        if(firebaseUser == null){
-//            Toast.makeText(getContext(), "Something went wrong! user's details are not available at the moment", Toast.LENGTH_SHORT).show();
-//            Toast.makeText(getContext(),"Nice", Toast.LENGTH_LONG).show();
-//
-//        }else{
-//            showUserProfile(firebaseUser);
-//        }
+    //Create Actionbar Menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
-//    private void showUserProfile(FirebaseUser firebaseUser) {
-//        String userID = firebaseUser.getUid();
-//
-//        //Extracting User Reference from database for "Registered Users"
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-//        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ReadWriteUserDetails readWriteUserDatails = snapshot.getValue(ReadWriteUserDetails.class);
-//                if (readWriteUserDatails != null){
-//                    fullName = firebaseUser.getDisplayName();
-//
-//                    name.setText("Welcome, " + fullName + "!");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//}
+}
+

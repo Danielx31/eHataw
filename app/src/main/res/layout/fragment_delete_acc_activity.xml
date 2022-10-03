@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
+        android:layout_marginTop="60dp"
         >
 
 
@@ -29,9 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:fontFamily="@font/concert_one"
                 android:text="You can delete your profile now. Please enter your password and verify before continuing."
                 android:textAlignment="center"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView_delete_user_pwd_current"
@@ -39,9 +41,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_delete_user_head"
                 android:layout_marginTop="50dp"
+                android:fontFamily="@font/concert_one"
                 android:padding="6dp"
                 android:text="Current Password"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editText_delete_user_current"
@@ -49,11 +52,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textView_delete_user_pwd_current"
                 android:background="@drawable/box"
+                android:fontFamily="@font/concert_one"
                 android:hint="Enter your password"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
                 android:padding="10dp"
-                android:textSize="16dp" />
+                android:textSize="20sp"
+                 />
 
             <Button
                 android:id="@+id/button_authenticate_delete_user"
@@ -63,7 +68,10 @@
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="70dp"
-                android:text="Authenticate" />
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="Authenticate"
+                android:textSize="20sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -79,12 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/concert_one"
                 android:padding="6dp"
                 android:text="Your profile is not authenticated/verified yet!"
-                android:textSize="16sp" />
-
-
-
+                android:textSize="20sp" />
 
 
             <Button
@@ -95,7 +101,10 @@
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="70dp"
-                android:text="Delete User" />
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="Delete User"
+                android:textSize="20sp" />
 
         </RelativeLayout>
 

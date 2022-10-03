@@ -3,6 +3,7 @@ package com.danielx31.ehataw;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,10 +43,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(navigationListener);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, new HomeFragment()).commit();
 
     }
@@ -63,6 +62,8 @@ public class HomeActivity extends AppCompatActivity {
                     selectedFragment = new MenuFragment();
                     break;
             }
+
+
 
             getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, selectedFragment).commit();
 

@@ -1,150 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
+    android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="175dp"
+        android:layout_height="192dp"
+        android:src="@drawable/logo_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        >
+        android:layout_marginTop="88dp"
+        android:fontFamily="@font/concert_one"
+        android:text="Account Settings"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnChangePwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:fontFamily="@font/concert_one"
+        android:text="Change Password"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.402" />
 
-        <RelativeLayout
-            android:id="@+id/RL_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/box"
-            android:padding="15dp">
-
-            <TextView
-                android:id="@+id/textView_update_email_head"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="You can change your password now. Please enter your password and verify before continuing."
-                android:textAlignment="center"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textView_update_change_pwd_current"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_update_email_head"
-                android:layout_marginTop="50dp"
-                android:padding="6dp"
-                android:text="Current Password"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editText_change_pwd_current"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView_update_change_pwd_current"
-                android:background="@drawable/box"
-                android:hint="Enter your password"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                android:textSize="16dp" />
-
-            <Button
-                android:id="@+id/button_authenticate_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editText_change_pwd_current"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="70dp"
-                android:text="Authenticate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/RL_email"
-            android:layout_margin="15dp"
-            android:background="@drawable/box"
-            android:padding="15dp">
-
-            <TextView
-                android:id="@+id/textView_update_pwd_authenticated"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="6dp"
-                android:text="Your profile is not authenticated/verified yet!"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textView_change_pwd_new"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView_update_pwd_authenticated"
-                android:layout_marginTop="10dp"
-                android:padding="6dp"
-                android:text="New Password"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editText_change_pwd_new"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView_change_pwd_new"
-                android:background="@drawable/box"
-                android:hint="Enter your new password"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/textView_change_pwd_new_confirm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editText_change_pwd_new"
-                android:layout_marginTop="10dp"
-                android:padding="6dp"
-                android:text="New Password"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editText_change_pwd_new_confirm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView_change_pwd_new_confirm"
-                android:background="@drawable/box"
-                android:hint="Enter your new password"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                android:textSize="16dp" />
-
-            <Button
-                android:id="@+id/button_update_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editText_change_pwd_new_confirm"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="70dp"
-                android:text="Change Password" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-
-</ScrollView>
+    <Button
+        android:id="@+id/btnDeleteAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button"
+        android:fontFamily="@font/concert_one"
+        android:text="Delete Account"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnChangePwd"
+        app:layout_constraintStart_toStartOf="@+id/btnChangePwd"
+        app:layout_constraintTop_toBottomOf="@+id/btnChangePwd" />
+</androidx.constraintlayout.widget.ConstraintLayout>

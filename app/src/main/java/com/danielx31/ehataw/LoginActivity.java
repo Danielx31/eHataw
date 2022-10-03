@@ -114,14 +114,15 @@ public class LoginActivity extends AppCompatActivity {
                     //Check if email is verified before user can access their profile
                     if(firebaseUser.isEmailVerified()){
                         Toast.makeText(getApplicationContext(), "You are logged in now", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
                         //open User Profile
                     }else{
                         firebaseUser.sendEmailVerification();
                         auth.signOut(); //Sign Out user
                         showAlertDialog();
                     }
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
+
                 }else{
                     try{
                         throw task.getException();

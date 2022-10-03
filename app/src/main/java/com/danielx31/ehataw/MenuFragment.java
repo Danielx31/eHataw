@@ -32,7 +32,7 @@ public class MenuFragment extends Fragment {
     private String fullName, name;
     private FirebaseAuth auth;
 
-    private Button btnSettings;
+    private Button btnSettings,btnLogOut;
 
     @Nullable
     @Override
@@ -44,9 +44,24 @@ public class MenuFragment extends Fragment {
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Fragment settingsFragment = new ChangePasswordActivity();
+//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.container_fragment, settingsFragment).commit();
+
                 Fragment settingsFragment = new SettingsActivity();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, settingsFragment).commit();
+            }
+        });
+
+        btnLogOut = root.findViewById(R.id.btn_LogOut);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -74,24 +89,33 @@ public class MenuFragment extends Fragment {
         if(!firebaseUser.isEmailVerified()){
             showAlertDialog();
         }
+
     }
 
     private void showAlertDialog() {
         //Setup the Alert Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Email Not Verified");
-        builder.setMessage("Please verify your email now. You can not login without email verification next time");
+        builder.setMessage("Please verify your email now. You can not login without email verification");
 
         //Open Email Apps if User clicks/taps Continue button
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //To email app in new window and not within our app
+
+                auth.signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                getActivity().finish();
+
+//                Intent intent = new Intent(Intent.ACTION_MAIN);
+//                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //To email app in new window and not within our app
+//                startActivity(intent);
+
             }
         });
+
         //create the AlertDialog
         AlertDialog alertDialog = builder.create();
 

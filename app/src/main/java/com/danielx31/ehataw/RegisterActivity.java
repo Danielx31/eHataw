@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
         password =  findViewById(R.id.passwordRegister);
         conPassword = findViewById(R.id.edittext_password1);
 
-        final Button registerBtn = findViewById(R.id.button_Register);
+        final Button registerBtn = findViewById(R.id.button_login);
         final TextView loginNowBtn =  findViewById(R.id.button_Login);
 
         auth = FirebaseAuth.getInstance();

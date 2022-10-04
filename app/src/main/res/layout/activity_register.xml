@@ -7,6 +7,17 @@
     android:background="@drawable/bg_2"
     tools:context=".RegisterActivity">
 
+    <ImageView
+        android:id="@+id/imageview_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_2" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
@@ -115,7 +126,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fullNameRegister" />
 
     <Button
-        android:id="@+id/button_Register"
+        android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -140,7 +151,7 @@
         android:text="Already have an account?"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/edittext_password1"
-        app:layout_constraintTop_toBottomOf="@+id/button_Register" />
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <TextView
         android:id="@+id/button_Login"
@@ -154,7 +165,7 @@
         app:layout_constraintEnd_toEndOf="@+id/edittext_password1"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toEndOf="@+id/textview_registerdesc"
-        app:layout_constraintTop_toBottomOf="@+id/button_Register" />
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <ImageView
         android:id="@+id/imageView2"

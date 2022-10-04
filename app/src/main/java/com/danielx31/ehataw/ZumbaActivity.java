@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -21,6 +22,9 @@ public class ZumbaActivity extends AppCompatActivity {
     private StyledPlayerView styledPlayerView;
     private ExoPlayer exoPlayer;
     private String videoUrl;
+
+    private static final int BACK_PRESS_TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private long backPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,5 +53,19 @@ public class ZumbaActivity extends AppCompatActivity {
         exoPlayer.addMediaItem(mediaItem);
         exoPlayer.prepare();
         exoPlayer.setPlayWhenReady(true);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (backPressed + BACK_PRESS_TIME_INTERVAL > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            finishActivity(0);
+            return;
+        }
+        else { Toast.makeText(getBaseContext(), "Press again to exit!", Toast.LENGTH_SHORT).show(); }
+
+        backPressed = System.currentTimeMillis();
     }
 }

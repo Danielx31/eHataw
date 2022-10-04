@@ -27,8 +27,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.regex.Pattern;
-
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
 
@@ -52,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
         emailTextInputLayout = findViewById(R.id.textinputlayout_email);
         passwordTextInputLayout = findViewById(R.id.textinputlayout_password);
-        loginButton = findViewById(R.id.button_Register);
+        loginButton = findViewById(R.id.button_login);
         registerTextView = findViewById(R.id.button_Login);
         forgotPasswordTextView = findViewById(R.id.button_forgetpass);
         auth = FirebaseAuth.getInstance();

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.danielx31.ehataw.firebase.model.Zumba;
+import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class ZumbaAdapter extends RecyclerView.Adapter<ZumbaAdapter.ZumbaViewHol
         Zumba zumba = zumbaList.get(position);
 
         Glide.with(holder.imageView)
-                .load(zumba.getVideoThumbnailUrl())
+                .load(zumba.getThumbnailUrl())
                 .into(holder.imageView);
 
         holder.titleTextView.setText(zumba.getTitle());

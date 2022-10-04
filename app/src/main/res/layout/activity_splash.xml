@@ -7,4 +7,15 @@
     android:background="@drawable/bg_2"
     tools:context=".SplashActivity">
 
+    <ImageView
+        android:id="@+id/imageview_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

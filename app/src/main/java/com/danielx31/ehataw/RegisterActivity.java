@@ -1,8 +1,10 @@
 package com.danielx31.ehataw;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,8 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText fullName, email, password, conPassword;
     private static final String TAG = "RegisterActivity";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,9 +157,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 //send verification email
                                 firebaseUser.sendEmailVerification();
-                                Toast.makeText(RegisterActivity.this, "Registered Successfully. Please verify your email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Registered Successfully. Please check email and verify", Toast.LENGTH_LONG).show();
 
                              //Open User Profile after successful registration
+                                auth.signOut();
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     //To prevent user from returning back to register activity on pressing back button after registration
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

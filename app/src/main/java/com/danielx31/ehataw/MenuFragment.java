@@ -32,7 +32,7 @@ public class MenuFragment extends Fragment {
     private String fullName, name;
     private FirebaseAuth auth;
 
-    private Button btnSettings,btnLogOut;
+    private Button btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
 
     @Nullable
     @Override
@@ -40,17 +40,44 @@ public class MenuFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_menu, container, false);
 
+        btnWatchlist = root.findViewById(R.id.btn_Save_Watch_List);
+        btnWatchlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment watchlistFragment = new WatchlistFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, watchlistFragment).commit();
+            }
+        });
+
+        btnDownload = root.findViewById(R.id.btn_Download);
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment download = new DownloadVideoFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, download).commit();
+            }
+        });
+
         btnSettings = root.findViewById(R.id.btn_Settings);
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Fragment settingsFragment = new ChangePasswordActivity();
-//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.replace(R.id.container_fragment, settingsFragment).commit();
 
                 Fragment settingsFragment = new SettingsActivity();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, settingsFragment).commit();
+            }
+        });
+
+        btnAbout = root.findViewById(R.id.btn_About);
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment about = new AboutFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, about).commit();
             }
         });
 
@@ -64,6 +91,7 @@ public class MenuFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
 
 
         textViewWelcome = root.findViewById(R.id.textview_name);

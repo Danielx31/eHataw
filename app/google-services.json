@@ -37,6 +37,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:951429753824:android:a98367442762a2a8965985",
+        "android_client_info": {
+          "package_name": "com.danielx31.ehatawadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951429753824-31a8fucplekk6944npq4i4kf15avsn6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvnjOTZ_SnF8jNwY6UItpNjBzv_TQORqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951429753824-31a8fucplekk6944npq4i4kf15avsn6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:951429753824:android:c649dbb2f9a6ffe9965985",
         "android_client_info": {
           "package_name": "com.example.ehataw"

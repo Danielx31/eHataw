@@ -25,21 +25,36 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
 public class HomeFragment extends Fragment {
+
+    private FirebaseAuth auth;
+    private FirebaseFirestore database;
+    private CollectionReference zumbasReference;
+    private CollectionReference usersReference;
+    private DocumentReference userReference;
 
     private SearchView searchView;
 
@@ -47,8 +62,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ZumbaPagingAdapter zumbaPagingAdapter;
 
-    private FirebaseFirestore database = FirebaseFirestore.getInstance();
-    private CollectionReference zumbaReference = database.collection("zumba") ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,8 +69,24 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        zumbaPagingAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        zumbaPagingAdapter.stopListening();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RxJavaPlugins.setErrorHandler(e -> { });
+
+        initializeDatabase();
 
         searchView = getView().findViewById(R.id.searchview);
         //searchView.clearFocus();
@@ -100,28 +129,27 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String category = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
 
-                Query query = zumbaReference.orderBy("createdDate", Query.Direction.DESCENDING);
+                Query query = zumbasReference.orderBy("createdDate", Query.Direction.DESCENDING);
 
                 switch (category) {
                     case "All":
-                        query = zumbaReference.orderBy("createdDate", Query.Direction.DESCENDING);
+                        query = zumbasReference.orderBy("createdDate", Query.Direction.DESCENDING);
                         break;
                     case "Whole Body":
-                        query = zumbaReference.whereEqualTo("category", "Whole Body")
+                        query = zumbasReference.whereEqualTo("category", "Whole Body")
                                 .orderBy("createdDate", Query.Direction.DESCENDING);
                         break;
                     case "Arms":
-                        query = zumbaReference.whereEqualTo("category", "Arms")
+                        query = zumbasReference.whereEqualTo("category", "Arms")
                                 .orderBy("createdDate", Query.Direction.DESCENDING);
                         break;
                     case "Belly":
-                        query = zumbaReference.whereEqualTo("category", "Belly")
+                        query = zumbasReference.whereEqualTo("category", "Belly")
                                 .orderBy("createdDate", Query.Direction.DESCENDING);
                         break;
                     case "Legs":
-                        query = zumbaReference.whereEqualTo("category", "Legs")
+                        query = zumbasReference.whereEqualTo("category", "Legs")
                                 .orderBy("createdDate", Query.Direction.DESCENDING);
                         break;
                 }
@@ -139,6 +167,13 @@ public class HomeFragment extends Fragment {
         buildRecyclerView(buildRecyclerAdapter());
     }
 
+    public void initializeDatabase() {
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseFirestore.getInstance();
+        zumbasReference = database.collection("zumba");
+        userReference = database.collection("users").document(auth.getCurrentUser().getUid());
+    }
+
     public FirestorePagingOptions<Zumba> createPagingOptions(Query query) {
         PagingConfig config = new PagingConfig(10, 2, false);
 
@@ -149,7 +184,7 @@ public class HomeFragment extends Fragment {
     }
 
     public RecyclerView.Adapter buildRecyclerAdapter() {
-        Query query = zumbaReference.orderBy("createdDate", Query.Direction.DESCENDING);
+        Query query = zumbasReference.orderBy("createdDate", Query.Direction.DESCENDING);
 
         zumbaPagingAdapter = new ZumbaPagingAdapter(createPagingOptions(query));
 
@@ -206,12 +241,14 @@ public class HomeFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), ZumbaActivity.class);
                 intent.putExtra("videoUrl", zumba.getVideoUrl());
+                intent.putExtra("isOnline", true);
                 startActivity(intent);
             }
 
             @Override
             public void onPopupMenuClick(View view, DocumentSnapshot documentSnapshot, int position) {
                 Zumba zumba = documentSnapshot.toObject(Zumba.class);
+                zumba.setId(documentSnapshot.getId());
                 showPopupMenu(view, zumba);
             }
 
@@ -230,12 +267,13 @@ public class HomeFragment extends Fragment {
 
     public void showPopupMenu(View view, Zumba zumba) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
+        MenuItem saveToWatchlist = popupMenu.getMenu().findItem(R.id.item_save_to_watchlist);
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.item_save_to_watchlist:
-                        return true;
                     case R.id.item_download:
                         startDownload(zumba.getVideoUrl());
                         return true;
@@ -244,7 +282,45 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
+
+        userReference.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isComplete()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            User user = documentSnapshot.toObject(User.class);
+                            boolean isWatchlistContains = user.getWatchlist().contains(zumba.getId());
+
+                            if (isWatchlistContains) {
+                                saveToWatchlist.setTitle("Unsave");
+                            }
+
+                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    switch (item.getItemId()) {
+                                        case R.id.item_save_to_watchlist:
+                                            if (isWatchlistContains) {
+                                                removeFromWatchlist(zumba.getId());
+                                                return true;
+                                            }
+                                            saveToWatchlist(zumba.getId());
+                                            return true;
+                                        case R.id.item_download:
+                                            startDownload(zumba.getVideoUrl());
+                                            return true;
+                                        default:
+                                            return false;
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                });
+
+
         popupMenu.show();
     }
 
@@ -253,6 +329,43 @@ public class HomeFragment extends Fragment {
         intent.putExtra("url", url);
         getActivity().startService(intent);
     }
+
+    public void saveToWatchlist(String zumbaId) {
+        userReference.set(new HashMap<>(), SetOptions.merge());
+
+        userReference.update("watchlist", FieldValue.arrayUnion(zumbaId))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getContext(), "Saved to Watchlist!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Failed to Save!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    public void removeFromWatchlist(String zumbaId) {
+        userReference.update("watchlist", FieldValue.arrayRemove(zumbaId))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getContext(), "Removed!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Failed to Remove!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
 
 
 }

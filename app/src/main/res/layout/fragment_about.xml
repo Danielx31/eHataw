@@ -6,13 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/about_guideline_header_edge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/about_guideline_header_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="210dp"
-        android:layout_height="189dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/logo_3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@+id/about_guideline_header_edge"
+        app:layout_constraintEnd_toStartOf="@+id/about_guideline_header_center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,12 +34,11 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
         android:fontFamily="@font/concert_one"
         android:text="About"
         android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/about_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/about_guideline_header_center"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

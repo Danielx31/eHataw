@@ -16,12 +16,18 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class ZumbaActivity extends AppCompatActivity {
 
     private StyledPlayerView styledPlayerView;
     private ExoPlayer exoPlayer;
     private String videoUrl;
+    private boolean isOnline;
 
     private static final int BACK_PRESS_TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long backPressed;
@@ -34,6 +40,7 @@ public class ZumbaActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             videoUrl = extras.getString("videoUrl");
+            isOnline = extras.getBoolean("isOnline");
             //The key argument here must match that used in the other activity
         }
 
@@ -53,6 +60,20 @@ public class ZumbaActivity extends AppCompatActivity {
         exoPlayer.addMediaItem(mediaItem);
         exoPlayer.prepare();
         exoPlayer.setPlayWhenReady(true);
+    }
+
+    public void addToHistory() {
+        if (!isOnline) {
+            return;
+        }
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference userReference = database.collection("users").document(auth.getCurrentUser().getUid());
+
+        userReference.set(new HashMap<>());
+
+
     }
 
     @Override

@@ -7,6 +7,13 @@
     tools:context=".DownloadVideoFragment">
 
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="190dp"
@@ -21,10 +28,10 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:fontFamily="@font/concert_one"
-        android:text="Download"
+        android:text="Downloaded"
         android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toEndOf="@+id/imageView"

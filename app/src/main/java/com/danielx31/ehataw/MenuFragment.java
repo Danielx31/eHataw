@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 public class MenuFragment extends Fragment {
 
     private TextView textViewWelcome;
@@ -39,6 +41,8 @@ public class MenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        RxJavaPlugins.setErrorHandler(e -> { });
 
         btnWatchlist = root.findViewById(R.id.btn_Save_Watch_List);
         btnWatchlist.setOnClickListener(new View.OnClickListener() {

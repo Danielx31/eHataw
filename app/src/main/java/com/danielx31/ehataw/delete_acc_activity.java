@@ -1,7 +1,10 @@
 package com.danielx31.ehataw;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,6 +35,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class delete_acc_activity extends Fragment {
+
+    private BroadcastReceiver connectionReceiver;
 
     private FirebaseAuth auth;
     private FirebaseUser firebaseUser;
@@ -69,6 +74,19 @@ public class delete_acc_activity extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
     }
 
     //ReAuthenticated User before changing password

@@ -1,7 +1,10 @@
 package com.danielx31.ehataw;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -50,6 +53,8 @@ import kotlin.jvm.functions.Function1;
 
 public class HomeFragment extends Fragment {
 
+    private BroadcastReceiver connectionReceiver;
+
     private FirebaseAuth auth;
     private FirebaseFirestore database;
     private CollectionReference zumbasReference;
@@ -69,23 +74,12 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        zumbaPagingAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        zumbaPagingAdapter.stopListening();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         RxJavaPlugins.setErrorHandler(e -> { });
 
+        connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
 
         searchView = getView().findViewById(R.id.searchview);
@@ -165,6 +159,22 @@ public class HomeFragment extends Fragment {
         });
 
         buildRecyclerView(buildRecyclerAdapter());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+        zumbaPagingAdapter.startListening();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
+        zumbaPagingAdapter.stopListening();
     }
 
     public void initializeDatabase() {
@@ -288,40 +298,60 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isComplete()) {
+
+                            if (!task.isSuccessful()) {
+                                setPopupMenuSelection(popupMenu, zumba, false);
+                                return;
+                            }
+
                             DocumentSnapshot documentSnapshot = task.getResult();
+
+                            if (!documentSnapshot.exists()) {
+                                setPopupMenuSelection(popupMenu, zumba, false);
+                                return;
+                            }
+
                             User user = documentSnapshot.toObject(User.class);
+
+                            if (user.getWatchlist() == null) {
+                                setPopupMenuSelection(popupMenu, zumba, false);
+                                return;
+                            }
                             boolean isWatchlistContains = user.getWatchlist().contains(zumba.getId());
 
                             if (isWatchlistContains) {
                                 saveToWatchlist.setTitle("Unsave");
                             }
 
-                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    switch (item.getItemId()) {
-                                        case R.id.item_save_to_watchlist:
-                                            if (isWatchlistContains) {
-                                                removeFromWatchlist(zumba.getId());
-                                                return true;
-                                            }
-                                            saveToWatchlist(zumba.getId());
-                                            return true;
-                                        case R.id.item_download:
-                                            startDownload(zumba.getVideoUrl());
-                                            return true;
-                                        default:
-                                            return false;
-                                    }
-                                }
-                            });
+                            setPopupMenuSelection(popupMenu, zumba, isWatchlistContains);
                         }
 
                     }
                 });
 
-
         popupMenu.show();
+    }
+
+    public void setPopupMenuSelection(PopupMenu popupMenu, Zumba zumba, boolean inWatchlist) {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_save_to_watchlist:
+                        if (inWatchlist) {
+                            removeFromWatchlist(zumba.getId());
+                            return true;
+                        }
+                        saveToWatchlist(zumba.getId());
+                        return true;
+                    case R.id.item_download:
+                        startDownload(zumba.getVideoUrl());
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     private void startDownload(String url) {

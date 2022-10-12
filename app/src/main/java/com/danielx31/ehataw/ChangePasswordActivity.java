@@ -1,6 +1,9 @@
 package com.danielx31.ehataw;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordActivity extends Fragment {
 
+    private BroadcastReceiver connectionReceiver;
+
     private FirebaseAuth auth;
     private EditText editTextPwdCurr, editTextPwdNew, editTextPwdCurrNew;
     private TextView textViewAuthenticated;
@@ -36,6 +41,8 @@ public class ChangePasswordActivity extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.change_password_activity, container, false);
+
+        connectionReceiver = new ConnectionReceiver();
 
         editTextPwdCurr = view.findViewById(R.id.editText_delete_user_current);
         editTextPwdNew = view.findViewById(R.id.editText_change_pwd_new);
@@ -61,6 +68,19 @@ public class ChangePasswordActivity extends Fragment {
             reAuthenticated(firebaseUser);
         }
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
     }
 
     //ReAuthenticated User before changing password

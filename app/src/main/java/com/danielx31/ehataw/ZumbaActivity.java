@@ -77,6 +77,18 @@ public class ZumbaActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        exoPlayer.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        exoPlayer.release();
+    }
+
+    @Override
     public void onBackPressed()
     {
         if (backPressed + BACK_PRESS_TIME_INTERVAL > System.currentTimeMillis())

@@ -1,7 +1,10 @@
 package com.danielx31.ehataw;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +33,8 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class MenuFragment extends Fragment {
 
+    private BroadcastReceiver connectionReceiver;
+
     private TextView textViewWelcome;
     private String fullName, name;
     private FirebaseAuth auth;
@@ -43,6 +48,7 @@ public class MenuFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_menu, container, false);
 
         RxJavaPlugins.setErrorHandler(e -> { });
+        connectionReceiver = new ConnectionReceiver();
 
         btnWatchlist = root.findViewById(R.id.btn_Save_Watch_List);
         btnWatchlist.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +119,18 @@ public class MenuFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+    }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
+    }
 
     //Users coming to Menu after successful registration
     private void checkingifEmailVerified(FirebaseUser firebaseUser) {

@@ -3,7 +3,10 @@ package com.danielx31.ehataw;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
+    private BroadcastReceiver connectionReceiver;
+
     private Button forgetBtn, loginBtn;
     private EditText emailTxt;
     private String email;
@@ -33,6 +38,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+
+        connectionReceiver = new ConnectionReceiver();
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -54,6 +61,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectionReceiver, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(connectionReceiver);
     }
 
     private void validateData() {

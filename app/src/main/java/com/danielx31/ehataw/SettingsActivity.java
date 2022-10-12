@@ -1,5 +1,8 @@
 package com.danielx31.ehataw;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,12 +16,16 @@ import android.widget.Button;
 
 public class SettingsActivity extends Fragment {
 
+    private BroadcastReceiver connectionReceiver;
     private Button ButtonChangePwd, ButtonDeleteAcc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings_activity, container, false);
+
+        connectionReceiver = new ConnectionReceiver();
+
         ButtonChangePwd = view.findViewById(R.id.btnChangePwd);
         ButtonDeleteAcc = view.findViewById(R.id.btnDeleteAcc);
 
@@ -40,5 +47,18 @@ public class SettingsActivity extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
     }
 }

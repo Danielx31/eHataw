@@ -1,6 +1,9 @@
 package com.danielx31.ehataw;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +49,8 @@ import kotlin.jvm.functions.Function1;
 
 public class WatchlistFragment extends Fragment {
 
+    private BroadcastReceiver connectionReceiver;
+
     private FirebaseAuth auth;
     private FirebaseFirestore database;
     private CollectionReference zumbasReference;
@@ -64,23 +69,12 @@ public class WatchlistFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        zumbaPagingAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        zumbaPagingAdapter.stopListening();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initializeDatabase();
-
         RxJavaPlugins.setErrorHandler(e -> { });
+
+        connectionReceiver = new ConnectionReceiver();
+        initializeDatabase();
 
         swipeRefreshLayout = getView().findViewById(R.id.swiperefreshlayout_zumba);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -92,6 +86,21 @@ public class WatchlistFragment extends Fragment {
 
         buildRecyclerView(buildRecyclerAdapter());
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+        zumbaPagingAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
+        zumbaPagingAdapter.stopListening();
     }
 
     public void initializeDatabase() {
@@ -110,99 +119,109 @@ public class WatchlistFragment extends Fragment {
                 .build();
     }
 
-    public void loadWatchlist() {
-
-    }
-
     public RecyclerView.Adapter buildRecyclerAdapter() {
 
-        swipeRefreshLayout.setRefreshing(true);
         Query query = zumbasReference.whereEqualTo("forEmptyQuery", "");
 
         zumbaPagingAdapter = new ZumbaPagingAdapter(createPagingOptions(query));
 
         userReference.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User user = documentSnapshot.toObject(User.class);
-                        List<String> watchlist = user.getWatchlist();
-
-                        if (watchlist.isEmpty()) {
-                            return;
-                        }
-
-                        Query query = zumbasReference.whereIn(FieldPath.documentId(), watchlist);
-
-                        zumbaPagingAdapter.updateOptions(createPagingOptions(query));
-
-                        zumbaPagingAdapter.addLoadStateListener(new Function1<CombinedLoadStates, Unit>() {
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
-                            public Unit invoke(CombinedLoadStates states) {
-                                LoadState refresh = states.getRefresh();
-                                LoadState append = states.getAppend();
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                swipeRefreshLayout.setRefreshing(true);
 
-                                if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
-                                    // The previous load (either initial or additional) failed. Call
-                                    // the retry() method in order to retry the load operation.
-                                    // ...
+                                if (task.isComplete()) {
                                     swipeRefreshLayout.setRefreshing(false);
-                                }
 
-                                if (refresh instanceof LoadState.Loading) {
-                                    // The initial Load has begun
-                                    // ...
-                                    swipeRefreshLayout.setRefreshing(true);
-                                }
-
-                                if (append instanceof LoadState.Loading) {
-                                    // The adapter has started to load an additional page
-                                    // ...
-                                    swipeRefreshLayout.setRefreshing(true);
-                                }
-
-                                if (append instanceof LoadState.NotLoading) {
-                                    LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
-                                    if (notLoading.getEndOfPaginationReached()) {
-                                        // The adapter has finished loading all of the data set
-                                        // ...
-                                        swipeRefreshLayout.setRefreshing(false);
-                                        return null;
+                                    if (!task.isSuccessful()) {
+                                        return;
                                     }
 
-                                    if (refresh instanceof LoadState.NotLoading) {
-                                        // The previous load (either initial or additional) completed
-                                        // ...
-                                        swipeRefreshLayout.setRefreshing(false);
-                                        return null;
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+
+                                    if (!documentSnapshot.exists()) {
+                                        return;
                                     }
+
+                                    User user = documentSnapshot.toObject(User.class);
+                                    List<String> watchlist = user.getWatchlist();
+
+                                    if (watchlist == null || watchlist.isEmpty()) {
+                                        return;
+                                    }
+
+                                    Query query = zumbasReference.whereIn(FieldPath.documentId(), watchlist);
+
+                                    zumbaPagingAdapter.updateOptions(createPagingOptions(query));
                                 }
-                                return null;
                             }
                         });
 
-                        zumbaPagingAdapter.setOnItemClickListener(new ZumbaPagingAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                                Zumba zumba = documentSnapshot.toObject(Zumba.class);
-                                zumba.setId(documentSnapshot.getId());
+        zumbaPagingAdapter.addLoadStateListener(new Function1<CombinedLoadStates, Unit>() {
+            @Override
+            public Unit invoke(CombinedLoadStates states) {
+                LoadState refresh = states.getRefresh();
+                LoadState append = states.getAppend();
 
-                                Intent intent = new Intent(getContext(), ZumbaActivity.class);
-                                intent.putExtra("videoUrl", zumba.getVideoUrl());
-                                intent.putExtra("isOnline", true);
-                                startActivity(intent);
-                            }
+                if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
+                    // The previous load (either initial or additional) failed. Call
+                    // the retry() method in order to retry the load operation.
+                    // ...
+                    swipeRefreshLayout.setRefreshing(false);
+                }
 
-                            @Override
-                            public void onPopupMenuClick(View view, DocumentSnapshot documentSnapshot, int position) {
-                                Zumba zumba = documentSnapshot.toObject(Zumba.class);
-                                zumba.setId(documentSnapshot.getId());
-                                showPopupMenu(view, zumba);
-                            }
+                if (refresh instanceof LoadState.Loading) {
+                    // The initial Load has begun
+                    // ...
+                    swipeRefreshLayout.setRefreshing(true);
+                }
 
-                        });
+                if (append instanceof LoadState.Loading) {
+                    // The adapter has started to load an additional page
+                    // ...
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+
+                if (append instanceof LoadState.NotLoading) {
+                    LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
+                    if (notLoading.getEndOfPaginationReached()) {
+                        // The adapter has finished loading all of the data set
+                        // ...
+                        swipeRefreshLayout.setRefreshing(false);
+                        return null;
                     }
-                });
+
+                    if (refresh instanceof LoadState.NotLoading) {
+                        // The previous load (either initial or additional) completed
+                        // ...
+                        swipeRefreshLayout.setRefreshing(false);
+                        return null;
+                    }
+                }
+                return null;
+            }
+        });
+
+        zumbaPagingAdapter.setOnItemClickListener(new ZumbaPagingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Zumba zumba = documentSnapshot.toObject(Zumba.class);
+                zumba.setId(documentSnapshot.getId());
+
+                Intent intent = new Intent(getContext(), ZumbaActivity.class);
+                intent.putExtra("videoUrl", zumba.getVideoUrl());
+                intent.putExtra("isOnline", true);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onPopupMenuClick(View view, DocumentSnapshot documentSnapshot, int position) {
+                Zumba zumba = documentSnapshot.toObject(Zumba.class);
+                zumba.setId(documentSnapshot.getId());
+                showPopupMenu(view, zumba);
+            }
+        });
 
         return zumbaPagingAdapter;
     }
@@ -258,13 +277,17 @@ public class WatchlistFragment extends Fragment {
                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                User user = documentSnapshot.toObject(User.class);
-                                                List<String> watchlist = user.getWatchlist();
-
-                                                if (watchlist.isEmpty()) {
+                                                if (!documentSnapshot.exists()) {
                                                     return;
                                                 }
 
+                                                User user = documentSnapshot.toObject(User.class);
+
+                                                List<String> watchlist = user.getWatchlist();
+
+                                                if (watchlist == null || watchlist.isEmpty()) {
+                                                    return;
+                                                }
                                                 Query query = zumbasReference.whereIn(FieldPath.documentId(), watchlist);
                                                 zumbaPagingAdapter.updateOptions(createPagingOptions(query));
                                             }

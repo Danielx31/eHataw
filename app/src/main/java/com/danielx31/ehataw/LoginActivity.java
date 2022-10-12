@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +31,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private BroadcastReceiver connectionReceiver;
+
     private FirebaseAuth auth;
 
     private TextInputEditText emailTextInputEditText;
@@ -45,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        connectionReceiver = new ConnectionReceiver();
 
         emailTextInputEditText = findViewById(R.id.textinputedittext_email);
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
@@ -99,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void logIn(String emailTxt, String password){
         auth.signInWithEmailAndPassword(emailTxt, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -168,6 +178,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectionReceiver, filter);
+
         if(auth.getCurrentUser() != null){
             Toast.makeText(LoginActivity.this, "Already Logged In", Toast.LENGTH_SHORT).show();
 
@@ -177,5 +190,11 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             Toast.makeText(LoginActivity.this, "You can login now!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(connectionReceiver);
     }
 }

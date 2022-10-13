@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
-import androidx.paging.PagingDataAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -76,7 +75,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         RxJavaPlugins.setErrorHandler(e -> { });
 
         connectionReceiver = new ConnectionReceiver();
@@ -104,7 +102,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        swipeRefreshLayout = getView().findViewById(R.id.swiperefreshlayout_zumba);
+        swipeRefreshLayout = getView().findViewById(R.id.watchlist_swiperefreshlayout_zumba);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -249,10 +247,7 @@ public class HomeFragment extends Fragment {
                 Zumba zumba = documentSnapshot.toObject(Zumba.class);
                 zumba.setId(documentSnapshot.getId());
 
-                Intent intent = new Intent(getContext(), ZumbaActivity.class);
-                intent.putExtra("videoUrl", zumba.getVideoUrl());
-                intent.putExtra("isOnline", true);
-                startActivity(intent);
+                watchZumba(zumba);
             }
 
             @Override
@@ -267,7 +262,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void buildRecyclerView(RecyclerView.Adapter adapter) {
-        recyclerView = getView().findViewById(R.id.recyclerview_zumba);
+        recyclerView = getView().findViewById(R.id.watchlist_recyclerview_zumba);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -354,7 +349,25 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void startDownload(String url) {
+    public void watchZumba(Zumba zumba) {
+        if (zumba == null) {
+            Toast.makeText(getContext(), "Cannot load zumba!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(getContext(), ZumbaActivity.class);
+        intent.putExtra("isOnline", true);
+        intent.putExtra("zumbaId", zumba.getId());
+        intent.putExtra("videoPath", zumba.getVideoUrl());
+        startActivity(intent);
+    }
+
+    public void startDownload(String url) {
+        if (url == null || url.isEmpty()) {
+            Toast.makeText(getContext(), "Cannot download video!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent(getContext(), DownloadService.class);
         intent.putExtra("url", url);
         getActivity().startService(intent);

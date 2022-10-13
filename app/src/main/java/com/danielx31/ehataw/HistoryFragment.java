@@ -5,6 +5,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,13 +21,6 @@ import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
@@ -39,14 +38,16 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class WatchlistFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
     private BroadcastReceiver connectionReceiver;
 
@@ -59,11 +60,10 @@ public class WatchlistFragment extends Fragment {
     private RecyclerView recyclerView;
     private ZumbaPagingAdapter zumbaPagingAdapter;
 
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_watchlist, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class WatchlistFragment extends Fragment {
         connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
 
-        swipeRefreshLayout = getView().findViewById(R.id.watchlist_swiperefreshlayout_zumba);
+        swipeRefreshLayout = getView().findViewById(R.id.history_swiperefreshlayout_zumba);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -91,14 +91,12 @@ public class WatchlistFragment extends Fragment {
         super.onStart();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         getActivity().registerReceiver(connectionReceiver, filter);
-        zumbaPagingAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         getActivity().unregisterReceiver(connectionReceiver);
-        zumbaPagingAdapter.stopListening();
     }
 
     public void initializeDatabase() {
@@ -124,37 +122,37 @@ public class WatchlistFragment extends Fragment {
         zumbaPagingAdapter = new ZumbaPagingAdapter(createPagingOptions(query));
 
         userReference.get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                swipeRefreshLayout.setRefreshing(true);
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        swipeRefreshLayout.setRefreshing(true);
 
-                                if (task.isComplete()) {
-                                    swipeRefreshLayout.setRefreshing(false);
+                        if (task.isComplete()) {
+                            swipeRefreshLayout.setRefreshing(false);
 
-                                    if (!task.isSuccessful()) {
-                                        return;
-                                    }
-
-                                    DocumentSnapshot documentSnapshot = task.getResult();
-
-                                    if (!documentSnapshot.exists()) {
-                                        return;
-                                    }
-
-                                    User user = documentSnapshot.toObject(User.class);
-                                    List<String> watchlist = user.getWatchlist();
-
-                                    if (watchlist == null || watchlist.isEmpty()) {
-                                        return;
-                                    }
-
-                                    Query query = zumbasReference.whereIn(FieldPath.documentId(), watchlist);
-
-                                    zumbaPagingAdapter.updateOptions(createPagingOptions(query));
-                                }
+                            if (!task.isSuccessful()) {
+                                return;
                             }
-                        });
+
+                            DocumentSnapshot documentSnapshot = task.getResult();
+
+                            if (!documentSnapshot.exists()) {
+                                return;
+                            }
+
+                            User user = documentSnapshot.toObject(User.class);
+                            List<String> history = user.getHistory();
+
+                            if (history == null || history.isEmpty()) {
+                                return;
+                            }
+
+                            Query query = zumbasReference.whereIn(FieldPath.documentId(), history);
+
+                            zumbaPagingAdapter.updateOptions(createPagingOptions(query));
+                        }
+                    }
+                });
 
         zumbaPagingAdapter.addLoadStateListener(new Function1<CombinedLoadStates, Unit>() {
             @Override
@@ -222,7 +220,7 @@ public class WatchlistFragment extends Fragment {
     }
 
     public void buildRecyclerView(RecyclerView.Adapter adapter) {
-        recyclerView = getView().findViewById(R.id.watchlist_recyclerview_zumba);
+        recyclerView = getView().findViewById(R.id.history_recyclerview_zumba);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -235,15 +233,10 @@ public class WatchlistFragment extends Fragment {
         popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
         MenuItem saveToWatchlist = popupMenu.getMenu().findItem(R.id.item_save_to_watchlist);
 
-        saveToWatchlist.setTitle("Unsave");
-
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.item_save_to_watchlist:
-                        removeFromWatchlist(zumba.getId());
-                        return true;
                     case R.id.item_download:
                         startDownload(zumba.getVideoUrl());
                         return true;
@@ -253,7 +246,65 @@ public class WatchlistFragment extends Fragment {
             }
         });
 
+        userReference.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isComplete()) {
+
+                            if (!task.isSuccessful()) {
+                                setPopupMenuSelection(popupMenu, zumba, false);
+                                return;
+                            }
+
+                            DocumentSnapshot documentSnapshot = task.getResult();
+
+                            if (!documentSnapshot.exists()) {
+                                setPopupMenuSelection(popupMenu, zumba, false);
+                                return;
+                            }
+
+                            User user = documentSnapshot.toObject(User.class);
+
+                            if (user.getWatchlist() == null) {
+                                setPopupMenuSelection(popupMenu, zumba, false);
+                                return;
+                            }
+                            boolean isWatchlistContains = user.getWatchlist().contains(zumba.getId());
+
+                            if (isWatchlistContains) {
+                                saveToWatchlist.setTitle("Unsave");
+                            }
+
+                            setPopupMenuSelection(popupMenu, zumba, isWatchlistContains);
+                        }
+
+                    }
+                });
+
         popupMenu.show();
+    }
+
+    public void setPopupMenuSelection(PopupMenu popupMenu, Zumba zumba, boolean inWatchlist) {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_save_to_watchlist:
+                        if (inWatchlist) {
+                            removeFromWatchlist(zumba.getId());
+                            return true;
+                        }
+                        saveToWatchlist(zumba.getId());
+                        return true;
+                    case R.id.item_download:
+                        startDownload(zumba.getVideoUrl());
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     public void watchZumba(Zumba zumba) {
@@ -280,37 +331,31 @@ public class WatchlistFragment extends Fragment {
         getActivity().startService(intent);
     }
 
+    public void saveToWatchlist(String zumbaId) {
+        userReference.set(new HashMap<>(), SetOptions.merge());
+
+        userReference.update("watchlist", FieldValue.arrayUnion(zumbaId))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getContext(), "Saved to Watchlist!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Failed to Save!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
     public void removeFromWatchlist(String zumbaId) {
         userReference.update("watchlist", FieldValue.arrayRemove(zumbaId))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getContext(), "Removed!", Toast.LENGTH_SHORT).show();
-                        userReference.get()
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                if (!documentSnapshot.exists()) {
-                                                    return;
-                                                }
-
-                                                User user = documentSnapshot.toObject(User.class);
-
-                                                List<String> watchlist = user.getWatchlist();
-
-                                                if (watchlist == null || watchlist.isEmpty()) {
-                                                    return;
-                                                }
-                                                Query query = zumbasReference.whereIn(FieldPath.documentId(), watchlist);
-                                                zumbaPagingAdapter.updateOptions(createPagingOptions(query));
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getContext(), "Failed to Remove!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 
 public class SettingsActivity extends Fragment {
 
@@ -23,6 +25,7 @@ public class SettingsActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings_activity, container, false);
+        RxJavaPlugins.setErrorHandler(e -> { });
 
         connectionReceiver = new ConnectionReceiver();
 

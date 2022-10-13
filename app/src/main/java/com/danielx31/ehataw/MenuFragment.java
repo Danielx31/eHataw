@@ -39,7 +39,7 @@ public class MenuFragment extends Fragment {
     private String fullName, name;
     private FirebaseAuth auth;
 
-    private Button btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
+    private Button btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
 
     @Nullable
     @Override
@@ -49,6 +49,16 @@ public class MenuFragment extends Fragment {
 
         RxJavaPlugins.setErrorHandler(e -> { });
         connectionReceiver = new ConnectionReceiver();
+
+        btnHistory = root.findViewById(R.id.btn_History);
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment watchlistFragment = new HistoryFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, watchlistFragment).commit();
+            }
+        });
 
         btnWatchlist = root.findViewById(R.id.btn_Save_Watch_List);
         btnWatchlist.setOnClickListener(new View.OnClickListener() {

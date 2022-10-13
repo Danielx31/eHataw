@@ -49,7 +49,7 @@
     </FrameLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefreshlayout_zumba"
+        android:id="@+id/watchlist_swiperefreshlayout_zumba"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="@+id/home_guideline_header_edge">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_zumba"
+            android:id="@+id/watchlist_recyclerview_zumba"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical" />

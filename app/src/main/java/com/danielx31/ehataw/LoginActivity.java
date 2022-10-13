@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 public class LoginActivity extends AppCompatActivity {
 
     private BroadcastReceiver connectionReceiver;
@@ -182,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
         registerReceiver(connectionReceiver, filter);
 
         if(auth.getCurrentUser() != null){
-            Toast.makeText(LoginActivity.this, "Already Logged In", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(LoginActivity.this, "Already Logged In", Toast.LENGTH_SHORT).show();
 
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();

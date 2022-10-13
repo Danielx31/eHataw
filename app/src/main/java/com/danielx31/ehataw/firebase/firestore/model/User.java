@@ -10,14 +10,17 @@ public class User {
 
     private String id;
 
-    List<String> watchlist;
+    private List<String> watchlist;
+
+    private List<String> history;
 
     public User() {
 
     }
 
-    public User(List<String> watchlist) {
+    public User(List<String> watchlist, List<String> history) {
         this.watchlist = watchlist;
+        this.history = history;
     }
 
     public void setId(String id) {
@@ -32,4 +35,6 @@ public class User {
     public List<String> getWatchlist() {
         return watchlist;
     }
+
+    public List<String> getHistory() { return history; }
 }

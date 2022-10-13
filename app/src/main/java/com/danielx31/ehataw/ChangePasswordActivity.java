@@ -26,6 +26,8 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 public class ChangePasswordActivity extends Fragment {
 
     private BroadcastReceiver connectionReceiver;
@@ -41,6 +43,7 @@ public class ChangePasswordActivity extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.change_password_activity, container, false);
+        RxJavaPlugins.setErrorHandler(e -> { });
 
         connectionReceiver = new ConnectionReceiver();
 

@@ -9,4 +9,8 @@
         android:icon="@drawable/ic_baseline_menu_24"
         android:title="Menu"/>
 
+    <item android:id="@+id/bottom_nav_diet"
+        android:icon="@drawable/ic_baseline_local_dining_24"
+        android:title="Diet"/>
+
 </menu>

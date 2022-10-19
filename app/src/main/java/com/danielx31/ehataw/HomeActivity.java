@@ -81,6 +81,9 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.bottom_nav_menu:
                     selectedFragment = new MenuFragment();
                     break;
+                case R.id.bottom_nav_diet:
+                    selectedFragment = new DietFragment();
+                    break;
             }
 
             getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, selectedFragment).commit();

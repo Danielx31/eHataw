@@ -3,68 +3,72 @@ package com.danielx31.ehataw;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 //import com.danielx31.ehataw.firebase.model.Zumba;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import org.checkerframework.checker.units.qual.C;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private static final int BACK_PRESS_TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private long backPressed;
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        RxJavaPlugins.setErrorHandler(e -> {
+        });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(navigationListener);
 
         Bundle extras = getIntent().getExtras();
         String fragmentString = "";
         if (extras != null) {
-           fragmentString = extras.getString("fragment");
+            fragmentString = extras.getString("fragment");
         }
         startFragment(fragmentString);
     }
 
-    private void startFragment(String fragmentString) {
+    @Override
+    public void onBackPressed() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container_fragment);
+        if (currentFragment instanceof HomeFragment || currentFragment instanceof MenuFragment) {
+            if (backPressed + BACK_PRESS_TIME_INTERVAL > System.currentTimeMillis()) {
+                super.onBackPressed();
+                finishAffinity();
+                return;
+            } else {
+                Toast.makeText(getBaseContext(), "Press again to exit!", Toast.LENGTH_SHORT).show();
+            }
+
+            backPressed = System.currentTimeMillis();
+            return;
+        }
+
+        bottomNavigationView.setSelectedItemId(R.id.bottom_nav_menu);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, new MenuFragment()).commit();
+    }
+
+    public void startFragment(String fragmentString) {
         if (fragmentString == null || fragmentString.isEmpty()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, new HomeFragment()).commit();
+            return;
         }
 
         Fragment fragment = new HomeFragment();
         if (fragmentString.equals("downloadVideo")) {
-            fragment = new DownloadVideoFragment();
+            fragment = new OfflineVideosFragment();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, fragment).commit();
     }
@@ -72,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
     private NavigationBarView.OnItemSelectedListener navigationListener = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
+            Fragment selectedFragment = new HomeFragment();
 
             switch (item.getItemId()) {
                 case R.id.bottom_nav_home:

@@ -1,11 +1,16 @@
 package com.danielx31.ehataw;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
+import androidx.paging.PagingData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,6 +33,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
+import com.danielx31.ehataw.localData.controller.ZumbaListController;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,8 +47,14 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,7 +73,15 @@ public class HistoryFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private ZumbaPagingAdapter zumbaPagingAdapter;
+    private ZumbaAdapter zumbaPagingAdapter;
+
+    private final String ZUMBA_COLLECTION = "zumba";
+    private final String USERS_COLLECTION = "users";
+    private final String WATCHLIST_FIELD = "watchlist";
+    private final String HISTORY_FIELD = "history";
+
+    private List<Zumba> zumbaList;
+
 
     @Nullable
     @Override
@@ -69,7 +92,10 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RxJavaPlugins.setErrorHandler(e -> { });
+        RxJavaPlugins.setErrorHandler(e -> {
+        });
+
+        zumbaList = new ArrayList<>();
 
         connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
@@ -78,12 +104,11 @@ public class HistoryFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                zumbaPagingAdapter.refresh();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         buildRecyclerView(buildRecyclerAdapter());
-
     }
 
     @Override
@@ -102,117 +127,99 @@ public class HistoryFragment extends Fragment {
     public void initializeDatabase() {
         auth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
-        zumbasReference = database.collection("zumba");
-        userReference = database.collection("users").document(auth.getCurrentUser().getUid());
+        zumbasReference = database.collection(ZUMBA_COLLECTION);
+        userReference = database.collection(USERS_COLLECTION).document(auth.getCurrentUser().getUid());
     }
 
-    public FirestorePagingOptions<Zumba> createPagingOptions(Query query) {
-        PagingConfig config = new PagingConfig(10, 2, false);
-
-        return new FirestorePagingOptions.Builder<Zumba>()
-                .setLifecycleOwner(this)
-                .setQuery(query, config, Zumba.class)
-                .build();
-    }
-
-    public RecyclerView.Adapter buildRecyclerAdapter() {
-
-        Query query = zumbasReference.whereEqualTo("forEmptyQuery", "");
-
-        zumbaPagingAdapter = new ZumbaPagingAdapter(createPagingOptions(query));
-
+    public void refreshData() {
+        swipeRefreshLayout.setRefreshing(true);
+        zumbaList.clear();
+        zumbaPagingAdapter.notifyDataSetChanged();
         userReference.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        swipeRefreshLayout.setRefreshing(true);
 
                         if (task.isComplete()) {
                             swipeRefreshLayout.setRefreshing(false);
 
                             if (!task.isSuccessful()) {
+                                swipeRefreshLayout.setRefreshing(false);
                                 return;
                             }
 
                             DocumentSnapshot documentSnapshot = task.getResult();
 
                             if (!documentSnapshot.exists()) {
+                                swipeRefreshLayout.setRefreshing(false);
                                 return;
                             }
 
                             User user = documentSnapshot.toObject(User.class);
+
                             List<String> history = user.getHistory();
 
                             if (history == null || history.isEmpty()) {
+                                zumbaPagingAdapter.notifyDataSetChanged();
                                 return;
                             }
 
-                            Query query = zumbasReference.whereIn(FieldPath.documentId(), history);
+                            Collections.reverse(history);
 
-                            zumbaPagingAdapter.updateOptions(createPagingOptions(query));
+                            for (int index = 0; index < history.size(); index += 10) {
+
+                                int limitIndex = index + 10;
+
+                                if (limitIndex > history.size()) {
+                                    limitIndex = history.size();
+                                }
+
+                                List<String> historySubList = history.subList(index, limitIndex);
+
+                                zumbasReference.whereIn(FieldPath.documentId(), historySubList)
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                for (QueryDocumentSnapshot zumbaSnapshot : queryDocumentSnapshots) {
+                                                    Zumba zumba = zumbaSnapshot.toObject(Zumba.class);
+                                                    zumbaList.add(zumba);
+                                                }
+
+                                                if (history.size() == zumbaList.size()) {
+                                                    swipeRefreshLayout.setRefreshing(false);
+                                                }
+                                                zumbaPagingAdapter.notifyDataSetChanged();
+                                            }
+                                        });
+                            }
                         }
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 });
+    }
 
-        zumbaPagingAdapter.addLoadStateListener(new Function1<CombinedLoadStates, Unit>() {
+    public RecyclerView.Adapter buildRecyclerAdapter() {
+
+        Query query = zumbasReference.whereEqualTo("forEmptyQuery", "");
+
+        zumbaPagingAdapter = new ZumbaAdapter(zumbaList);
+        refreshData();
+
+        zumbaPagingAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
             @Override
-            public Unit invoke(CombinedLoadStates states) {
-                LoadState refresh = states.getRefresh();
-                LoadState append = states.getAppend();
-
-                if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
-                    // The previous load (either initial or additional) failed. Call
-                    // the retry() method in order to retry the load operation.
-                    // ...
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-
-                if (refresh instanceof LoadState.Loading) {
-                    // The initial Load has begun
-                    // ...
-                    swipeRefreshLayout.setRefreshing(true);
-                }
-
-                if (append instanceof LoadState.Loading) {
-                    // The adapter has started to load an additional page
-                    // ...
-                    swipeRefreshLayout.setRefreshing(true);
-                }
-
-                if (append instanceof LoadState.NotLoading) {
-                    LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
-                    if (notLoading.getEndOfPaginationReached()) {
-                        // The adapter has finished loading all of the data set
-                        // ...
-                        swipeRefreshLayout.setRefreshing(false);
-                        return null;
-                    }
-
-                    if (refresh instanceof LoadState.NotLoading) {
-                        // The previous load (either initial or additional) completed
-                        // ...
-                        swipeRefreshLayout.setRefreshing(false);
-                        return null;
-                    }
-                }
-                return null;
-            }
-        });
-
-        zumbaPagingAdapter.setOnItemClickListener(new ZumbaPagingAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Zumba zumba = documentSnapshot.toObject(Zumba.class);
-                zumba.setId(documentSnapshot.getId());
-
-                watchZumba(zumba);
+            public void onItemClick(int position) {
+                watchZumba(zumbaList.get(position));
             }
 
             @Override
-            public void onPopupMenuClick(View view, DocumentSnapshot documentSnapshot, int position) {
-                Zumba zumba = documentSnapshot.toObject(Zumba.class);
-                zumba.setId(documentSnapshot.getId());
-                showPopupMenu(view, zumba);
+            public void onPopupMenuImageButtonClick(View view, int position) {
+                showPopupMenu(view, zumbaList.get(position));
             }
         });
 
@@ -232,13 +239,17 @@ public class HistoryFragment extends Fragment {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
         MenuItem saveToWatchlist = popupMenu.getMenu().findItem(R.id.item_save_to_watchlist);
+        popupMenu.getMenu().add(Menu.NONE, 2, Menu.NONE, "Remove");
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_download:
-                        startDownload(zumba.getVideoUrl());
+                        startDownload(zumba);
+                        return true;
+                    case 2:
+                        showRemoveAlertDialog(zumba.getId());
                         return true;
                     default:
                         return false;
@@ -298,7 +309,10 @@ public class HistoryFragment extends Fragment {
                         saveToWatchlist(zumba.getId());
                         return true;
                     case R.id.item_download:
-                        startDownload(zumba.getVideoUrl());
+                        startDownload(zumba);
+                        return true;
+                    case 2:
+                        showRemoveAlertDialog(zumba.getId());
                         return true;
                     default:
                         return false;
@@ -320,21 +334,38 @@ public class HistoryFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void startDownload(String url) {
-        if (url == null || url.isEmpty()) {
+    public void startDownload(Zumba zumba) {
+        if (zumba == null) {
             Toast.makeText(getContext(), "Cannot download video!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        final String DOWNLOADED_VIDEOS_KEY = "downloadVideos";
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
+        File folder = new File(getActivity().getExternalFilesDir("offline").toString());
+        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, folder);
+
+        if (DownloadService.isDownloading()) {
+            showDownloadExistsAlertDialog();
+            return;
+        }
+
+        if (zumbaListController.contains(zumba.getId())) {
+            showReplaceAlertDialog(zumba);
+            return;
+        }
+
         Intent intent = new Intent(getContext(), DownloadService.class);
-        intent.putExtra("url", url);
+        Gson gson = new Gson();
+        intent.putExtra("zumba", gson.toJson(zumba));
         getActivity().startService(intent);
+        Toast.makeText(getContext(), "Download Started", Toast.LENGTH_SHORT).show();
     }
 
     public void saveToWatchlist(String zumbaId) {
         userReference.set(new HashMap<>(), SetOptions.merge());
 
-        userReference.update("watchlist", FieldValue.arrayUnion(zumbaId))
+        userReference.update(WATCHLIST_FIELD, FieldValue.arrayUnion(zumbaId))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -347,15 +378,32 @@ public class HistoryFragment extends Fragment {
                         Toast.makeText(getContext(), "Failed to Save!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     public void removeFromWatchlist(String zumbaId) {
-        userReference.update("watchlist", FieldValue.arrayRemove(zumbaId))
+        userReference.update(WATCHLIST_FIELD, FieldValue.arrayRemove(zumbaId))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getContext(), "Unsaved!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Failed to Unsave!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    public void removeFromHistory(String zumbaId) {
+        userReference.update(HISTORY_FIELD, FieldValue.arrayRemove(zumbaId))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getContext(), "Removed!", Toast.LENGTH_SHORT).show();
+                        refreshData();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -364,6 +412,74 @@ public class HistoryFragment extends Fragment {
                         Toast.makeText(getContext(), "Failed to Remove!", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void showRemoveAlertDialog(String zumbaId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Remove History");
+        builder.setMessage("Are you sure you want to delete this item?\nThis action cannot be undone");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                removeFromHistory(zumbaId);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void showReplaceAlertDialog(Zumba zumba) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Replace Offline Video");
+        builder.setMessage("Video is already exists! Are you sure you want to replace?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Replace", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(getContext(), DownloadService.class);
+                Gson gson = new Gson();
+                intent.putExtra("zumba", gson.toJson(zumba));
+                getActivity().startService(intent);
+                Toast.makeText(getContext(), "Download Started", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void showDownloadExistsAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Download Failed");
+        builder.setMessage("Download in progress! Please Try again later.");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

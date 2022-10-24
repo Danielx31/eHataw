@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 
 public class DietFragment extends Fragment {
 
@@ -26,11 +28,17 @@ public class DietFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diet, container, false);
 
+        RxJavaPlugins.setErrorHandler(e -> {
+        });
+
         mRecyclerView = view.findViewById(R.id.recycler_view);
 //        GridLayoutManager gridLayoutManager = new GridLayoutManager(DietFragment.this, 1);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
+
+        SpacingItemDecoration spacingItemDecoration = new SpacingItemDecoration(10);
+        mRecyclerView.addItemDecoration(spacingItemDecoration);
 
         foodDataList = new ArrayList<>();
 

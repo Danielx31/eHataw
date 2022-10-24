@@ -2,15 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_id"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/container_id">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/textView"
+        android:id="@+id/menu_accountpanel"
         android:layout_width="356dp"
         android:layout_height="126dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
@@ -21,130 +20,131 @@
         android:id="@+id/imageview_picture"
         android:layout_width="93dp"
         android:layout_height="114dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_accountpanel"
+        app:layout_constraintEnd_toEndOf="@+id/menu_accountpanel"
         app:layout_constraintHorizontal_bias="0.053"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/menu_accountpanel"
+        app:layout_constraintTop_toTopOf="@+id/menu_accountpanel"
         app:layout_constraintVertical_bias="0.833"
         app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
     <TextView
         android:id="@+id/textview_name"
-        android:layout_width="227dp"
-        android:layout_height="27dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/concert_one"
         android:hint="Loading..."
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_accountpanel"
+        app:layout_constraintEnd_toEndOf="@+id/menu_accountpanel"
         app:layout_constraintStart_toEndOf="@+id/imageview_picture"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/menu_accountpanel" />
 
 
-<!--    <Button-->
-<!--        android:id="@+id/button_history"-->
-<!--        android:layout_width="332dp"-->
-<!--        android:layout_height="61dp"-->
-<!--        android:layout_marginTop="84dp"-->
-<!--        android:background="@drawable/button"-->
-<!--        android:fontFamily="@font/concert_one"-->
-<!--        android:strokeColor="@color/black"-->
-<!--        android:text="History"-->
-<!--        android:textColor="#000000"-->
-<!--        app:backgroundTint="@color/white"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/textView"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/textView"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView"-->
-<!--        app:strokeColor="@color/black"-->
-<!--        app:strokeWidth="10dp" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/button_history"-->
+    <!--        android:layout_width="332dp"-->
+    <!--        android:layout_height="61dp"-->
+    <!--        android:layout_marginTop="84dp"-->
+    <!--        android:background="@drawable/button"-->
+    <!--        android:fontFamily="@font/concert_one"-->
+    <!--        android:strokeColor="@color/black"-->
+    <!--        android:text="History"-->
+    <!--        android:textColor="#000000"-->
+    <!--        app:backgroundTint="@color/white"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/textView"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/textView"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView"-->
+    <!--        app:strokeColor="@color/black"-->
+    <!--        app:strokeWidth="10dp" />-->
 
 
-    <Button
-        android:id="@+id/btn_History"
-        android:layout_width="189dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_login"
-        android:fontFamily="@font/concert_one"
-        android:text="History"
-        android:textColor="@color/white"
-        app:backgroundTint="#F4A022"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+    <ScrollView
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/menu_accountpanel"
+        app:layout_constraintStart_toStartOf="@+id/menu_accountpanel"
+        app:layout_constraintTop_toBottomOf="@+id/menu_accountpanel">
 
-    <Button
-        android:id="@+id/btn_Save_Watch_List"
-        android:layout_width="189dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button"
-        android:fontFamily="@font/concert_one"
-        android:text="Watchlist"
-        android:textColor="@color/white"
-        app:backgroundTint="#F4A022"
-        app:layout_constraintEnd_toEndOf="@+id/btn_History"
-        app:layout_constraintStart_toStartOf="@+id/btn_History"
-        app:layout_constraintTop_toBottomOf="@+id/btn_History" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_Download"
-        android:layout_width="189dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button"
-        app:backgroundTint="#F4A022"
-        android:fontFamily="@font/concert_one"
-        android:text="Download"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/btn_Save_Watch_List"
-        app:layout_constraintStart_toStartOf="@+id/btn_Save_Watch_List"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Save_Watch_List" />
+            <Button
+                android:id="@+id/home_button_history"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_login"
+                android:fontFamily="@font/concert_one"
+                android:text="History"
+                android:textColor="@color/white"
+                app:backgroundTint="#F4A022" />
 
-    <Button
-        android:id="@+id/btn_Settings"
-        android:layout_width="189dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button"
-        android:fontFamily="@font/concert_one"
-        android:text="Settings"
-        android:textColor="@color/white"
-        app:backgroundTint="#F4A022"
-        app:layout_constraintEnd_toEndOf="@+id/btn_Download"
-        app:layout_constraintStart_toStartOf="@+id/btn_Download"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Download" />
+            <Button
+                android:id="@+id/home_button_watchlist"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="Watchlist"
+                android:textColor="@color/white"
+                app:backgroundTint="#F4A022" />
 
-    <Button
-        android:id="@+id/btn_About"
-        android:layout_width="189dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button"
-        app:backgroundTint="#F4A022"
-        android:fontFamily="@font/concert_one"
-        android:text="About"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/btn_Download"
-        app:layout_constraintStart_toStartOf="@+id/btn_Download"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Settings" />
+            <Button
+                android:id="@+id/home_button_offlinevideos"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="Offline Videos"
+                android:textColor="@color/white"
+                app:backgroundTint="#F4A022" />
 
-    <Button
-        android:id="@+id/btn_LogOut"
-        android:layout_width="189dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button"
-        app:backgroundTint="#F4A022"
-        android:fontFamily="@font/concert_one"
-        android:text="Log Out"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/btn_About"
-        app:layout_constraintStart_toStartOf="@+id/btn_About"
-        app:layout_constraintTop_toBottomOf="@+id/btn_About" />
+            <Button
+                android:id="@+id/home_button_settings"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="Settings"
+                android:textColor="@color/white"
+                app:backgroundTint="#F4A022" />
+
+            <Button
+                android:id="@+id/home_button_about"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="About"
+                android:textColor="@color/white"
+                app:backgroundTint="#F4A022" />
+
+            <Button
+                android:id="@+id/home_button_logout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button"
+                android:fontFamily="@font/concert_one"
+                android:text="Log Out"
+                android:textColor="@color/white"
+                app:backgroundTint="#F4A022" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

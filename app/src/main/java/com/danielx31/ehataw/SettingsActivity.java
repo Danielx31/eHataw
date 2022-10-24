@@ -24,13 +24,13 @@ public class SettingsActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
         RxJavaPlugins.setErrorHandler(e -> { });
 
         connectionReceiver = new ConnectionReceiver();
 
-        ButtonChangePwd = view.findViewById(R.id.btnChangePwd);
-        ButtonDeleteAcc = view.findViewById(R.id.btnDeleteAcc);
+        ButtonChangePwd = view.findViewById(R.id.settings_button_changepassword);
+        ButtonDeleteAcc = view.findViewById(R.id.settings_button_deleteaccount);
 
         ButtonChangePwd.setOnClickListener(new View.OnClickListener() {
             @Override

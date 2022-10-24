@@ -50,7 +50,7 @@ public class MenuFragment extends Fragment {
         RxJavaPlugins.setErrorHandler(e -> { });
         connectionReceiver = new ConnectionReceiver();
 
-        btnHistory = root.findViewById(R.id.btn_History);
+        btnHistory = root.findViewById(R.id.home_button_history);
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +60,7 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btnWatchlist = root.findViewById(R.id.btn_Save_Watch_List);
+        btnWatchlist = root.findViewById(R.id.home_button_watchlist);
         btnWatchlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,17 +70,17 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btnDownload = root.findViewById(R.id.btn_Download);
+        btnDownload = root.findViewById(R.id.home_button_offlinevideos);
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment download = new DownloadVideoFragment();
+                Fragment download = new OfflineVideosFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, download).commit();
             }
         });
 
-        btnSettings = root.findViewById(R.id.btn_Settings);
+        btnSettings = root.findViewById(R.id.home_button_settings);
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +91,7 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btnAbout = root.findViewById(R.id.btn_About);
+        btnAbout = root.findViewById(R.id.home_button_about);
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +101,7 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btnLogOut = root.findViewById(R.id.btn_LogOut);
+        btnLogOut = root.findViewById(R.id.home_button_logout);
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,8 +111,6 @@ public class MenuFragment extends Fragment {
                 getActivity().finish();
             }
         });
-
-
 
         textViewWelcome = root.findViewById(R.id.textview_name);
         auth = FirebaseAuth.getInstance();
@@ -155,6 +153,7 @@ public class MenuFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Email Not Verified");
         builder.setMessage("Please verify your email now. You can not login without email verification");
+        builder.setCancelable(false);
 
         //Open Email Apps if User clicks/taps Continue button
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {

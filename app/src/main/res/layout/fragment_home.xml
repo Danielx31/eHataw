@@ -15,11 +15,12 @@
         app:layout_constraintGuide_percent="0.50" />
 
     <SearchView
-        android:id="@+id/searchview"
+        android:id="@+id/home_searchview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/oblong"
+        android:elevation="4dp"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search Zumba"
@@ -31,21 +32,29 @@
 
     </SearchView>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/home_guideline_header_edge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/home_frameLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/home_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/home_guideline_headline_center"
-        app:layout_constraintTop_toBottomOf="@+id/searchview">
+        app:layout_constraintTop_toBottomOf="@+id/home_searchview">
 
         <Spinner
             android:id="@+id/spinner_category"
-            android:layout_width="180dp"
-            android:layout_height="40dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="4dp" />
     </FrameLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -65,12 +74,5 @@
             android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/home_guideline_header_edge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

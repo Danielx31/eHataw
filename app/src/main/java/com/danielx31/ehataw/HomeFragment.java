@@ -2,10 +2,14 @@ package com.danielx31.ehataw;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
@@ -30,12 +35,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
+import com.danielx31.ehataw.localData.controller.ZumbaListController;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,8 +50,15 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import kotlin.Unit;
@@ -52,15 +66,19 @@ import kotlin.jvm.functions.Function1;
 
 public class HomeFragment extends Fragment {
 
+    private final String TAG = "HomeFragment";
+
     private BroadcastReceiver connectionReceiver;
 
     private FirebaseAuth auth;
     private FirebaseFirestore database;
     private CollectionReference zumbasReference;
-    private CollectionReference usersReference;
     private DocumentReference userReference;
 
-    private SearchView searchView;
+    private final String ZUMBA_COLLECTION = "zumba";
+    private final String USERS_COLLECTION = "users";
+    private final String WATCHLIST_FIELD = "watchlist";
+    private final String TITLE_FIELD = "title";
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -75,32 +93,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RxJavaPlugins.setErrorHandler(e -> { });
+        RxJavaPlugins.setErrorHandler(e -> {
+        });
 
         connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
-
-        searchView = getView().findViewById(R.id.searchview);
-        //searchView.clearFocus();
-
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
 
         swipeRefreshLayout = getView().findViewById(R.id.watchlist_swiperefreshlayout_zumba);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -157,6 +154,7 @@ public class HomeFragment extends Fragment {
         });
 
         buildRecyclerView(buildRecyclerAdapter());
+
     }
 
     @Override
@@ -178,8 +176,8 @@ public class HomeFragment extends Fragment {
     public void initializeDatabase() {
         auth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
-        zumbasReference = database.collection("zumba");
-        userReference = database.collection("users").document(auth.getCurrentUser().getUid());
+        zumbasReference = database.collection(ZUMBA_COLLECTION);
+        userReference = database.collection(USERS_COLLECTION).document(auth.getCurrentUser().getUid());
     }
 
     public FirestorePagingOptions<Zumba> createPagingOptions(Query query) {
@@ -245,7 +243,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Zumba zumba = documentSnapshot.toObject(Zumba.class);
-                zumba.setId(documentSnapshot.getId());
 
                 watchZumba(zumba);
             }
@@ -253,7 +250,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPopupMenuClick(View view, DocumentSnapshot documentSnapshot, int position) {
                 Zumba zumba = documentSnapshot.toObject(Zumba.class);
-                zumba.setId(documentSnapshot.getId());
                 showPopupMenu(view, zumba);
             }
 
@@ -280,7 +276,7 @@ public class HomeFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_download:
-                        startDownload(zumba.getVideoUrl());
+                        startDownload(zumba);
                         return true;
                     default:
                         return false;
@@ -340,7 +336,7 @@ public class HomeFragment extends Fragment {
                         saveToWatchlist(zumba.getId());
                         return true;
                     case R.id.item_download:
-                        startDownload(zumba.getVideoUrl());
+                        startDownload(zumba);
                         return true;
                     default:
                         return false;
@@ -362,21 +358,38 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void startDownload(String url) {
-        if (url == null || url.isEmpty()) {
+    public void startDownload(Zumba zumba) {
+        if (zumba == null) {
             Toast.makeText(getContext(), "Cannot download video!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        final String DOWNLOADED_VIDEOS_KEY = "downloadVideos";
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
+        File folder = new File(getActivity().getExternalFilesDir("offline").toString());
+        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, folder);
+
+        if (DownloadService.isDownloading()) {
+            showDownloadExistsAlertDialog();
+            return;
+        }
+
+        if (zumbaListController.contains(zumba.getId())) {
+            showReplaceAlertDialog(zumba);
+            return;
+        }
+
         Intent intent = new Intent(getContext(), DownloadService.class);
-        intent.putExtra("url", url);
+        Gson gson = new Gson();
+        intent.putExtra("zumba", gson.toJson(zumba));
         getActivity().startService(intent);
+        Toast.makeText(getContext(), "Download Started", Toast.LENGTH_SHORT).show();
     }
 
     public void saveToWatchlist(String zumbaId) {
         userReference.set(new HashMap<>(), SetOptions.merge());
 
-        userReference.update("watchlist", FieldValue.arrayUnion(zumbaId))
+        userReference.update(WATCHLIST_FIELD, FieldValue.arrayUnion(zumbaId))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -389,11 +402,10 @@ public class HomeFragment extends Fragment {
                         Toast.makeText(getContext(), "Failed to Save!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     public void removeFromWatchlist(String zumbaId) {
-        userReference.update("watchlist", FieldValue.arrayRemove(zumbaId))
+        userReference.update(WATCHLIST_FIELD, FieldValue.arrayRemove(zumbaId))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -408,7 +420,48 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+    public void showReplaceAlertDialog(Zumba zumba) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Replace Offline Video");
+        builder.setMessage("Video is already exists! Are you sure you want to replace?");
+        builder.setCancelable(false);
 
+        builder.setPositiveButton("Replace", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(getContext(), DownloadService.class);
+                Gson gson = new Gson();
+                intent.putExtra("zumba", gson.toJson(zumba));
+                getActivity().startService(intent);
+                Toast.makeText(getContext(), "Download Started", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void showDownloadExistsAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Download Failed");
+        builder.setMessage("Download in progress! Please Try again later.");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
 }

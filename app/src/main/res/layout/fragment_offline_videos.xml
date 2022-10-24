@@ -4,57 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WatchlistFragment">
+    tools:context=".OfflineVideosFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/watchlist_guideline_headline_center"
+        android:id="@+id/offlinevideos_guideline_headline_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/watchlist_guideline_header_edge"
+        android:id="@+id/offlinevideos_guideline_header_edge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.20" />
 
+
     <ImageView
-        android:id="@+id/watchlist_imageview_applogo"
+        android:id="@+id/offlinevideos_imageview_applogo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/logo_3"
-        app:layout_constraintBottom_toTopOf="@+id/watchlist_guideline_header_edge"
-        app:layout_constraintEnd_toStartOf="@+id/watchlist_guideline_headline_center"
+        app:layout_constraintBottom_toTopOf="@+id/offlinevideos_guideline_header_edge"
+        app:layout_constraintEnd_toStartOf="@+id/offlinevideos_guideline_headline_center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/watchlist_textview_title"
+        android:id="@+id/offlinevideos_textview_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/concert_one"
-        android:text="Watchlist"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/watchlist_guideline_header_edge"
+        android:gravity="center_horizontal"
+        android:text="Offline\nVideos"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/offlinevideos_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/watchlist_imageview_applogo"
+        app:layout_constraintStart_toStartOf="@+id/offlinevideos_guideline_headline_center"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/watchlist_swiperefreshlayout_zumba"
+        android:id="@+id/offlinevideos_swiperefreshlayout_zumba"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/watchlist_guideline_header_edge">
+        app:layout_constraintTop_toTopOf="@+id/offlinevideos_guideline_header_edge">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/watchlist_recyclerview_zumba"
+            android:id="@+id/offlinevideos_recyclerview_zumba"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical" />

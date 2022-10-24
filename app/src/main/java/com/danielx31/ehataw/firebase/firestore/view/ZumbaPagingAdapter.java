@@ -3,8 +3,6 @@ package com.danielx31.ehataw.firebase.firestore.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.danielx31.ehataw.R;
-import com.danielx31.ehataw.ZumbaAdapter;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
@@ -57,7 +54,7 @@ public class ZumbaPagingAdapter extends FirestorePagingAdapter<Zumba, ZumbaPagin
             super(itemView);
             this.imageView = itemView.findViewById(R.id.imageview_thumbnail);
             this.titleTextView = itemView.findViewById(R.id.textview_title);
-            this.textTextView = itemView.findViewById(R.id.textview_text);
+            this.textTextView = itemView.findViewById(R.id.textview_category);
             this.popupMenuImageButton = itemView.findViewById(R.id.imagebutton_popupmenu);
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -40,7 +40,7 @@ public class ZumbaAdapter extends RecyclerView.Adapter<ZumbaAdapter.ZumbaViewHol
             super(itemView);
             this.imageView = itemView.findViewById(R.id.imageview_thumbnail);
             this.titleTextView = itemView.findViewById(R.id.textview_title);
-            this.textTextView = itemView.findViewById(R.id.textview_text);
+            this.textTextView = itemView.findViewById(R.id.textview_category);
             this.popupMenuImageButton = itemView.findViewById(R.id.imagebutton_popupmenu);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,11 @@ public class ZumbaAdapter extends RecyclerView.Adapter<ZumbaAdapter.ZumbaViewHol
                 .into(holder.imageView);
 
         holder.titleTextView.setText(zumba.getTitle());
-        holder.textTextView.setText(zumba.getDescription());
+        holder.textTextView.setText(zumba.getCategory());
+    }
+
+    public void setZumbaList(List<Zumba> zumbaList) {
+        this.zumbaList = zumbaList;
     }
 
     public int getItemCount() {

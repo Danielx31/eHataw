@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -35,11 +36,15 @@ public class Zumba {
         this.category = category;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
-    @Exclude
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    @DocumentId
     public String getId() {
         return id;
     }
@@ -67,6 +72,17 @@ public class Zumba {
 
     public String getCategory() {
         return category;
+    }
+
+    @Override
+    public String toString() {
+        return "Zumba Id: " + id + "\n" +
+                "Created Date: " + createdDate.toString() + "\n" +
+                "Video Url: " + videoUrl + "\n" +
+                "Thumbnail Url: " + thumbnailUrl + "\n" +
+                "Title: " + title + "\n" +
+                "Description: " + description + "\n" +
+                "Category: " + category + "\n";
     }
 
 }

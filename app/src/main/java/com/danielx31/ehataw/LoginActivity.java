@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Check if email is verified before user can access their profile
                     if(firebaseUser.isEmailVerified()){
-                        Toast.makeText(getApplicationContext(), "You are logged in now", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         //open User Profile
@@ -158,7 +157,8 @@ public class LoginActivity extends AppCompatActivity {
         //Setup the Alert Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Email Not Verified");
-        builder.setMessage("Please verify your email now. You can not login without email verification");
+        builder.setMessage("Please verify your email now! You can not login without email verification.");
+        builder.setCancelable(false);
 
         //Open Email Apps if User clicks/taps Continue button
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
@@ -190,8 +190,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
             //Start the UserProfileActivity
-        }else{
-            Toast.makeText(LoginActivity.this, "You can login now!", Toast.LENGTH_SHORT).show();
         }
     }
 

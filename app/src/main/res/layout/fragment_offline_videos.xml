@@ -38,6 +38,7 @@
         android:fontFamily="@font/concert_one"
         android:gravity="center_horizontal"
         android:text="Offline\nVideos"
+        android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/offlinevideos_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"

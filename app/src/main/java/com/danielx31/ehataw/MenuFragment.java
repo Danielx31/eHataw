@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -39,7 +40,8 @@ public class MenuFragment extends Fragment {
     private String fullName, name;
     private FirebaseAuth auth;
 
-    private Button btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
+//    private Button btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
+    private CardView btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
 
     @Nullable
     @Override

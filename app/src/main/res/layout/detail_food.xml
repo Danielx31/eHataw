@@ -13,12 +13,30 @@
         android:id="@+id/ivImage2"
         android:src="@drawable/chicken_adobo"
         android:scaleType="centerCrop"/>
-    <TextView
+
+
+    <ScrollView
+        android:background="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:text="Description"
-        android:textSize="19sp"
-        android:id="@+id/txtDescription"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@drawable/box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/concert_one"
+                android:padding="20dp"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

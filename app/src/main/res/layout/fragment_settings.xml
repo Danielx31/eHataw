@@ -37,6 +37,7 @@
         android:fontFamily="@font/concert_one"
         android:gravity="center_horizontal"
         android:text="Account\nSettings"
+        android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/settings_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,43 +45,128 @@
         app:layout_constraintStart_toEndOf="@+id/settings_imageview_applogo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/settings_guideline_header_edge">
+<!--    <ScrollView-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="64dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/settings_guideline_header_edge">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/settings_button_changepassword"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/button"-->
+<!--                android:fontFamily="@font/concert_one"-->
+<!--                android:text="Change Password"-->
+<!--                android:textSize="14sp"-->
+<!--                app:backgroundTint="#F4A022" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/settings_button_deleteaccount"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                android:background="@drawable/button"-->
+<!--                android:fontFamily="@font/concert_one"-->
+<!--                android:text="Delete Account"-->
+<!--                android:textSize="14sp"-->
+<!--                app:backgroundTint="#F4A022" />-->
+
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        android:columnCount="1"
+        android:rowCount="2"
+        >
+        <androidx.cardview.widget.CardView
+            android:id="@+id/settings_button_changepassword"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_row="0"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true">
 
-            <Button
-                android:id="@+id/settings_button_changepassword"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button"
-                android:fontFamily="@font/concert_one"
-                android:text="Change Password"
-                android:textSize="14sp"
-                app:backgroundTint="#F4A022" />
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/settings_button_deleteaccount"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_lock_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change Password"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/settings_button_deleteaccount"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_row="0"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button"
-                android:fontFamily="@font/concert_one"
-                android:text="Delete Account"
-                android:textSize="14sp"
-                app:backgroundTint="#F4A022" />
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </ScrollView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_person_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete Account"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

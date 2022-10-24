@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/concert_one"
         android:text="History"
+        android:textColor="@color/black"
         android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@+id/history_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"

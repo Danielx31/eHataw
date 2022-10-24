@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,8 +20,8 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 public class SettingsActivity extends Fragment {
 
     private BroadcastReceiver connectionReceiver;
-    private Button ButtonChangePwd, ButtonDeleteAcc;
 
+    private CardView ButtonChangePwd, ButtonDeleteAcc;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

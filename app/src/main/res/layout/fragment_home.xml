@@ -14,23 +14,40 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
-    <SearchView
-        android:id="@+id/home_searchview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/oblong"
-        android:elevation="4dp"
-        android:iconifiedByDefault="false"
-        android:queryBackground="@android:color/transparent"
-        android:queryHint="Search Zumba"
-        android:submitBackground="@drawable/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <SearchView-->
+<!--        android:id="@+id/home_searchview"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:background="@drawable/oblong"-->
+<!--        android:elevation="4dp"-->
+<!--        android:iconifiedByDefault="false"-->
+<!--        android:queryBackground="@android:color/transparent"-->
+<!--        android:queryHint="Search Zumba"-->
+<!--        android:submitBackground="@drawable/transparent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-    </SearchView>
+<!--    </SearchView>-->
+
+
+    <TextView
+        android:id="@+id/txtHome"
+        android:layout_width="154dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/concert_one"
+        android:text="Home"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="@+id/home_guideline_headline_center"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/home_guideline_header_edge"
@@ -48,7 +65,7 @@
         app:layout_constraintBottom_toTopOf="@+id/home_guideline_header_edge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/home_guideline_headline_center"
-        app:layout_constraintTop_toBottomOf="@+id/home_searchview">
+        app:layout_constraintTop_toBottomOf="@+id/txtHome">
 
         <Spinner
             android:id="@+id/spinner_category"
@@ -74,5 +91,16 @@
             android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="164dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/home_guideline_headline_center"
+        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

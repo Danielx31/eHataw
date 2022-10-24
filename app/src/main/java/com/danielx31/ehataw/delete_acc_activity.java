@@ -33,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 
 public class delete_acc_activity extends Fragment {
 
@@ -52,6 +54,7 @@ public class delete_acc_activity extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_delete_acc_activity, container, false);
+        RxJavaPlugins.setErrorHandler(e -> { });
 
         editTextUserPwd = view.findViewById(R.id.editText_delete_user_current);
         textViewAuthenticated = view.findViewById(R.id.textView_delete_user_authenticated);
@@ -62,7 +65,7 @@ public class delete_acc_activity extends Fragment {
         buttonDeleteUser.setEnabled(false);
 
         auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
 
         if(firebaseUser.equals("")){
             Toast.makeText(getActivity(), "Something went wrong! User's details not available at the moment", Toast.LENGTH_SHORT).show();

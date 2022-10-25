@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -45,7 +44,7 @@ public class SettingsActivity extends Fragment {
         ButtonDeleteAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment deleteAcc =  new delete_acc_activity();
+                Fragment deleteAcc =  new DeleteAccountActivity();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, deleteAcc).commit();
             }

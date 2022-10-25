@@ -7,6 +7,20 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/menu_guideline_headline_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/menu_guideline_header_edge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,14 +43,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/menu_accountpanel"
-        android:layout_width="356dp"
+        android:layout_width="0dp"
         android:layout_height="126dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/box"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toTopOf="@+id/guideline4">
+        app:layout_constraintTop_toTopOf="@+id/menu_guideline_header_edge">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,21 +83,25 @@
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="290dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:columnCount="2"
-        android:rowCount="3">
+        android:rowCount="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_accountpanel">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/home_button_history"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">
@@ -112,14 +130,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/home_button_watchlist"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">
@@ -148,14 +166,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/home_button_offlinevideos"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">>
@@ -184,14 +202,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/home_button_settings"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">>
@@ -220,14 +238,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/home_button_about"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">>
@@ -256,14 +274,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/home_button_logout"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true">>
@@ -291,15 +309,14 @@
         </androidx.cardview.widget.CardView>
 
 
-
     </GridLayout>
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="182dp"
-        android:layout_height="134dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/menu_guideline_header_edge"
+        app:layout_constraintEnd_toStartOf="@+id/menu_guideline_headline_center"
         app:layout_constraintStart_toStartOf="@+id/guideline10"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
         app:srcCompat="@drawable/logo_3" />
@@ -308,13 +325,13 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/concert_one"
         android:text="Menu"
         android:textColor="@color/black"
         android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/menu_guideline_header_edge"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/menu_guideline_headline_center"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
 

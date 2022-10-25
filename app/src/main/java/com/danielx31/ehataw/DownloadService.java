@@ -38,10 +38,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.apache.commons.io.FilenameUtils;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -65,7 +70,7 @@ public class DownloadService extends IntentService {
 
     private Handler handler;
     private int progress;
-    private long delayUpdateNotificationTime = 2000; //A second
+    private long delayUpdateNotificationTime = 1800;
 
     private static boolean downloading;
 
@@ -81,8 +86,6 @@ public class DownloadService extends IntentService {
         }
 
         handler = new Handler(Looper.getMainLooper());
-        downloading = true;
-
         initializeController();
 
         String zumbaString = intent.getStringExtra("zumba");
@@ -134,28 +137,25 @@ public class DownloadService extends IntentService {
 
 
     public static String getUrlFile(String url) {
-        int firstIndex = url.lastIndexOf('/') + 1;
-        int lastIndex = url.lastIndexOf('?', firstIndex);
-
-        if (firstIndex == -1) {
-            firstIndex = 0;
+        try {
+            URI newUri = new URI(url);
+            return FilenameUtils.getName(newUri.getPath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
 
-        if (lastIndex == -1) {
-            lastIndex = url.length();
-        }
-
-        return url.substring(firstIndex, lastIndex);
+        return "";
     }
 
     private Runnable notificationRunnable = new Runnable() {
         public void run() {
             sendNotification(progress);
-            handler.postDelayed(this, delayUpdateNotificationTime); // Run again after 1 second
+            handler.postDelayed(this, delayUpdateNotificationTime); // Run again after time ms
         }
     };
 
     public void startDownload() {
+        downloading = true;
         handler.postDelayed(notificationRunnable, delayUpdateNotificationTime);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://google.com/")
@@ -262,6 +262,9 @@ public class DownloadService extends IntentService {
                 outputStream = new FileOutputStream(file);
 
                 while (true) {
+                    if (!downloading) {
+                        break;
+                    }
                     int read = inputStream.read(fileReader);
 
                     if (read == -1) {
@@ -278,6 +281,9 @@ public class DownloadService extends IntentService {
                 }
 
                 outputStream.flush();
+                if (!downloading) {
+                    return false;
+                }
 
                 return true;
             } catch (IOException e) {

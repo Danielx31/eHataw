@@ -1,5 +1,8 @@
 package com.danielx31.ehataw;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +21,8 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class DietFragment extends Fragment {
 
+    private BroadcastReceiver connectionReceiver;
+
     RecyclerView mRecyclerView;
     List<FoodData> foodDataList;
     FoodData mfoodData;
@@ -30,6 +35,8 @@ public class DietFragment extends Fragment {
 
         RxJavaPlugins.setErrorHandler(e -> {
         });
+
+        connectionReceiver = new ConnectionReceiver();
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
 //        GridLayoutManager gridLayoutManager = new GridLayoutManager(DietFragment.this, 1);
@@ -316,5 +323,18 @@ public class DietFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(connectionReceiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(connectionReceiver);
     }
 }

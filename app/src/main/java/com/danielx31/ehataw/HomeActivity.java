@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -43,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container_fragment);
-        if (currentFragment instanceof HomeFragment || currentFragment instanceof MenuFragment) {
+        if (currentFragment instanceof HomeFragment || currentFragment instanceof MenuFragment || currentFragment instanceof DietFragment) {
             if (backPressed + BACK_PRESS_TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity();

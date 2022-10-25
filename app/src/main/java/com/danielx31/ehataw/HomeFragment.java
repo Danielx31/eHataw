@@ -270,6 +270,7 @@ public class HomeFragment extends Fragment {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
         MenuItem saveToWatchlist = popupMenu.getMenu().findItem(R.id.item_save_to_watchlist);
+        saveToWatchlist.setTitle("...");
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -289,32 +290,27 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isComplete()) {
-
                             if (!task.isSuccessful()) {
-                                setPopupMenuSelection(popupMenu, zumba, false);
+                                setPopupMenuSelection(popupMenu, zumba, saveToWatchlist,false);
                                 return;
                             }
 
                             DocumentSnapshot documentSnapshot = task.getResult();
 
                             if (!documentSnapshot.exists()) {
-                                setPopupMenuSelection(popupMenu, zumba, false);
+                                setPopupMenuSelection(popupMenu, zumba, saveToWatchlist,false);
                                 return;
                             }
 
                             User user = documentSnapshot.toObject(User.class);
 
                             if (user.getWatchlist() == null) {
-                                setPopupMenuSelection(popupMenu, zumba, false);
+                                setPopupMenuSelection(popupMenu, zumba, saveToWatchlist, false);
                                 return;
                             }
                             boolean isWatchlistContains = user.getWatchlist().contains(zumba.getId());
 
-                            if (isWatchlistContains) {
-                                saveToWatchlist.setTitle("Unsave");
-                            }
-
-                            setPopupMenuSelection(popupMenu, zumba, isWatchlistContains);
+                            setPopupMenuSelection(popupMenu, zumba, saveToWatchlist, isWatchlistContains);
                         }
 
                     }
@@ -323,7 +319,7 @@ public class HomeFragment extends Fragment {
         popupMenu.show();
     }
 
-    public void setPopupMenuSelection(PopupMenu popupMenu, Zumba zumba, boolean inWatchlist) {
+    public void setPopupMenuSelection(PopupMenu popupMenu, Zumba zumba, MenuItem menuItem, boolean inWatchlist) {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -343,6 +339,11 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+        menuItem.setTitle("Add to Watchlist");
+        if (inWatchlist) {
+            menuItem.setTitle("Unsave");
+        }
     }
 
     public void watchZumba(Zumba zumba) {

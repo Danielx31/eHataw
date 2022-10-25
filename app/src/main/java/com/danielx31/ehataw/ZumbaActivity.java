@@ -102,6 +102,7 @@ public class ZumbaActivity extends AppCompatActivity {
         styledPlayerView.setControllerShowTimeoutMs(2000);
         styledPlayerView.setPlayer(exoPlayer);
 
+
         MediaItem mediaItem = MediaItem.fromUri(videoPath);
 //        MediaItem mediaItem = new MediaItem.Builder()
 //                .setUri(Uri.parse(sampleUrl))

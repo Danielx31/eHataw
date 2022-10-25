@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -35,7 +36,7 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private BroadcastReceiver connectionReceiver;
+    private BroadcastReceiver connectionReceiverPrime;
 
     private FirebaseAuth auth;
 
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        connectionReceiver = new ConnectionReceiver();
+        connectionReceiverPrime = new ConnectionReceiverPrime();
 
         emailTextInputEditText = findViewById(R.id.textinputedittext_email);
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
@@ -182,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(connectionReceiver, filter);
+        registerReceiver(connectionReceiverPrime, filter);
 
         if(auth.getCurrentUser() != null){
             //Toast.makeText(LoginActivity.this, "Already Logged In", Toast.LENGTH_SHORT).show();
@@ -196,6 +197,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(connectionReceiver);
+        unregisterReceiver(connectionReceiverPrime);
     }
 }

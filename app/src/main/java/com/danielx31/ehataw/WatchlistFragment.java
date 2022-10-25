@@ -54,6 +54,8 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+import java8.util.Comparators;
+import java8.util.Lists;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
@@ -182,7 +184,15 @@ public class WatchlistFragment extends Fragment {
                                                 if (watchlist.size() == zumbaList.size()) {
                                                     swipeRefreshLayout.setRefreshing(false);
                                                 }
+                                                sortListByList(watchlist);
                                                 zumbaPagingAdapter.notifyDataSetChanged();
+                                                swipeRefreshLayout.setRefreshing(false);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                swipeRefreshLayout.setRefreshing(false);
                                             }
                                         });
                             }
@@ -195,6 +205,10 @@ public class WatchlistFragment extends Fragment {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
+    }
+
+    public void sortListByList(List<String> list) {
+        Lists.sort(zumbaList, Comparators.comparing(z->list.indexOf(z.getId())));
     }
 
     public RecyclerView.Adapter buildRecyclerAdapter() {

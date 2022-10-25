@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,20 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.paging.CombinedLoadStates;
-import androidx.paging.LoadState;
-import androidx.paging.PagingConfig;
-import androidx.paging.PagingData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
-import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
-import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,12 +47,15 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import java8.util.Comparators;
+import java8.util.Lists;
+
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
+import java8.util.stream.StreamSupport;
 
 public class HistoryFragment extends Fragment {
 
@@ -185,11 +180,15 @@ public class HistoryFragment extends Fragment {
                                                     Zumba zumba = zumbaSnapshot.toObject(Zumba.class);
                                                     zumbaList.add(zumba);
                                                 }
-
-                                                if (history.size() == zumbaList.size()) {
-                                                    swipeRefreshLayout.setRefreshing(false);
-                                                }
+                                                sortListByList(history);
                                                 zumbaPagingAdapter.notifyDataSetChanged();
+                                                swipeRefreshLayout.setRefreshing(false);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                swipeRefreshLayout.setRefreshing(false);
                                             }
                                         });
                             }
@@ -202,6 +201,10 @@ public class HistoryFragment extends Fragment {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
+    }
+
+    public void sortListByList(List<String> list) {
+        Lists.sort(zumbaList, Comparators.comparing(z->list.indexOf(z.getId())));
     }
 
     public RecyclerView.Adapter buildRecyclerAdapter() {
@@ -239,6 +242,7 @@ public class HistoryFragment extends Fragment {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.inflate(R.menu.popupmenu_zumbaitem_option);
         MenuItem saveToWatchlist = popupMenu.getMenu().findItem(R.id.item_save_to_watchlist);
+        saveToWatchlist.setTitle("...");
         popupMenu.getMenu().add(Menu.NONE, 2, Menu.NONE, "Remove");
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -262,32 +266,29 @@ public class HistoryFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isComplete()) {
-
+                            saveToWatchlist.setTitle("Add to Watchlist");
                             if (!task.isSuccessful()) {
-                                setPopupMenuSelection(popupMenu, zumba, false);
+                                setPopupMenuSelection(popupMenu, zumba, saveToWatchlist, false);
                                 return;
                             }
 
                             DocumentSnapshot documentSnapshot = task.getResult();
 
                             if (!documentSnapshot.exists()) {
-                                setPopupMenuSelection(popupMenu, zumba, false);
+                                setPopupMenuSelection(popupMenu, zumba, saveToWatchlist, false);
                                 return;
                             }
 
                             User user = documentSnapshot.toObject(User.class);
 
                             if (user.getWatchlist() == null) {
-                                setPopupMenuSelection(popupMenu, zumba, false);
+                                setPopupMenuSelection(popupMenu, zumba, saveToWatchlist, false);
                                 return;
                             }
                             boolean isWatchlistContains = user.getWatchlist().contains(zumba.getId());
 
-                            if (isWatchlistContains) {
-                                saveToWatchlist.setTitle("Unsave");
-                            }
 
-                            setPopupMenuSelection(popupMenu, zumba, isWatchlistContains);
+                            setPopupMenuSelection(popupMenu, zumba, saveToWatchlist, isWatchlistContains);
                         }
 
                     }
@@ -296,7 +297,7 @@ public class HistoryFragment extends Fragment {
         popupMenu.show();
     }
 
-    public void setPopupMenuSelection(PopupMenu popupMenu, Zumba zumba, boolean inWatchlist) {
+    public void setPopupMenuSelection(PopupMenu popupMenu, Zumba zumba, MenuItem menuItem, boolean inWatchlist) {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -319,6 +320,11 @@ public class HistoryFragment extends Fragment {
                 }
             }
         });
+
+        menuItem.setTitle("Add to Watchlist");
+        if (inWatchlist) {
+            menuItem.setTitle("Unsave");
+        }
     }
 
     public void watchZumba(Zumba zumba) {

@@ -37,8 +37,9 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder> {
 
         holder.imageView.setImageResource(myFoodList.get(position).getItemImage());
         holder.mTitle.setText(myFoodList.get(position).getItemName());
-        holder.mDescription.setText(myFoodList.get(position).getItemDescription());
-        holder.mPrice.setText(myFoodList.get(position).getItemprice());
+        holder.mDescription.setText(myFoodList.get(position).getItemprice());
+        //holder.mPrice.setText(myFoodList.get(position).getItemprice());
+        holder.mPrice.setText("");
 
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,18 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.loader.app.LoaderManager;
 
-public class ConnectionReceiver extends BroadcastReceiver {
+public class ConnectionReceiverPrime extends BroadcastReceiver {
 
     private static Dialog dialog;
 
@@ -26,6 +23,7 @@ public class ConnectionReceiver extends BroadcastReceiver {
 
         if (!isConnected(context)) {
             showAlertDialog(context);
+            return;
         }
 
         if (dialog != null) {
@@ -51,12 +49,12 @@ public class ConnectionReceiver extends BroadcastReceiver {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.layout_no_network, null);
         Button offlineVideosButton = view.findViewById(R.id.layoutnn_offlinevideos);
+        offlineVideosButton.setText("Settings");
         offlineVideosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, HomeActivity.class);
-                intent.putExtra("fragment", "downloadVideo");
-                context.startActivity(intent);
+                context.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+
             }
         });
 

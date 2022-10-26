@@ -60,9 +60,10 @@ public class ZumbaListController {
         }
 
         List<Zumba> zumbaDownloads = userDownloadsList.get(userDownloadsIndex).getDownloadList();
-        if (zumbaDownloads == null) {
+        if (zumbaDownloads == null || zumbaDownloads.isEmpty()) {
             return new ArrayList<>();
         }
+
 
         String zumbaDownloadsJson = gson.toJson(zumbaDownloads);
         return gson.fromJson(zumbaDownloadsJson, new TypeToken<List<Zumba>>(){}.getType());

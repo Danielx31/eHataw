@@ -82,6 +82,10 @@ public class OfflineVideosFragment extends Fragment {
         // get item if video and thumbnail are exists.
         List<Zumba> zumbaList = zumbaListController.getList();
 
+        if (zumbaList == null) {
+            return new ArrayList<>();
+        }
+
         Iterator<Zumba> zumbaIterator = zumbaList.iterator();
         while (zumbaIterator.hasNext()) {
             Zumba zumba = zumbaIterator.next();
@@ -191,7 +195,12 @@ public class OfflineVideosFragment extends Fragment {
     }
 
     public void updateRecyclerView() {
-        recyclerViewAdapter.setZumbaList(getList());
+        List<Zumba> zumbaList = getList();
+        if (zumbaList == null || zumbaList.isEmpty()) {
+            return;
+        }
+
+        recyclerViewAdapter.setZumbaList(zumbaList);
         recyclerViewAdapter.notifyDataSetChanged();
     }
 

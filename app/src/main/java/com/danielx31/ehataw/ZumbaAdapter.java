@@ -103,6 +103,9 @@ public class ZumbaAdapter extends RecyclerView.Adapter<ZumbaAdapter.ZumbaViewHol
     }
 
     public void setZumbaList(List<Zumba> zumbaList) {
+        if (zumbaList == null) {
+            return;
+        }
         this.zumbaList = zumbaList;
     }
 

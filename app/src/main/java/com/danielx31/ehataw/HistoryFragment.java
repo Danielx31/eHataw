@@ -27,6 +27,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -100,6 +101,7 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setEnabled(false);
             }
         });
 
@@ -127,6 +129,7 @@ public class HistoryFragment extends Fragment {
     }
 
     public void refreshData() {
+        swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setRefreshing(true);
         zumbaList.clear();
         zumbaPagingAdapter.notifyDataSetChanged();
@@ -137,9 +140,11 @@ public class HistoryFragment extends Fragment {
 
                         if (task.isComplete()) {
                             swipeRefreshLayout.setRefreshing(false);
+                            swipeRefreshLayout.setEnabled(false);
 
                             if (!task.isSuccessful()) {
                                 swipeRefreshLayout.setRefreshing(false);
+                                swipeRefreshLayout.setEnabled(false);
                                 return;
                             }
 
@@ -147,6 +152,7 @@ public class HistoryFragment extends Fragment {
 
                             if (!documentSnapshot.exists()) {
                                 swipeRefreshLayout.setRefreshing(false);
+                                swipeRefreshLayout.setEnabled(false);
                                 return;
                             }
 
@@ -155,7 +161,8 @@ public class HistoryFragment extends Fragment {
                             List<String> history = user.getHistory();
 
                             if (history == null || history.isEmpty()) {
-                                zumbaPagingAdapter.notifyDataSetChanged();
+                                swipeRefreshLayout.setRefreshing(false);
+                                swipeRefreshLayout.setEnabled(false);
                                 return;
                             }
 
@@ -183,12 +190,14 @@ public class HistoryFragment extends Fragment {
                                                 sortListByList(history);
                                                 zumbaPagingAdapter.notifyDataSetChanged();
                                                 swipeRefreshLayout.setRefreshing(false);
+                                                swipeRefreshLayout.setEnabled(false);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 swipeRefreshLayout.setRefreshing(false);
+                                                swipeRefreshLayout.setEnabled(false);
                                             }
                                         });
                             }
@@ -199,6 +208,7 @@ public class HistoryFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setEnabled(false);
                     }
                 });
     }
@@ -349,7 +359,8 @@ public class HistoryFragment extends Fragment {
         final String DOWNLOADED_VIDEOS_KEY = "downloadVideos";
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
         File folder = new File(getActivity().getExternalFilesDir("offline").toString());
-        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, folder);
+        String userId = auth.getCurrentUser().getUid();
+        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, userId, folder);
 
         if (DownloadService.isDownloading()) {
             showDownloadExistsAlertDialog();

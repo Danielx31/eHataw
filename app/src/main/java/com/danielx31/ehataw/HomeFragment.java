@@ -368,7 +368,8 @@ public class HomeFragment extends Fragment {
         final String DOWNLOADED_VIDEOS_KEY = "downloadVideos";
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
         File folder = new File(getActivity().getExternalFilesDir("offline").toString());
-        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, folder);
+        String userId = auth.getCurrentUser().getUid();
+        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, userId, folder);
 
         if (DownloadService.isDownloading()) {
             showDownloadExistsAlertDialog();

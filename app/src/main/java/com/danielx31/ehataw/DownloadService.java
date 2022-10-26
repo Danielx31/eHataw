@@ -24,6 +24,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
 import com.danielx31.ehataw.retrofit.api.FileDownloadClient;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -117,7 +118,9 @@ public class DownloadService extends IntentService {
     public void initializeController() {
         SharedPreferences sharedPreferences = getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
         File folder = new File(getExternalFilesDir("offline").toString());
-        this.zumbaListController = new ZumbaListController(sharedPreferences, folder);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userId = auth.getCurrentUser().getUid();
+        this.zumbaListController = new ZumbaListController(sharedPreferences, userId, folder);
     }
 
     @Override

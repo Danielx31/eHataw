@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
@@ -103,7 +104,10 @@ public class OfflineVideosFragment extends Fragment {
     public void initializeController() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
         File folder = new File(getActivity().getExternalFilesDir("offline").toString());
-        this.zumbaListController = new ZumbaListController(sharedPreferences, folder);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userId = auth.getCurrentUser().getUid();
+        this.zumbaListController = new ZumbaListController(sharedPreferences, userId, folder);
+
     }
 
     public void buildRecyclerAdapter(List list) {

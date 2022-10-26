@@ -101,6 +101,7 @@ public class WatchlistFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setEnabled(false);
             }
         });
 
@@ -128,6 +129,7 @@ public class WatchlistFragment extends Fragment {
     }
 
     public void refreshData() {
+        swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setRefreshing(true);
         zumbaList.clear();
         zumbaPagingAdapter.notifyDataSetChanged();
@@ -140,6 +142,7 @@ public class WatchlistFragment extends Fragment {
 
                             if (!task.isSuccessful()) {
                                 swipeRefreshLayout.setRefreshing(false);
+                                swipeRefreshLayout.setEnabled(false);
                                 return;
                             }
 
@@ -147,6 +150,7 @@ public class WatchlistFragment extends Fragment {
 
                             if (!documentSnapshot.exists()) {
                                 swipeRefreshLayout.setRefreshing(false);
+                                swipeRefreshLayout.setEnabled(false);
                                 return;
                             }
 
@@ -156,6 +160,7 @@ public class WatchlistFragment extends Fragment {
 
                             if (watchlist == null || watchlist.isEmpty()) {
                                 swipeRefreshLayout.setRefreshing(false);
+                                swipeRefreshLayout.setEnabled(false);
                                 return;
                             }
 
@@ -180,19 +185,17 @@ public class WatchlistFragment extends Fragment {
                                                     Zumba zumba = zumbaSnapshot.toObject(Zumba.class);
                                                     zumbaList.add(zumba);
                                                 }
-
-                                                if (watchlist.size() == zumbaList.size()) {
-                                                    swipeRefreshLayout.setRefreshing(false);
-                                                }
                                                 sortListByList(watchlist);
                                                 zumbaPagingAdapter.notifyDataSetChanged();
                                                 swipeRefreshLayout.setRefreshing(false);
+                                                swipeRefreshLayout.setEnabled(false);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 swipeRefreshLayout.setRefreshing(false);
+                                                swipeRefreshLayout.setEnabled(false);
                                             }
                                         });
                             }
@@ -203,6 +206,7 @@ public class WatchlistFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setEnabled(false);
                     }
                 });
     }
@@ -287,7 +291,8 @@ public class WatchlistFragment extends Fragment {
         final String DOWNLOADED_VIDEOS_KEY = "downloadVideos";
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(DOWNLOADED_VIDEOS_KEY, Context.MODE_PRIVATE);
         File folder = new File(getActivity().getExternalFilesDir("offline").toString());
-        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, folder);
+        String userId = auth.getCurrentUser().getUid();
+        ZumbaListController zumbaListController = new ZumbaListController(sharedPreferences, userId, folder);
 
         if (DownloadService.isDownloading()) {
             showDownloadExistsAlertDialog();

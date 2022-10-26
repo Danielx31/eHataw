@@ -26,6 +26,7 @@ public class ConnectionReceiver extends BroadcastReceiver {
 
         if (!isConnected(context)) {
             showAlertDialog(context);
+            return;
         }
 
         if (dialog != null) {

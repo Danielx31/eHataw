@@ -31,6 +31,7 @@ import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -85,6 +86,8 @@ public class OfflineVideosFragment extends Fragment {
         if (zumbaList == null) {
             return new ArrayList<>();
         }
+
+        Collections.reverse(zumbaList);
 
         Iterator<Zumba> zumbaIterator = zumbaList.iterator();
         while (zumbaIterator.hasNext()) {

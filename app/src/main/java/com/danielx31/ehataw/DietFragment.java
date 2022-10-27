@@ -51,6 +51,9 @@ public class DietFragment extends Fragment {
 
         mfoodData = new FoodData("Vegetables Salad", "A salad is a dish consisting of mixed, mostly natural ingredients with at least one raw ingredient.\n" +
                 "\n" +
+                "★Why Vegetable Salad is Healthy?★\n" +
+                "Leafy vegetables are a good choice for a healthful diet because they do not contain cholesterol and are naturally low in calories and sodium.\n" +
+                "\n" +
                 "★Ingredients★\n" +
                 "•5 romaine lettuce leaves, torn into bite size pieces\n" +
                 "•5 radishes, chopped\n" +
@@ -77,10 +80,14 @@ public class DietFragment extends Fragment {
                 "Whisk olive oil, lemon juice, pomegranate juice, water, garlic, dill, basil, salt, and black pepper in a small bowl. Drizzle dressing over the salad just before serving.\n" +
                 "\n" +
                 "Image:loveandlemons.com\n" +
-                "Reference: https://www.allrecipes.com/recipe/141314/the-best-vegetable-salad/", "13 Calories", R.drawable.salad);
+                "Reference: https://www.allrecipes.com/recipe/141314/the-best-vegetable-salad/\n" +"\n"+
+                "https://extension.colostate.edu/topic-areas/nutrition-food-safety-health/health-benefits-and-safe-handling-of-salad-greens-9-373/#:~:text=Salad%20greens%20contain%20Vitamin%20A,low%20in%20calories%20and%20sodium.", "13 Calories, 2.8g Carbs, 0.1g Fats, 0.6g Protein", R.drawable.salad);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Boiled Egg", "Boiled eggs are eggs, typically from a chicken, cooked with their shells unbroken, usually by immersion in boiling water.\n" +
+                "\n" +
+                "★Why Boiled Egg is Healthy?★\n" +
+                "Hard-boiled eggs are an excellent source of lean protein. They'll fill you up without packing in too many calories, which is helpful if you want to lose weight. The protein in hard-boiled eggs also works alongside vitamin D to promote prenatal development.\n" +
                 "\n" +
                 "Instructions\n" +
                 "Step 1\n" +
@@ -97,10 +104,16 @@ public class DietFragment extends Fragment {
                 "\n" +
                 "\n" +
                 "Reference https://www.eggs.ca/eggs101/view/6/how-to-make-the-perfect-hard-boiled-egg\n" +
-                "Image: Serious Eats / Julia Estrada", "74 Calories", R.drawable.boiled_egg);
+                "\n" +
+                "https://www.webmd.com/diet/health-benefits-boiled-eggs\n" +
+                "\n" +
+                "Image: Serious Eats / Julia Estrada", "74 Calories, 1g Carbs, 5g Fats, 6g Protein", R.drawable.boiled_egg);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Baked Salmon", "This is the very best, Easy Healthy Baked Salmon! Made with lemon and garlic for incredible flavor and baked in the oven for flaky tenderness, this tasty salmon recipe is the answer to busy nights and special occasions alike!\n" +
+                "\n" +
+                "★Why is eating salmon healthy?★\n" +
+                "Salmon is high in protein and omega-3 fatty acids that provide well documented benefits for the heart and brain\n" +
                 "\n" +
                 "★Ingredients★\n" +
                 "•Salmon Fillets\n" +
@@ -124,10 +137,16 @@ public class DietFragment extends Fragment {
                 "Step 4\n" +
                 "Garnish with fresh thyme or parsley if desired and serve.\n" +
                 "\n" +
-                "Source: https://www.lecremedelacrumb.com/best-easy-healthy-baked-salmon/", "55 Calories", R.drawable.bakedsalmon);
+                "Source: https://www.lecremedelacrumb.com/best-easy-healthy-baked-salmon/\n" +
+                "\n" +
+                "https://doh.wa.gov/community-and-environment/food/fish/farmed-salmon", "55 Calories, 0g Carbs, 21g Fats, 38g Protein", R.drawable.bakedsalmon);
         foodDataList.add(mfoodData);
 
-        mfoodData = new FoodData("Chicken Parm Casserole", "When you combine super crispy breaded chicken with rigatoni, warm marinara sauce, and loads of hot melted mozzarella and Parmesan cheese, good things happen.\n" +
+        mfoodData = new FoodData("Chicken Parm Casserole",
+                "When you combine super crispy breaded chicken with rigatoni, warm marinara sauce, and loads of hot melted mozzarella and Parmesan cheese, good things happen.\n" +
+                "\n" +
+                "★Why is chicken Parm casserole good for you?★\n" +
+                "contains high amounts of niacin, phosphorus, selenium, and protein. Niacin (Vitamin B3) can reduce LDL or the bad cholesterol and increase HDL or the good cholesterol. Selenium plays an important roll in thyroid health. Both selenium and niacin can reduce asthma symptoms.\n" +
                 "\n" +
                 "★Ingredients★\n" +
                 "See recipe card at the bottom of post for full ingredient amounts and instructions\n" +
@@ -157,10 +176,18 @@ public class DietFragment extends Fragment {
                 "\n" +
                 "Add the rest of the rigatoni. Top with remaining chicken and cheese.\n" +
                 "\n" +
-                "Cover and bake at 375° for 15 minutes, then uncover and bake for 25 minutes.\n", "361 Calories", R.drawable.chicken_parmesan_casserole);
+                "Cover and bake at 375° for 15 minutes, then uncover and bake for 25 minutes.\n" +
+                "\n" +
+                "Source: https://thecozycook.com/chicken-parmesan-casserole/\n" +
+                "\n" +
+                "https://www.aashpazi.com/chicken-parmesan-calories\n" +
+                "\n", "361 Calories, 26g Carbs, 10g Fats, 32g Protein", R.drawable.chicken_parmesan_casserole);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Mashed Potatoes", "homemade mashed potatoes are a classic holiday tradition. They’re a comforting reminder of the very best times gathered together around a table.\n" +
+                "\n" +
+                "★Why is mashed potato Healthy?★\n" +
+                "They are low in fat, high in potassium and only have 150 calories per potato/serving. These are not empty calories either. There's actual great vitamins and nutrients in those calories. So, nutrition and calorie-wise, potatoes are great to add to your diet.\n" +
                 "\n" +
                 "★Ingredients★\n" +
                 "•8 to 10 medium russet potatoes (about 3 lb.), peeled, cut into quarters\n" +
@@ -178,10 +205,15 @@ public class DietFragment extends Fragment {
                 "Step 3\n" +
                 "Mash potatoes with potato masher until no lumps remain. Add butter, pepper and remaining 1/4 teaspoon salt; continue mashing, gradually adding enough milk to make potatoes smooth and creamy.\n" +
                 "\n" +
-                "Source: https://www.pillsbury.com/recipes/easy-homemade-mashed-potatoes/09f0bba4-8bb9-4ce3-8d98-ae7a803eb7d5", "88 Calories", R.drawable.mashed_potatoes);
+                "Source: https://www.pillsbury.com/recipes/easy-homemade-mashed-potatoes/09f0bba4-8bb9-4ce3-8d98-ae7a803eb7d5\n" +
+                "\n" +
+                "https://feelgoodfoodie.net/recipe/healthy-mashed-potatoes/#:~:text=They%20are%20low%20in%20fat,to%20add%20to%20your%20diet.", "88 Calories, 36.9g Carbs, 1.2g Fats, 4g Protein", R.drawable.mashed_potatoes);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Pumpkin Soup", "Make the most of pumpkins in the supermarkets in the autumn and make this warming and filling pumpkin soup. Serve with our savoury granola sprinkled on top\n" +
+                "\n" +
+                "Why is Pumpkin Soup Healthy?\n" +
+                "rich in several minerals and vitamins like copper, manganese, riboflavin, iron, niacin, and potassium as well as Vitamins C, K, and E. It is also extremely high in a powerful antioxidant called beta-carotene.\n" +
                 "\n" +
                 "Ingredients\n" +
                 "1 pumpkin (around 1.5kg), peeled and chopped, seeds reserved\n" +
@@ -205,10 +237,19 @@ public class DietFragment extends Fragment {
                 "Heat the oil in the pan over a medium heat and cook the onion, celery, carrots, garlic and pumpkin, along with the remaining spices and some seasoning for 10 mins. Pour in the stock. Bring to a simmer and cook with the lid on for 20-25 mins.\n" +
                 "\n" +
                 "STEP 3\n" +
-                "Blitz until smooth using a hand blender. Serve with the savoury granola sprinkled on top.", " 71 Calories", R.drawable.pumpkinsoup);
+                "Blitz until smooth using a hand blender. Serve with the savoury granola sprinkled on top.\n" +
+                "\n" +
+                "Source: https://www.bbcgoodfood.com/recipes/healthy-pumpkin-soup\n" +
+                "\n" +
+                "https://www.cult.fit/live/recipe/pumpkin-soup/RECIPE413#:~:text=Pumpkin%20soup%20is%20also%20rich,powerful%20antioxidant%20called%20beta%2Dcarotene.\n" +
+                "\n" +
+                "Image: BBC", " 71 Calories, 5.1g Carbs, 0.9g Fats, 1.3g Protein", R.drawable.pumpkinsoup);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Pinto Beans", "The Pinto Bean is a speckled variety of common bean that is known for its creamy texture, mild flavor and ability to absorb flavors. Its Spanish name translates to \"speckled bean,\" referring to its mottled skin, which becomes uniform when cooked.\n" +
+                "\n" +
+                "Why is Pinto Beans Healthy?\n" +
+                "Pinto beans are extremely nutritious. They're an excellent source of protein, fiber, vitamins, and minerals. These nutrients may provide several benefits, including improved blood sugar control and heart health. Pinto beans are also rich in various antioxidants and may help lower your risk of chronic disease\n" +
                 "\n" +
                 "Ingredients\n" +
                 "\n" +
@@ -231,10 +272,15 @@ public class DietFragment extends Fragment {
                 "Step 2\n" +
                 "Drain and rinse the beans, then put them in a large pot. Cover the beans with water and add the chili powder, cumin, paprika, cayenne, bacon, garlic, bay leaves, onion, bell pepper and some salt and pepper. Bring to a boil, then reduce the heat to low and cook until the beans are tender, 2 to 3 1/2 hours.\n" +
                 "\n" +
-                "Source: https://www.foodnetwork.com", "245 Calories", R.drawable.pinto_beans);
+                "Source: https://www.foodnetwork.com\n" +
+                "\n" +
+                "https://www.healthline.com/nutrition/pinto-beans-nutrition#:~:text=Pinto%20beans%20are%20extremely%20nutritious,your%20risk%20of%20chronic%20disease.", "245 Calories, 63g Carbs, 1.2g Fats, 21g Protein", R.drawable.pinto_beans);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Creamy Yogart", "Homemade yogurt is a snap to make. All you really need is good quality milk, a few spoonfuls of your favorite plain yogurt to use as a starter culture, and some time to let it sit. Y\n" +
+                "\n" +
+                "Why is Creamy Yogurt Healthy?\n" +
+                "Yogurts can be high in protein, calcium, vitamins, and live culture, or probiotics, which can enhance the gut microbiota. These can offer protection for bones and teeth and help prevent digestive problems. Low-fat yogurt can be a useful source of protein on a weight-loss diet. Probiotics may boost the immune system.\n" +
                 "\n" +
                 "INGREDIENTS\n" +
                 "Yield: 1¾ quarts\n" +
@@ -255,13 +301,23 @@ public class DietFragment extends Fragment {
                 "Step 4\n" +
                 "Let yogurt sit for 6 to 12 hours, until the yogurt is thick and tangy; the longer it sits, the thicker and tangier it will become. (I usually let it sit for the full 12 hours.) Transfer the pot to the refrigerator and chill for at least another 4 hours; it will continue to thicken as it chills.\n" +
                 "\n" +
-                "Source: https://cooking.nytimes.com/recipes/1017991-creamy-homemade-yogurt", "59 Calories", R.drawable.yogart);
+                "Source: https://cooking.nytimes.com/recipes/1017991-creamy-homemade-yogurt\n" +
+                "\n" +
+                "https://www.medicalnewstoday.com/articles/295714", "59 Calories, 8g Carbs, 3g Fats, 3.4g Protein", R.drawable.yogart);
         foodDataList.add(mfoodData);
 
-        mfoodData = new FoodData("Apples", "The apple is one of the pome (fleshy) fruits. Apples at harvest vary widely in size, shape, colour, and acidity, but most are fairly round and some shade of red or yellow. The thousands of varieties fall into three broad classes: cider, cooking, and dessert varieties.", "52 Calories", R.drawable.apples);
+        mfoodData = new FoodData("Apples", "The apple is one of the pome (fleshy) fruits. Apples at harvest vary widely in size, shape, colour, and acidity, but most are fairly round and some shade of red or yellow. The thousands of varieties fall into three broad classes: cider, cooking, and dessert varieties."
+                + "\n"+
+                "\nWhy is Apple Healthy?\n"+
+                "Apples are an incredibly nutritious fruit that offers multiple health benefits. They're rich in fiber and antioxidants. Eating them is linked to a lower risk of many chronic conditions, including diabetes, heart disease, and cancer. Apples may also promote weight loss and improve gut and brain health.\n"
+                +"\n"+
+                "Source: https://www.healthline.com/nutrition/10-health-benefits-of-apples#:~:text=Apples%20are%20an%20incredibly%20nutritious,improve%20gut%20and%20brain%20health.", "52 Calories, 13.8g Carbs, 0.2g Fats, 0.3g Protein", R.drawable.apples);
         foodDataList.add(mfoodData);
 
         mfoodData = new FoodData("Double Pecan Thumbprints", "These buttery frangipane-filled pecan buttons are decadent without being fragile, and they make excellent cookies for boxing up and giving as gifts. Dusting them with powdered sugar before baking creates a crackly, glossy coating. Feel free to add more afterward as well.\n" +
+                "\n" +
+                "Why Pecan Nuts is Healthy?\n" +
+                "Pecans are a good source of calcium, magnesium, and potassium, which help lower blood pressure. Most of the fat found in pecans is a healthy type called monounsaturated fat. Eating foods with monounsaturated fat instead of foods high in saturated fats (like potato chips) can help lower levels of bad LDL cholesterol.\n" +
                 "\n" +
                 "Ingredients\n" +
                 "FRANGIPANE\n" +
@@ -313,7 +369,9 @@ public class DietFragment extends Fragment {
                 "Step 9\n" +
                 "Do Ahead: Cookies can be baked 5 days ahead. Store airtight at room temperature.\n" +
                 "\n" +
-                "Source: https://www.bonappetit.com/recipe/double-pecan-thumbprints", "120 Calories", R.drawable.double_pecan_thumbprints);
+                "Source: https://www.bonappetit.com/recipe/double-pecan-thumbprints\n" +
+                "\n" +
+                "https://www.webmd.com/diet/health-benefits-pecans#:~:text=Pecans%20are%20a%20good%20source,levels%20of%20bad%20LDL%20cholesterol.", "120 Calories, 10g Carbs, 6g Fats, 1g Protein", R.drawable.double_pecan_thumbprints);
         foodDataList.add(mfoodData);
 
 

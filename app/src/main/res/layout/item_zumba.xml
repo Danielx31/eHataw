@@ -44,7 +44,7 @@
                 android:paddingEnd="4dp"
                 android:text="Title"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageButton
                 android:id="@+id/imagebutton_popupmenu"
@@ -61,7 +61,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:fontFamily="@font/concert_one"
+            android:fontFamily="@font/amethysta"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             android:text="Category"

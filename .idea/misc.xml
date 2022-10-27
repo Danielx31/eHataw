@@ -21,6 +21,8 @@
         <entry key="..\:/AndroidStudioProjects/Capstone Project/app/src/main/res/layout/fragment_menu.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/Capstone Project/app/src/main/res/layout/zumba_item_list.xml" value="0.2509057971014493" />
         <entry key="..\:/AndroidStudioProjects/Capstone Project/app/src/main/res/menu/bottom_nav_menu.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Dark King/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Dark King/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Desktop/eHataw/app/src/main/res/layout/change_password_activity.xml" value="0.266304347826087" />
         <entry key="..\:/Users/Dark King/Desktop/eHataw/app/src/main/res/layout/detail_food.xml" value="0.266304347826087" />
         <entry key="..\:/Users/Dark King/Desktop/eHataw/app/src/main/res/layout/fragment_about.xml" value="0.1716612377850163" />
@@ -44,22 +46,24 @@
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_main2.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_menu.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_register.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_register.xml" value="0.4" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_splash.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_splash2.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_zumba.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/change_password_activity.xml" value="0.1" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/detail_food.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_about.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_delete_acc_activity.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_detail_food.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_diet.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_diet.xml" value="0.264" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_menu.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_save_video.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_settings.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_settings_activity.xml" value="0.264" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_watchlist.xml" value="0.2" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_wishlist.xml" value="0.4" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/item_diet.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/item_zumba.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/recycle_row_item.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/zumba_item_list.xml" value="0.22826086956521738" />

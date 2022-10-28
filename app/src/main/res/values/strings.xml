@@ -9,6 +9,7 @@
         <item>Arms</item>
         <item>Belly</item>
         <item>Legs</item>
+        <item>Most Viewed</item>
     </string-array>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

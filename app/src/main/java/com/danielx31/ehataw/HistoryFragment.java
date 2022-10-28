@@ -69,7 +69,7 @@ public class HistoryFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private ZumbaAdapter zumbaPagingAdapter;
+    private ZumbaAdapter zumbaAdapter;
 
     private final String ZUMBA_COLLECTION = "zumba";
     private final String USERS_COLLECTION = "users";
@@ -105,7 +105,8 @@ public class HistoryFragment extends Fragment {
             }
         });
 
-        buildRecyclerView(buildRecyclerAdapter());
+        buildRecyclerAdapter();
+        buildRecyclerView();
     }
 
     @Override
@@ -132,7 +133,7 @@ public class HistoryFragment extends Fragment {
         swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setRefreshing(true);
         zumbaList.clear();
-        zumbaPagingAdapter.notifyDataSetChanged();
+        zumbaAdapter.notifyDataSetChanged();
         userReference.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -188,7 +189,7 @@ public class HistoryFragment extends Fragment {
                                                     zumbaList.add(zumba);
                                                 }
                                                 sortListByList(history);
-                                                zumbaPagingAdapter.notifyDataSetChanged();
+                                                zumbaAdapter.notifyDataSetChanged();
                                                 swipeRefreshLayout.setRefreshing(false);
                                                 swipeRefreshLayout.setEnabled(false);
                                             }
@@ -217,14 +218,11 @@ public class HistoryFragment extends Fragment {
         Lists.sort(zumbaList, Comparators.comparing(z->list.indexOf(z.getId())));
     }
 
-    public RecyclerView.Adapter buildRecyclerAdapter() {
-
-        Query query = zumbasReference.whereEqualTo("forEmptyQuery", "");
-
-        zumbaPagingAdapter = new ZumbaAdapter(zumbaList);
+    public void buildRecyclerAdapter() {
+        zumbaAdapter = new ZumbaAdapter(zumbaList);
         refreshData();
 
-        zumbaPagingAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
+        zumbaAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 watchZumba(zumbaList.get(position));
@@ -236,13 +234,15 @@ public class HistoryFragment extends Fragment {
             }
         });
 
-        return zumbaPagingAdapter;
     }
 
-    public void buildRecyclerView(RecyclerView.Adapter adapter) {
+    public void buildRecyclerView() {
+        if (zumbaAdapter == null) {
+            return;
+        }
         recyclerView = getView().findViewById(R.id.history_recyclerview_zumba);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(zumbaAdapter);
 
         SpacingItemDecoration spacingItemDecoration = new SpacingItemDecoration(10);
         recyclerView.addItemDecoration(spacingItemDecoration);
@@ -345,8 +345,10 @@ public class HistoryFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), ZumbaActivity.class);
         intent.putExtra("isOnline", true);
-        intent.putExtra("zumbaId", zumba.getId());
-        intent.putExtra("videoPath", zumba.getVideoUrl());
+
+        Gson gson = new Gson();
+        String zumbaJson = gson.toJson(zumba);
+        intent.putExtra("zumba", zumbaJson);
         startActivity(intent);
     }
 

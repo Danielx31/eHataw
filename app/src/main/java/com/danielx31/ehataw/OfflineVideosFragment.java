@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
@@ -164,7 +165,10 @@ public class OfflineVideosFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), ZumbaActivity.class);
         intent.putExtra("isOnline", false);
-        intent.putExtra("videoPath", zumba.getVideoUrl());
+
+        Gson gson = new Gson();
+        String zumbaJson = gson.toJson(zumba);
+        intent.putExtra("zumba", zumbaJson);
         startActivity(intent);
     }
 

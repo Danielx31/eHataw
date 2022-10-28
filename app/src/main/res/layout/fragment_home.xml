@@ -22,23 +22,23 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="245dp"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/home_guideline_header_edge"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/logo_3" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="356dp"
-        android:layout_height="48dp"
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/home_guideline_header_edge"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7">
+        app:layout_constraintStart_toStartOf="@+id/guideline2">
 
         <Spinner
             android:id="@+id/spinner_category"
@@ -48,8 +48,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

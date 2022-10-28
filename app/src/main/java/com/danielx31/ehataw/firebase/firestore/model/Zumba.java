@@ -16,24 +16,18 @@ import java.util.Date;
 
 public class Zumba {
 
-    private Date createdDate;
     private String id;
+    private Date createdDate;
     private String videoUrl;
     private String thumbnailUrl;
     private String title;
     private String description;
     private String category;
+    private String benefit;
+    private long viewCount;
 
     public Zumba() {
 
-    }
-
-    public Zumba(String videoUrl, String thumbnailUrl, String title, String description, String category) {
-        this.videoUrl = videoUrl;
-        this.thumbnailUrl = thumbnailUrl;
-        this.title = title;
-        this.description = description;
-        this.category = category;
     }
 
     public void setVideoUrl(String videoUrl) {
@@ -74,6 +68,14 @@ public class Zumba {
         return category;
     }
 
+    public String getBenefit() {
+        return benefit;
+    }
+
+    public long getViewCount() {
+        return viewCount;
+    }
+
     @Override
     public String toString() {
         return "Zumba Id: " + id + "\n" +
@@ -82,7 +84,9 @@ public class Zumba {
                 "Thumbnail Url: " + thumbnailUrl + "\n" +
                 "Title: " + title + "\n" +
                 "Description: " + description + "\n" +
-                "Category: " + category + "\n";
+                "Category: " + category + "\n" +
+                "Benefit: " + benefit + "\n" +
+                "View Count: " + viewCount + "\n";
     }
 
 }

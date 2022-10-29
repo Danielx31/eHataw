@@ -143,6 +143,7 @@ public class ZumbaActivity extends AppCompatActivity {
         // pwede ka mag start ng activity or
         // gamitin mo description(message) mula sa zumba firebase
         String benefit = zumba.getBenefit();
+        
     }
 
     @Override

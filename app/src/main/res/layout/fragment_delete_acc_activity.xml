@@ -13,6 +13,7 @@
 
 
         <RelativeLayout
+            android:layout_marginTop="50dp"
             android:id="@+id/RL_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
                 android:background="@drawable/button"
                 android:fontFamily="@font/concert_one"
                 android:text="Authenticate"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <RelativeLayout

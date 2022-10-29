@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +43,9 @@ public class MenuFragment extends Fragment {
     private FirebaseAuth auth;
 
 //    private Button btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
-    private CardView btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
+//    private CardView btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
+//    private ImageView btnHistory,btnLogOut, btnWatchlist, btnDownload, btnAbout, btnDeleteAcc, btnChangePass;
+    private RelativeLayout  btnHistory,btnLogOut, btnWatchlist, btnDownload, btnAbout, btnDeleteAcc, btnChangePass;
 
     @Nullable
     @Override
@@ -82,17 +86,6 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btnSettings = root.findViewById(R.id.home_button_settings);
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Fragment settingsFragment = new SettingsActivity();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.container_fragment, settingsFragment).commit();
-            }
-        });
-
         btnAbout = root.findViewById(R.id.home_button_about);
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +93,26 @@ public class MenuFragment extends Fragment {
                 Fragment about = new AboutFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, about).commit();
+            }
+        });;
+
+        btnChangePass = root.findViewById(R.id.settings_button_changepassword);
+        btnChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment changePass = new ChangePasswordActivity();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, changePass).commit();
+            }
+        });
+
+        btnDeleteAcc = root.findViewById(R.id.settings_button_deleteaccount);
+        btnDeleteAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment deleteAcc =  new DeleteAccountActivity();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, deleteAcc).commit();
             }
         });
 

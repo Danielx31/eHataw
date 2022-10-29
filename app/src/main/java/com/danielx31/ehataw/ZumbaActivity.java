@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -143,7 +144,10 @@ public class ZumbaActivity extends AppCompatActivity {
         // pwede ka mag start ng activity or
         // gamitin mo description(message) mula sa zumba firebase
         String benefit = zumba.getBenefit();
-        
+        Intent intent = new Intent(this, BenefitActivity.class);
+        intent.putExtra("message", benefit);
+        startActivity(intent);
+        finish();
     }
 
     @Override

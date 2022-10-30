@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         final Button registerBtn = findViewById(R.id.button_login);
         final TextView loginNowBtn =  findViewById(R.id.button_Login);
+        final TextView termsBtn = findViewById(R.id.btnTerms);
+        final TextView policyBtn = findViewById(R.id.btnPolicy);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -131,13 +133,36 @@ public class RegisterActivity extends AppCompatActivity {
 
         });
 
-
         loginNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
+        termsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
+
+        policyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog1();
+            }
+        });
+    }
+
+    private void openDialog1() {
+        Policy policy = new Policy();
+        policy.show(getSupportFragmentManager(), "Example");
+    }
+
+    private void openDialog() {
+        Terms terms = new Terms();
+        terms.show(getSupportFragmentManager(), "Example");
     }
 
     @Override

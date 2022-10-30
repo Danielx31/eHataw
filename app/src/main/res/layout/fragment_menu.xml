@@ -392,10 +392,10 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="3dp"
                         android:src="@drawable/right_arrow" />
                 </RelativeLayout>
@@ -439,10 +439,10 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/right_arrow" />
 
@@ -475,10 +475,10 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/right_arrow" />
 
@@ -512,10 +512,10 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/right_arrow" />
 
@@ -560,10 +560,10 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/right_arrow" />
 
@@ -596,10 +596,10 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/right_arrow" />
 
@@ -632,10 +632,10 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/right_arrow" />
 

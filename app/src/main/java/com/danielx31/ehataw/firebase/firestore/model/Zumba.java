@@ -24,6 +24,17 @@ public class Zumba {
     private String description;
     private String category;
     private String benefit;
+    private String calories;
+    private String duration;
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public String getCalories() {
+        return calories;
+    }
+
     private long viewCount;
 
     public Zumba() {

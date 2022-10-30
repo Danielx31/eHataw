@@ -1,40 +1,24 @@
 package com.danielx31.ehataw;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.View;
+import android.os.Parcelable;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Tracks;
-import com.google.android.exoplayer2.extractor.mp4.Track;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -42,11 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -144,8 +125,13 @@ public class ZumbaActivity extends AppCompatActivity {
         // pwede ka mag start ng activity or
         // gamitin mo description(message) mula sa zumba firebase
         String benefit = zumba.getBenefit();
+        String kcal = zumba.getCalories();
+        String duration = zumba.getDuration();
+
         Intent intent = new Intent(this, BenefitActivity.class);
         intent.putExtra("message", benefit);
+        intent.putExtra("kcal", kcal);
+        intent.putExtra("duration", duration);
         startActivity(intent);
         finish();
     }

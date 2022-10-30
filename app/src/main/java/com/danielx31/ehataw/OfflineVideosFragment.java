@@ -130,13 +130,13 @@ public class OfflineVideosFragment extends Fragment {
         recyclerViewAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Zumba zumba = zumbaListController.getList().get(position);
+                Zumba zumba = getList().get(position);
                 watchZumba(zumba);
             }
 
             @Override
             public void onPopupMenuImageButtonClick(View view, int position) {
-                Zumba zumba = zumbaListController.getList().get(position);
+                Zumba zumba = getList().get(position);
                 showPopupMenu(view, zumba);
             }
         });
@@ -204,7 +204,7 @@ public class OfflineVideosFragment extends Fragment {
     public void updateRecyclerView() {
         List<Zumba> zumbaList = getList();
         if (zumbaList == null || zumbaList.isEmpty()) {
-            return;
+            zumbaList = new ArrayList<>();
         }
 
         recyclerViewAdapter.setZumbaList(zumbaList);
@@ -227,7 +227,6 @@ public class OfflineVideosFragment extends Fragment {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
             }
         });
 

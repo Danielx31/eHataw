@@ -80,12 +80,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="219dp"
-        android:layout_height="194dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline14"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintHorizontal_bias="0.50"
@@ -113,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.17" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline16"
@@ -124,10 +124,10 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="243dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/marck_script"
+        android:gravity="center_horizontal"
         android:text="Congratulations"
         android:textColor="@color/black"
         android:textSize="40sp"
@@ -135,12 +135,16 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="@+id/guideline14" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="207dp"
-        android:layout_height="204dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toEndOf="@+id/textView7"
         app:layout_constraintStart_toStartOf="@+id/textView2"

@@ -14,8 +14,10 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/bg_2" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -37,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.03" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_bottom"
@@ -50,6 +52,7 @@
         android:id="@+id/edittext_email1"
         android:layout_width="327dp"
         android:layout_height="48dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/ic_email"
         android:drawablePadding="12dp"
@@ -136,35 +139,50 @@
         android:paddingRight="30dp"
         android:text="Register"
         app:backgroundTint="#F4A022"
-        app:layout_constraintEnd_toEndOf="@+id/btnPolicy"
-        app:layout_constraintStart_toStartOf="@+id/btnPolicy"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/btnPolicy" />
 
-    <TextView
-        android:id="@+id/textview_registerdesc"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/concert_one"
-        android:text="Already have an account?"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/edittext_password1"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/button_login">
 
-    <TextView
-        android:id="@+id/button_Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/concert_one"
-        android:text="LogIn Now"
-        android:textColor="@android:color/holo_orange_light"
-        app:layout_constraintEnd_toEndOf="@+id/edittext_password1"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toEndOf="@+id/textview_registerdesc"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        <TextView
+            android:id="@+id/textview_registerdesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:fontFamily="@font/concert_one"
+            android:text="Already have an account?"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="1.5"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="58dp" />
+
+        <TextView
+            android:id="@+id/button_Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/concert_one"
+            android:text="Login Now"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="16sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="1.5"
+            tools:layout_editor_absoluteX="276dp"
+            tools:layout_editor_absoluteY="28dp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView2"
@@ -184,9 +202,13 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/concert_one"
-        android:text="by clicking register you agree to our"
-        android:textColor="@color/black"
-        android:textSize="12sp"
+        android:text="By clicking register you agree to our"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1.5"
         app:layout_constraintStart_toStartOf="@+id/edittext_password1"
         app:layout_constraintTop_toBottomOf="@+id/edittext_password1" />
 
@@ -198,9 +220,13 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="5dp"
         android:fontFamily="@font/concert_one"
-        android:text="Term and Condition,"
+        android:text="Terms and"
         android:textColor="#FF9800"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1.5"
         app:layout_constraintEnd_toEndOf="@+id/edittext_password1"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/edittext_password1" />
@@ -211,9 +237,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/concert_one"
-        android:text="Privacy Policy."
+        android:text="Conditions, Privacy Policy."
         android:textColor="#FF9800"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1.5"
         app:layout_constraintEnd_toEndOf="@+id/btnTerms"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />

@@ -11,8 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -110,7 +107,7 @@ public class MenuFragment extends Fragment {
         btnDeleteAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment deleteAcc =  new DeleteAccountActivity();
+                Fragment deleteAcc =  new DeleteAccountFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, deleteAcc).commit();
             }

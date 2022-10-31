@@ -10,38 +10,40 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="106dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/avatar"/>
+                android:layout_marginTop="0dp"
+                android:src="@drawable/avatar" />
 
             <TextView
                 android:id="@+id/textview_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="Loading..."
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/concert_one"
-                android:layout_marginTop="5dp"/>
-            
+                android:hint="Loading..."
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
             <LinearLayout
-                android:background="@drawable/background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/background"
                 android:orientation="vertical"
                 android:padding="15dp">
 
@@ -81,246 +83,246 @@
 
             </LinearLayout>
 
-        <LinearLayout
-            android:background="@drawable/background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:padding="15dp">
-
-            <RelativeLayout
-                android:id="@+id/home_button_history"
-                android:layout_marginTop="10dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/background"
+                android:orientation="vertical"
+                android:padding="15dp">
 
-                <ImageView
-                    android:id="@+id/history_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/round_back_about"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_baseline_history_24" />
+                <RelativeLayout
+                    android:id="@+id/home_button_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/history_icon"
-                    android:fontFamily="@font/concert_one"
-                    android:text="History"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/history_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_back_about"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_baseline_history_24" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="2dp"
-                    android:src="@drawable/right_arrow" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/history_icon"
+                        android:fontFamily="@font/concert_one"
+                        android:text="History"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-            </RelativeLayout>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/right_arrow" />
 
-            <RelativeLayout
-                android:id="@+id/home_button_watchlist"
-                android:layout_marginTop="10dp"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/home_button_watchlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/watchlist_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_back_about"
+                        android:padding="12dp"
+                        android:src="@drawable/watchlist" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/watchlist_icon"
+                        android:fontFamily="@font/concert_one"
+                        android:text="Watchlist"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/right_arrow" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/home_button_offlinevideos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/download_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_back_about"
+                        android:padding="12dp"
+                        android:src="@drawable/download" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/download_icon"
+                        android:fontFamily="@font/concert_one"
+                        android:text="Offline Videos"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/right_arrow" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/background"
+                android:orientation="vertical"
+                android:padding="15dp">
 
-                <ImageView
-                    android:id="@+id/watchlist_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/round_back_about"
-                    android:padding="12dp"
-                    android:src="@drawable/watchlist" />
+                <RelativeLayout
+                    android:id="@+id/settings_button_changepassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/watchlist_icon"
-                    android:fontFamily="@font/concert_one"
-                    android:text="Watchlist"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/changePass_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_back_about"
+                        android:padding="12dp"
+                        android:src="@drawable/change_password" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="2dp"
-                    android:src="@drawable/right_arrow" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/changePass_icon"
+                        android:fontFamily="@font/concert_one"
+                        android:text="Change Password"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/right_arrow" />
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/home_button_offlinevideos"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/settings_button_deleteaccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:id="@+id/download_icon"
-                    android:src="@drawable/download"
-                    android:background="@drawable/round_back_about"
-                    android:padding="12dp"/>
+                    <ImageView
+                        android:id="@+id/deleteAcc_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_back_about"
+                        android:padding="12dp"
+                        android:src="@drawable/delete_account" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/download_icon"
-                    android:fontFamily="@font/concert_one"
-                    android:text="Offline Videos"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/deleteAcc_icon"
+                        android:fontFamily="@font/concert_one"
+                        android:text="Delete Account"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="2dp"
-                    android:src="@drawable/right_arrow" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/right_arrow" />
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-        </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/home_button_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
 
-        <LinearLayout
-            android:background="@drawable/background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:padding="15dp">
+                    <ImageView
+                        android:id="@+id/logOut_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_back_about"
+                        android:padding="12dp"
+                        android:src="@drawable/logout" />
 
-            <RelativeLayout
-                android:id="@+id/settings_button_changepassword"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/logOut_icon"
+                        android:fontFamily="@font/concert_one"
+                        android:text="Log Out"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:id="@+id/changePass_icon"
-                    android:src="@drawable/change_password"
-                    android:background="@drawable/round_back_about"
-                    android:padding="12dp"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/right_arrow" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/changePass_icon"
-                    android:fontFamily="@font/concert_one"
-                    android:text="Change Password"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="2dp"
-                    android:src="@drawable/right_arrow" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/settings_button_deleteaccount"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:id="@+id/deleteAcc_icon"
-                    android:src="@drawable/delete_account"
-                    android:background="@drawable/round_back_about"
-                    android:padding="12dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/deleteAcc_icon"
-                    android:fontFamily="@font/concert_one"
-                    android:text="Delete Account"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="2dp"
-                    android:src="@drawable/right_arrow" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/home_button_logout"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:id="@+id/logOut_icon"
-                    android:src="@drawable/logout"
-                    android:background="@drawable/round_back_about"
-                    android:padding="12dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/logOut_icon"
-                    android:fontFamily="@font/concert_one"
-                    android:text="Log Out"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="2dp"
-                    android:src="@drawable/right_arrow" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

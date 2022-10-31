@@ -42,7 +42,7 @@ public class ChangePasswordActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.change_password_activity, container, false);
+        View view = inflater.inflate(R.layout.activity_change_password, container, false);
         RxJavaPlugins.setErrorHandler(e -> { });
 
         connectionReceiver = new ConnectionReceiver();

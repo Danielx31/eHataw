@@ -36,7 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 
-public class DeleteAccountActivity extends Fragment {
+public class DeleteAccountFragment extends Fragment {
 
     private BroadcastReceiver connectionReceiver;
 
@@ -53,7 +53,7 @@ public class DeleteAccountActivity extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_delete_acc_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_delete_account, container, false);
         RxJavaPlugins.setErrorHandler(e -> { });
 
         connectionReceiver = new ConnectionReceiver();

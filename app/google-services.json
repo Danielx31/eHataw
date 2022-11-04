@@ -63,43 +63,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:951429753824:android:c649dbb2f9a6ffe9965985",
-        "android_client_info": {
-          "package_name": "com.example.ehataw"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "951429753824-9r5p8r6ffggrvc5484a6hqo1pflq9t3d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ehataw",
-            "certificate_hash": "ba8b3886448b0d37e86878a1b960db4675c02343"
-          }
-        },
-        {
-          "client_id": "951429753824-31a8fucplekk6944npq4i4kf15avsn6a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBvnjOTZ_SnF8jNwY6UItpNjBzv_TQORqk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "951429753824-31a8fucplekk6944npq4i4kf15avsn6a.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

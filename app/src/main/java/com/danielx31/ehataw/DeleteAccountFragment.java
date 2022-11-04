@@ -107,6 +107,7 @@ public class DeleteAccountFragment extends Fragment {
                     editTextUserPwd.requestFocus();
                 }else{
                     //ReAutheticate user now
+
                     AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), userPwd);
                     firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -122,11 +123,50 @@ public class DeleteAccountFragment extends Fragment {
 
                                 //Set Textview to show user is authenticated/verified
                                 textViewAuthenticated.setText("You are authenticated." + "You can delete your profile and related data now!");
-                                Toast.makeText(getActivity(), "You are authenticated." + "You can change password now!", Toast.LENGTH_SHORT).show();
                                 buttonDeleteUser.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        showAlertDialog();
+
+                                        //Setup the Alert Builder
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                        builder.setTitle("Delete User and Related Data?");
+                                        builder.setMessage("Do you really want to delete your profile and related data? This action is irreversible!");
+
+                                        //Open Email Apps if User clicks/taps Continue button
+                                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                 deleteUser(firebaseUser);
+
+                                            }
+                                        });
+
+                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Fragment menu = new MenuFragment();
+                                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                                fragmentTransaction.replace(R.id.container_fragment, menu).commit();
+                                            }
+                                        });
+
+                                        //create the AlertDialog
+                                        AlertDialog alertDialog = builder.create();
+
+                                        //Change Button color of continue
+                                        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                            @Override
+                                            public void onShow(DialogInterface dialogInterface) {
+                                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.orange));
+                                            }
+                                        });
+
+                                        //show the AlertDialog
+                                        alertDialog.show();
+
+
+
+
                                     }
                                 });
                             }else {
@@ -143,77 +183,37 @@ public class DeleteAccountFragment extends Fragment {
         });
     }
 
-    private void showAlertDialog() {
-        //Setup the Alert Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete User and Related Data?");
-        builder.setMessage("Do you really want to delete your profile and related data? This action is irreversible!");
-
-        //Open Email Apps if User clicks/taps Continue button
-        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                deleteUser(firebaseUser);
-            }
-        });
-
-        //Return to user Profile Activity if user presses cancel button
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-//                Intent intent = new Intent(getActivity(), MenuFragment.class);
-//                startActivity(intent);
-//                getActivity().finish();
-                Fragment menu = new MenuFragment();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.container_fragment, menu).commit();
-            }
-        });
-
-        //create the AlertDialog
-        AlertDialog alertDialog = builder.create();
-
-        //Change Button color of continue
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.orange));
-            }
-        });
-
-        //show the AlertDialog
-        alertDialog.show();
-    }
-
     private void deleteUser(FirebaseUser firebaseUser) {
         firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    deleteUserData();
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Registered Users");
+                    databaseReference.child(firebaseUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d(TAG, "OnSuccess: User Data Deleted");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, e.getMessage());
+                            Toast.makeText(getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     auth.signOut();
                     Toast.makeText(getActivity(),"User has been deleted!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                     getActivity().finish();
 
+                }else{
+                    try {
+                        throw task.getException();
+                    }catch (Exception e){
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-    }
-
-    private void deleteUserData() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        databaseReference.child(firebaseUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d(TAG, "OnSuccess: User Data Deleted");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, e.getMessage());
-                Toast.makeText(getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

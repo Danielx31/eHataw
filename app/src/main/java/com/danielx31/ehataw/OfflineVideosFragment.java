@@ -119,13 +119,14 @@ public class OfflineVideosFragment extends Fragment {
     }
 
     public void buildRecyclerAdapter(List list) {
+
         if (list == null || list.isEmpty()) {
+            recyclerViewAdapter = new ZumbaAdapter(new ArrayList<>());
             return;
         }
 
-        swipeRefreshLayout.setRefreshing(true);
         recyclerView = getView().findViewById(R.id.offlinevideos_recyclerview_zumba);
-        recyclerViewAdapter = new ZumbaAdapter(list);
+        swipeRefreshLayout.setRefreshing(true);
 
         recyclerViewAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
             @Override

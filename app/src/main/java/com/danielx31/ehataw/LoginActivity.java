@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
     private BroadcastReceiver connectionReceiverPrime;
 
     private FirebaseAuth auth;
-    private UserAPI userAPI;
 
     private TextInputEditText emailTextInputEditText;
     private TextInputEditText passwordTextInputEditText;
@@ -56,10 +55,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        RxJavaPlugins.setErrorHandler(e -> {
+        });
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         connectionReceiverPrime = new ConnectionReceiverPrime();
-        userAPI = new UserAPI();
 
         emailTextInputEditText = findViewById(R.id.textinputedittext_email);
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
@@ -186,13 +186,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(connectionReceiverPrime, filter);
-
-        if(auth.getCurrentUser() != null){
-            startEntryIntent();
-        }
     }
 
     private void startEntryIntent() {
+        if (auth.getCurrentUser() == null) {
+            return;
+        }
+
+        UserAPI userAPI = new UserAPI();
+
         userAPI.onUserCalibrated(new UserAPI.OnUserCalibratedListener() {
             @Override
             public void onUserCalibrated() {
@@ -208,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onValidatingFailed(Exception e) {
-                Toast.makeText(LoginActivity.this, "An Error Occurred! Please Try Again!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "A Network Error Occurred! Please Try Again!", Toast.LENGTH_SHORT).show();
             }
         });
     }

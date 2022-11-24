@@ -3,6 +3,8 @@ package com.danielx31.ehataw;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,8 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    private ConnectionReceiverPrime connectionReceiverPrime;
+
     private Button nextButton;
 
     @Override
@@ -23,6 +27,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         RxJavaPlugins.setErrorHandler(e -> {
         });
+
+        connectionReceiverPrime = new ConnectionReceiverPrime();
 
         Log.e("USER ID:", new UserAPI().getUserId());
 
@@ -36,4 +42,18 @@ public class WelcomeActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectionReceiverPrime, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(connectionReceiverPrime);
+    }
+
 }

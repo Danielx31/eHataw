@@ -267,7 +267,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="serif"
-                android:text="If you choose to use our service, then you agree to the collection and use of information in relation to this policy. The personal Information that we collect is used for providing and improving the service. We will not use or share your information with anyone except as described in this Privacy Policy."
+                android:text="If you choose to use our service, then you agree to the collection and use of information in relation to this policyDialog. The personal Information that we collect is used for providing and improving the service. We will not use or share your information with anyone except as described in this Privacy Policy."
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="19dp" />
@@ -319,7 +319,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="serif"
-                android:text="The app does use third-party services that may collect information used to identify you. Link to the privacy policy of third-party service providers used by the app Google Play Services"
+                android:text="The app does use third-party services that may collect information used to identify you. Link to the privacy policyDialog of third-party service providers used by the app Google Play Services"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="19dp" />

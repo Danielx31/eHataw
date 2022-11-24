@@ -128,7 +128,7 @@ public class OfflineVideosFragment extends Fragment {
         recyclerView = getView().findViewById(R.id.offlinevideos_recyclerview_zumba);
         swipeRefreshLayout.setRefreshing(true);
 
-        recyclerViewAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
+        recyclerViewAdapter.setOnItemClickListener(new ZumbaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Zumba zumba = getList().get(position);

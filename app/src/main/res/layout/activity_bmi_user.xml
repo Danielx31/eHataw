@@ -38,7 +38,6 @@
 
     <RelativeLayout
         android:id="@+id/heightlayout"
-        android:background="@drawable/cardbackground"
         android:layout_width="340dp"
         android:layout_height="150dp"
         android:layout_above="@+id/centerhorizontalline"
@@ -88,7 +87,6 @@
 
     <RelativeLayout
         android:id="@+id/weightlayout"
-        android:background="@drawable/cardbackground"
         android:layout_width="340dp"
         android:layout_height="150dp"
         android:layout_above="@+id/centerhorizontalline"

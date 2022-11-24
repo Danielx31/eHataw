@@ -14,7 +14,7 @@ public class DetailFoodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_food);
+        setContentView(R.layout.activity_detail_food);
 
         foodDescription = (TextView) findViewById(R.id.txtDescription);
         foodImage = (ImageView) findViewById(R.id.ivImage2);

@@ -4,13 +4,13 @@ public class FoodData {
     
     private String itemName;
     private String itemDescription;
-    private String itemprice;
+    private String itemPrice;
     private int itemImage;
 
-    public FoodData(String itemName, String itemDescription, String itemprice, int itemImage) {
+    public FoodData(String itemName, String itemDescription, String itemPrice, int itemImage) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
-        this.itemprice = itemprice;
+        this.itemPrice = itemPrice;
         this.itemImage = itemImage;
     }
 
@@ -22,8 +22,8 @@ public class FoodData {
         return itemDescription;
     }
 
-    public String getItemprice() {
-        return itemprice;
+    public String getItemPrice() {
+        return itemPrice;
     }
 
     public int getItemImage() {

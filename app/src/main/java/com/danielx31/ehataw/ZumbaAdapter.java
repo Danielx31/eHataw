@@ -25,7 +25,7 @@ public class ZumbaAdapter extends RecyclerView.Adapter<ZumbaAdapter.ZumbaViewHol
         void onPopupMenuImageButtonClick(View view, int position);
     }
 
-    public void setOnItemClicklistener(OnItemClickListener onItemClicklistener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClicklistener) {
         this.onItemClicklistener = onItemClicklistener;
     }
 

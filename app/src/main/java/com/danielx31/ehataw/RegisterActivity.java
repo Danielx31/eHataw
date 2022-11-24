@@ -154,8 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void openDialog1() {
-        Policy policy = new Policy();
-        policy.show(getSupportFragmentManager(), "Example");
+        PolicyDialog policyDialog = new PolicyDialog();
+        policyDialog.show(getSupportFragmentManager(), "Example");
     }
 
     private void openDialog() {

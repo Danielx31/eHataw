@@ -3,6 +3,8 @@ package com.danielx31.ehataw;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,8 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class BMIUserActivity extends AppCompatActivity {
 
+    private ConnectionReceiverPrime connectionReceiverPrime;
+
     private UserAPI userAPI;
 
     private Button nextButton;
@@ -30,6 +34,8 @@ public class BMIUserActivity extends AppCompatActivity {
 
         RxJavaPlugins.setErrorHandler(e -> {
         });
+
+        connectionReceiverPrime = new ConnectionReceiverPrime();
 
         userAPI = new UserAPI();
 
@@ -50,4 +56,18 @@ public class BMIUserActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectionReceiverPrime, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(connectionReceiverPrime);
+    }
+
 }

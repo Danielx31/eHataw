@@ -222,7 +222,7 @@ public class HistoryFragment extends Fragment {
         zumbaAdapter = new ZumbaAdapter(zumbaList);
         refreshData();
 
-        zumbaAdapter.setOnItemClicklistener(new ZumbaAdapter.OnItemClickListener() {
+        zumbaAdapter.setOnItemClickListener(new ZumbaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 watchZumba(zumbaList.get(position));

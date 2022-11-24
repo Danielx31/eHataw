@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder> {
+public class FoodAdapter extends RecyclerView.Adapter<FoodViewHolder> {
 
     private Context mContext;
     private List<FoodData> myFoodList;
 
-    public MyAdapter(Context mContext, List<FoodData> myFoodList) {
+    public FoodAdapter(Context mContext, List<FoodData> myFoodList) {
         this.mContext = mContext;
         this.myFoodList = myFoodList;
     }
@@ -37,7 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder> {
 
         holder.imageView.setImageResource(myFoodList.get(position).getItemImage());
         holder.mTitle.setText(myFoodList.get(position).getItemName());
-        holder.mDescription.setText(myFoodList.get(position).getItemprice());
+        holder.mDescription.setText(myFoodList.get(position).getItemPrice());
         //holder.mPrice.setText(myFoodList.get(position).getItemprice());
         holder.mPrice.setText("");
 

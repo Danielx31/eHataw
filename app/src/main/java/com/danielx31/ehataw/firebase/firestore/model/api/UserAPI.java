@@ -27,8 +27,14 @@ public class UserAPI {
     public UserAPI() {
         auth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
-        userReference = database.collection(USERS_COLLECTION).document(auth.getCurrentUser().getUid());
-        userId = auth.getCurrentUser().getUid();
+        if (isUserLoggedIn()) {
+            userReference = database.collection(USERS_COLLECTION).document(auth.getCurrentUser().getUid());
+            userId = auth.getCurrentUser().getUid();
+        }
+    }
+
+    public boolean isUserLoggedIn() {
+        return auth.getCurrentUser() != null;
     }
 
     public String getUserId() {

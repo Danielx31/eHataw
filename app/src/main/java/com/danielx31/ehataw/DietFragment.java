@@ -373,12 +373,9 @@ public class DietFragment extends Fragment {
                 "\n" +
                 "https://www.webmd.com/diet/health-benefits-pecans#:~:text=Pecans%20are%20a%20good%20source,levels%20of%20bad%20LDL%20cholesterol.", "120 Calories, 10g Carbs, 6g Fats, 1g Protein", R.drawable.double_pecan_thumbprints);
         foodDataList.add(mfoodData);
-
-
-        MyAdapter myAdapter = new MyAdapter(getActivity(), foodDataList);
+        
+        FoodAdapter myAdapter = new FoodAdapter(getActivity(), foodDataList);
         mRecyclerView.setAdapter(myAdapter);
-
-
 
         return view;
     }

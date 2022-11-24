@@ -37,7 +37,6 @@
 
     <RelativeLayout
         android:id="@+id/heightlayout"
-        android:background="@drawable/cardbackground"
         android:layout_width="375dp"
         android:layout_height="287dp"
         android:layout_above="@+id/centerhorizontalline"

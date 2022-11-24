@@ -2,6 +2,7 @@ package com.danielx31.ehataw;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         RxJavaPlugins.setErrorHandler(e -> {
         });
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(navigationListener);

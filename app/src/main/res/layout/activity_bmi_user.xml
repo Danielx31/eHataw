@@ -38,6 +38,7 @@
 
     <RelativeLayout
         android:id="@+id/heightlayout"
+        android:background="@drawable/cardbackground"
         android:layout_width="340dp"
         android:layout_height="150dp"
         android:layout_above="@+id/centerhorizontalline"
@@ -87,6 +88,7 @@
 
     <RelativeLayout
         android:id="@+id/weightlayout"
+        android:background="@drawable/cardbackground"
         android:layout_width="340dp"
         android:layout_height="150dp"
         android:layout_above="@+id/centerhorizontalline"
@@ -142,7 +144,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/buttonbackground"
+        android:background="@drawable/bg_login"
         android:fontFamily="@font/concert_one"
         android:text="Next"
         android:textColor="@color/black"

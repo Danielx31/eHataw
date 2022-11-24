@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //open RegisterActivity activity
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                startActivity(new Intent(getApplicationContext(), WelcomeActivity.class));
             }
         });
 

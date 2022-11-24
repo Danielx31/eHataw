@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_2"
-    tools:context=".WelcomeActivity">
+    tools:context=".BMIUser">
 
     <RelativeLayout
         android:id="@+id/logo"
@@ -35,14 +35,15 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true" />
 
+
     <RelativeLayout
         android:id="@+id/heightlayout"
-        android:layout_width="386dp"
-        android:layout_height="329dp"
+        android:layout_width="340dp"
+        android:layout_height="150dp"
         android:layout_above="@+id/centerhorizontalline"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="-155dp"
+        android:layout_marginBottom="23dp"
         android:background="@drawable/cardbackground">
 
         <TextView
@@ -50,25 +51,86 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/concert_one"
-            android:text="Welcome to eHataw"
+            android:text="Height"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/currentHeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="143dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="36dp"
             android:fontFamily="@font/concert_one"
-            android:text="To properly calibrate the application to suit your needs, please answer the input data from in the following page."
+            android:hint="170"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/currentHeight"
+            android:fontFamily="@font/concert_one"
+            android:text="cm"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/weightlayout"
+        android:layout_width="340dp"
+        android:layout_height="150dp"
+        android:layout_above="@+id/centerhorizontalline"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="-162dp"
+        android:background="@drawable/cardbackground">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/concert_one"
+            android:text="Weight"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/currentweight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="37dp"
+            android:fontFamily="@font/concert_one"
+            android:hint="70"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/currentweight"
+            android:fontFamily="@font/concert_one"
+            android:text="Kg"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
 
     </RelativeLayout>
@@ -87,7 +149,6 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold" />
-
 
 
 </RelativeLayout>

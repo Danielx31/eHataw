@@ -90,6 +90,7 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/button.xml" value="0.1835" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/button_light.xml" value="0.2125" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1835" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/ic_baseline_cloud_download_24.xml" value="0.2125" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/ic_baseline_download_24.xml" value="0.1835" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.1835" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1365" />
@@ -104,13 +105,18 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/transparent.xml" value="0.219" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/font/arbutus.xml" value="0.303125" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_benefit.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_bmi_user.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_change_password.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_forgot_password.xml" value="0.14356884057971014" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_health_related.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_home.xml" value="0.2071622846781505" />
-        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_main.xml" value="0.14356884057971014" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_splash2.xml" value="0.20697463768115942" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_weight_goal.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_welcome.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_zumba.xml" value="0.21" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_zumba1.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/change_password_activity.xml" value="0.20697463768115942" />
@@ -118,6 +124,7 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/detail_food.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_about.xml" value="0.1495433789954338" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_delete_acc_activity.xml" value="0.20697463768115942" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_delete_account.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_diet.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_download_video.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_downloaded_video.xml" value="0.20697463768115942" />

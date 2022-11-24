@@ -215,7 +215,7 @@ public class HistoryFragment extends Fragment {
     }
 
     public void sortListByList(List<String> list) {
-        Lists.sort(zumbaList, Comparators.comparing(z->list.indexOf(z.getId())));
+        Lists.sort(zumbaList, Comparators.comparing(z -> list.indexOf(z.getId())));
     }
 
     public void buildRecyclerAdapter() {

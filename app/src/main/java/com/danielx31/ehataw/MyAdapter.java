@@ -44,7 +44,7 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder> {
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, DetailFood.class);
+                Intent intent = new Intent(mContext, DetailFoodActivity.class);
                 intent.putExtra("Image", myFoodList.get(holder.getAbsoluteAdapterPosition()).getItemImage());
                 intent.putExtra("Description", myFoodList.get(holder.getAbsoluteAdapterPosition()).getItemDescription());
                 mContext.startActivity(intent);

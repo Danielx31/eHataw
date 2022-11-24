@@ -9,10 +9,12 @@ import java.util.List;
 public class User {
 
     private String id;
-
-    private List<String> watchlist;
-
+    private String weight;
+    private String height;
+    private String weightGoal;
+    private List<String> healthConditions;
     private List<String> history;
+    private List<String> watchlist;
 
     public User() {
 
@@ -32,9 +34,41 @@ public class User {
         return id;
     }
 
+    public String getWeight() { return weight; }
+
+    public String getHeight() {return height; }
+
+    public String getWeightGoal() { return weightGoal; }
+
+    @Exclude
+    public Double getWeightInKg() {
+        return getKg(weight);
+    }
+
+    @Exclude
+    public Double getHeightInKg() {
+        return getKg(height);
+    }
+
+    @Exclude
+    public Double getWeightGoalInKg() {
+        return getKg(weightGoal);
+    }
+
+    @Exclude
+    private Double getKg(String data) {
+        String[] parts = data.split(" ");
+        return Double.parseDouble(parts[0]);
+    }
+
+    public List<String> getHealthConditions() { return healthConditions; }
+
+    public List<String> getHistory() { return history; }
+
     public List<String> getWatchlist() {
         return watchlist;
     }
 
-    public List<String> getHistory() { return history; }
+
+
 }

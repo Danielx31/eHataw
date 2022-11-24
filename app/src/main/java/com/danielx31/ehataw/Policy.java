@@ -18,7 +18,7 @@ public class Policy extends AppCompatDialogFragment {
                         "\n" +
                         "If you choose to use our service, then you agree to the collection and use of information in relation to this policy. The personal Information that we collect is used for providing and improving the service. We will not use or share your information with anyone except as described in this Privacy Policy.\n" +
                         "\n" +
-                        "The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at eHataw unless otherwise defined in this Privacy Policy.\n" +
+                        "The terms used in this Privacy Policy have the same meanings as in our TermsFragment and Conditions, which are accessible at eHataw unless otherwise defined in this Privacy Policy.\n" +
                         "\n" +
                         "Information Collection and Use\n" +
                         "For a better experience while using our service, we may require you to provide us with certain personally identifiable information, including but not limited to Full Name. The information that we request will be retained by us and used as described in this Privacy Policy.\n" +

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class DetailFood extends AppCompatActivity {
+public class DetailFoodActivity extends AppCompatActivity {
 
     TextView foodDescription;
     ImageView foodImage;

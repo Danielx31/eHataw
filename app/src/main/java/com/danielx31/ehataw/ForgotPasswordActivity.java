@@ -41,7 +41,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        RxJavaPlugins.setErrorHandler(e -> { });
+        RxJavaPlugins.setErrorHandler(e -> {
+        });
 
         connectionReceiver = new ConnectionReceiver();
 
@@ -83,16 +84,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void validateData() {
         email = emailTxt.getText().toString();
 
-        if(TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(ForgotPasswordActivity.this, "Please enter your registered email", Toast.LENGTH_SHORT).show();
             emailTxt.setError("Email is Required");
             emailTxt.requestFocus();
-        }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(ForgotPasswordActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
             emailTxt.setError("Valid email is required");
             emailTxt.requestFocus();
 
-        } else{
+        } else {
             forgetPass();
         }
     }
@@ -101,18 +102,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(ForgotPasswordActivity.this, "Please check your inbox for password reset link", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
-                }else{
+                } else {
                     try {
                         throw task.getException();
-                    }catch (FirebaseAuthInvalidUserException e){
+                    } catch (FirebaseAuthInvalidUserException e) {
                         emailTxt.setError("User does not exists or is no longer valid. Please register again.");
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                         Toast.makeText(ForgotPasswordActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }

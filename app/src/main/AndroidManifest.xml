@@ -25,13 +25,13 @@
             android:name=".WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".HealthRelated"
+            android:name=".HealthRelatedActivity"
             android:exported="false" />
         <activity
-            android:name=".WeightGoal"
+            android:name=".WeightGoalActivity"
             android:exported="false" />
         <activity
-            android:name=".BMIUser"
+            android:name=".BMIUserActivity"
             android:exported="false" />
         <activity
             android:name=".BenefitActivity"
@@ -44,7 +44,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".DetailFood"
+            android:name=".DetailFoodActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />

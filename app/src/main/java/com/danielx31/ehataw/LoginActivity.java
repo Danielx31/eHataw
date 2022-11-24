@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.window.SplashScreen;
 
+import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private BroadcastReceiver connectionReceiverPrime;
 
     private FirebaseAuth auth;
+    private UserAPI userAPI;
 
     private TextInputEditText emailTextInputEditText;
     private TextInputEditText passwordTextInputEditText;
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         connectionReceiverPrime = new ConnectionReceiverPrime();
+        userAPI = new UserAPI();
 
         emailTextInputEditText = findViewById(R.id.textinputedittext_email);
         passwordTextInputEditText = findViewById(R.id.textinputedittext_password);
@@ -125,8 +128,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Check if email is verified before user can access their profile
                     if(firebaseUser.isEmailVerified()){
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                        startEntryIntent();
                         //open User Profile
                     }else{
                         firebaseUser.sendEmailVerification();
@@ -186,12 +188,29 @@ public class LoginActivity extends AppCompatActivity {
         registerReceiver(connectionReceiverPrime, filter);
 
         if(auth.getCurrentUser() != null){
-            //Toast.makeText(LoginActivity.this, "Already Logged In", Toast.LENGTH_SHORT).show();
-
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-            finish();
-            //Start the UserProfileActivity
+            startEntryIntent();
         }
+    }
+
+    private void startEntryIntent() {
+        userAPI.onUserCalibrated(new UserAPI.OnUserCalibratedListener() {
+            @Override
+            public void onUserCalibrated() {
+                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onUserNotCalibrated() {
+                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onValidatingFailed(Exception e) {
+                Toast.makeText(LoginActivity.this, "An Error Occurred! Please Try Again!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

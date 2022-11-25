@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -37,38 +34,26 @@ import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
-import com.firebase.ui.firestore.paging.DefaultSnapshotDiffCallback;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 
 public class HomeFragment extends Fragment {
@@ -106,7 +91,7 @@ public class HomeFragment extends Fragment {
         connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
 
-        swipeRefreshLayout = getView().findViewById(R.id.watchlist_swiperefreshlayout_zumba);
+        swipeRefreshLayout = getView().findViewById(R.id.diet_swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -130,9 +115,6 @@ public class HomeFragment extends Fragment {
                 recyclerView.smoothScrollToPosition(0);
 
                 switch (category) {
-                    case "All":
-                        query = zumbasReference.orderBy("createdDate", Query.Direction.DESCENDING);
-                        break;
                     case "Whole Body":
                         query = zumbasReference.whereEqualTo("category", "Whole Body")
                                 .orderBy("createdDate", Query.Direction.DESCENDING);
@@ -152,6 +134,8 @@ public class HomeFragment extends Fragment {
                     case "Most Viewed":
                         query = zumbasReference.orderBy("viewCount", Query.Direction.DESCENDING);
                         break;
+                    default:
+                        query = zumbasReference.orderBy("createdDate", Query.Direction.DESCENDING);
                 }
 
                 resetRecyclerAdapter(query);
@@ -263,13 +247,14 @@ public class HomeFragment extends Fragment {
             }
 
         });
+
     }
 
     public void buildRecyclerView() {
         if (zumbaPagingAdapter == null) {
             return;
         }
-        recyclerView = getView().findViewById(R.id.watchlist_recyclerview_zumba);
+        recyclerView = getView().findViewById(R.id.home_recyclerview_zumba);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(zumbaPagingAdapter);
 

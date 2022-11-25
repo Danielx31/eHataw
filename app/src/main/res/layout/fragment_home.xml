@@ -61,7 +61,7 @@
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/watchlist_swiperefreshlayout_zumba"
+        android:id="@+id/diet_swiperefreshlayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toTopOf="@+id/home_guideline_header_edge">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/watchlist_recyclerview_zumba"
+            android:id="@+id/home_recyclerview_zumba"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical" />

@@ -7,66 +7,59 @@
     tools:context=".DietFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
+        android:id="@+id/diet_guideline_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.05109489" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/home_guideline_header_edge2"
+        android:id="@+id/diet_guideline_header_edge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.20" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/home_guideline_headline_center2"
+        android:id="@+id/diet_guideline_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/diet_imageview_logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:src="@drawable/logo_3"
-        app:layout_constraintBottom_toTopOf="@+id/home_guideline_header_edge2"
-        app:layout_constraintEnd_toStartOf="@+id/home_guideline_headline_center2"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintBottom_toTopOf="@+id/diet_guideline_header_edge"
+        app:layout_constraintEnd_toStartOf="@+id/diet_guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/diet_guideline_left"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/diet_swiperefreshlayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:scrollbars="vertical"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/home_guideline_header_edge2">
+        app:layout_constraintTop_toBottomOf="@+id/diet_imageview_logo">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/diet_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/diet_guideline_header_edge" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:background="@drawable/bg_2"-->
-<!--    tools:context=".DietFragment">-->
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recycler_view"-->
-<!--        android:layout_marginTop="200dp"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:scrollbars="vertical">-->
-
-<!--    </androidx.recyclerview.widget.RecyclerView>-->
-
-<!--</LinearLayout>-->

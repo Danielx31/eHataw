@@ -42,38 +42,36 @@ public class UserAPI {
     }
 
     public void onUserCalibrated(OnUserCalibratedListener onUserCalibratedListener) {
-        userReference.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (!documentSnapshot.exists()) {
-                            onUserCalibratedListener.onUserNotCalibrated();
-                            return;
-                        }
+        fetchUser(new OnFetchUserListener() {
+            @Override
+            public void onFetchSuccess(User fetchedUser) {
+                User user = fetchedUser;
+                String weight = user.getWeight();
+                String height = user.getHeight();
+                String weightGoal = user.getWeightGoal();
+                List<String> healthConditions = user.getHealthConditions();
 
-                        User user = documentSnapshot.toObject(User.class);
-                        String weight = user.getWeight();
-                        String height = user.getHeight();
-                        String weightGoal = user.getWeightGoal();
-                        List<String> healthConditions = user.getHealthConditions();
-
-                        if (weight == null || weight.isEmpty() ||
+                if (weight == null || weight.isEmpty() ||
                         height == null || height.isEmpty() ||
                         weightGoal == null || weightGoal.isEmpty() ||
                         healthConditions == null) {
-                            onUserCalibratedListener.onUserNotCalibrated();
-                            return;
-                        }
+                    onUserCalibratedListener.onUserNotCalibrated();
+                    return;
+                }
 
-                        onUserCalibratedListener.onUserCalibrated();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        onUserCalibratedListener.onValidatingFailed(e);
-                    }
-                });
+                onUserCalibratedListener.onUserCalibrated();
+            }
+
+            @Override
+            public void onFetchNotFound() {
+                onUserCalibratedListener.onUserNotCalibrated();
+            }
+
+            @Override
+            public void onFetchError(Exception e) {
+                onUserCalibratedListener.onValidatingFailed(e);
+            }
+        });
     }
 
     public interface OnUserCalibratedListener {
@@ -99,6 +97,33 @@ public class UserAPI {
         HashMap<String, Object> healthConditionsMap = new HashMap<>();
         healthConditionsMap.put("healthConditions", healthConditions);
         userReference.set(healthConditionsMap, SetOptions.merge());
+    }
+
+    public void fetchUser(OnFetchUserListener onFetchUserListener) {
+        userReference.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (!documentSnapshot.exists()) {
+                            onFetchUserListener.onFetchNotFound();
+                        }
+
+                        User user = documentSnapshot.toObject(User.class);
+                        onFetchUserListener.onFetchSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFetchUserListener.onFetchError(e);
+                    }
+                });
+    }
+
+    public interface OnFetchUserListener {
+        void onFetchSuccess(User fetchedUser);
+        void onFetchNotFound();
+        void onFetchError(Exception e);
     }
 
 

@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Zumba {
 
@@ -26,6 +28,7 @@ public class Zumba {
     private String benefit;
     private String calories;
     private String duration;
+    private Map<String, Object> systemTags;
 
     public String getDuration() {
         return duration;
@@ -85,6 +88,10 @@ public class Zumba {
 
     public long getViewCount() {
         return viewCount;
+    }
+
+    public Map<String, Object> getSystemTags() {
+        return systemTags;
     }
 
     @Override

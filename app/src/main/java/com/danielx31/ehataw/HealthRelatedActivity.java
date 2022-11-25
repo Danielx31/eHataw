@@ -45,11 +45,11 @@ public class HealthRelatedActivity extends AppCompatActivity {
 
         healthConditionCheckBoxes = new HashMap<>();
 
-        healthConditionCheckBoxes.put("asthma", findViewById(R.id.cb_asthma));
-        healthConditionCheckBoxes.put("diabetes", findViewById(R.id.cb_diabetes));
-        healthConditionCheckBoxes.put("heartDiseases", findViewById(R.id.cb_heartdisease));
-        healthConditionCheckBoxes.put("highBlood", findViewById(R.id.cb_highbloodpressure));
-        healthConditionCheckBoxes.put("obesity", findViewById(R.id.cb_obesity));
+        healthConditionCheckBoxes.put("Asthma", findViewById(R.id.cb_asthma));
+        healthConditionCheckBoxes.put("Diabetes", findViewById(R.id.cb_diabetes));
+        healthConditionCheckBoxes.put("Heart Diseases", findViewById(R.id.cb_heartdisease));
+        healthConditionCheckBoxes.put("High Blood", findViewById(R.id.cb_highbloodpressure));
+        healthConditionCheckBoxes.put("Obesity", findViewById(R.id.cb_obesity));
 
         nextButton = findViewById(R.id.button_next);
 

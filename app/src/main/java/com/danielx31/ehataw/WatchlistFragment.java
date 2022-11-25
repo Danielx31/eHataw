@@ -13,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.paging.CombinedLoadStates;
-import androidx.paging.LoadState;
-import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,9 +26,7 @@ import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
-import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
-import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,7 +38,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
@@ -56,8 +50,6 @@ import java.util.List;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import java8.util.Comparators;
 import java8.util.Lists;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class WatchlistFragment extends Fragment {
 
@@ -96,7 +88,7 @@ public class WatchlistFragment extends Fragment {
         connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
 
-        swipeRefreshLayout = getView().findViewById(R.id.watchlist_swiperefreshlayout_zumba);
+        swipeRefreshLayout = getView().findViewById(R.id.diet_swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -239,7 +231,7 @@ public class WatchlistFragment extends Fragment {
             return;
         }
 
-        recyclerView = getView().findViewById(R.id.watchlist_recyclerview_zumba);
+        recyclerView = getView().findViewById(R.id.home_recyclerview_zumba);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(zumbaAdapter);
 

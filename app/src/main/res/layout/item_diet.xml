@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/ivImage"
+            android:id="@+id/diet_imageview_thumbnail"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -38,20 +38,13 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.88" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.73" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_price"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_left">
 
@@ -63,7 +56,7 @@
                 app:layout_constraintGuide_percent="0.50" />
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/diet_textview_title"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:fontFamily="@font/concert_one"
@@ -77,12 +70,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/diet_textview_nutritionfacts"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/amethysta"
                 android:gravity="center_vertical"
+                android:singleLine="true"
                 android:text="Description"
                 android:textColor="@color/black"
                 android:textSize="11sp"
@@ -91,20 +85,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/guideline_description2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/amethysta"
-            android:text="Php 300"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline_price"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

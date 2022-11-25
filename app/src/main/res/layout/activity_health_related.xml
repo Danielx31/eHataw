@@ -42,7 +42,8 @@
         android:layout_above="@+id/centerhorizontalline"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="-156dp">
+        android:layout_marginBottom="-156dp"
+        android:background="@drawable/cardbackground">
 
         <TextView
             android:layout_width="match_parent"

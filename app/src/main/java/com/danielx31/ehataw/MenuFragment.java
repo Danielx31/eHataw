@@ -42,7 +42,7 @@ public class MenuFragment extends Fragment {
 //    private Button btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
 //    private CardView btnHistory, btnSettings,btnLogOut, btnWatchlist, btnDownload, btnAbout;
 //    private ImageView btnHistory,btnLogOut, btnWatchlist, btnDownload, btnAbout, btnDeleteAcc, btnChangePass;
-    private RelativeLayout  btnHistory,btnLogOut, btnWatchlist, btnDownload, btnAbout, btnDeleteAcc, btnChangePass;
+    private RelativeLayout  btnHistory,btnLogOut, btnWatchlist, btnDownload, btnAbout, btnDeleteAcc, btnChangePass, btnBmi, btnWeightGoal, btnHealthRelated;
 
     @Nullable
     @Override
@@ -52,6 +52,36 @@ public class MenuFragment extends Fragment {
 
         RxJavaPlugins.setErrorHandler(e -> { });
         connectionReceiver = new ConnectionReceiver();
+
+        btnBmi = root.findViewById(R.id.home_button_bmi);
+        btnBmi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment changeBmi = new Bmi();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, changeBmi).commit();
+            }
+        });
+
+        btnWeightGoal = root.findViewById(R.id.home_button_weightGoal);
+        btnWeightGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment updateweightGoal = new WeightGoalChange();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, updateweightGoal).commit();
+            }
+        });
+
+        btnHealthRelated = root.findViewById(R.id.home_button_healthRelated);
+        btnHealthRelated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment updateHealt = new HealthRealatedUpdate();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, updateHealt).commit();
+            }
+        });
 
         btnHistory = root.findViewById(R.id.home_button_history);
         btnHistory.setOnClickListener(new View.OnClickListener() {

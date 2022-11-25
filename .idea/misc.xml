@@ -49,6 +49,7 @@
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/drawable/selector.xml" value="0.191" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_benefit.xml" value="0.2" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_bmi_user.xml" value="0.264" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_change_password.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_forgot_password.xml" value="0.4" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_health_related.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/activity_home.xml" value="0.2" />
@@ -66,15 +67,19 @@
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/change_password_activity.xml" value="0.264" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/detail_food.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_about.xml" value="0.13635187580853816" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_bmi.xml" value="0.2" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_delete_acc_activity.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_detail_food.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_diet.xml" value="0.264" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_health_realated_update.xml" value="0.264" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_home.xml" value="0.264" />
-        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_menu.xml" value="0.176" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_menu.xml" value="0.264" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_offline_videos.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_save_video.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_settings.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_settings_activity.xml" value="0.264" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_watchlist.xml" value="0.2" />
+        <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_weight_goal_change.xml" value="0.176" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/fragment_wishlist.xml" value="0.4" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/item_diet.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Dark King/Documents/eHataw/app/src/main/res/layout/item_zumba.xml" value="0.22826086956521738" />

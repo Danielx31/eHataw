@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 import com.google.firebase.firestore.SetOptions;
@@ -49,10 +50,19 @@ public class BMIUserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String weight = weightEditText.getText().toString() + " kg";
                 String height = heightEditText.getText().toString() + " cm";
-                userAPI.setBodySize(weight, height);
+                userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
+                            @Override
+                            public void onSetSuccess() {
+                                startActivity(new Intent(getApplicationContext(), WeightGoalActivity.class));
+                                finish();
+                            }
 
-                startActivity(new Intent(getApplicationContext(), WeightGoalActivity.class));
-                finish();
+                            @Override
+                            public void onSetError(Exception error) {
+                                Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
             }
         });
     }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 
@@ -44,10 +45,19 @@ public class WeightGoalActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String weightGoal = weightGoalEditText.getText().toString() + " kg";
-                userAPI.setWeightGoal(weightGoal);
+                userAPI.setWeightGoal(weightGoal, new UserAPI.OnSetListener() {
+                            @Override
+                            public void onSetSuccess() {
+                                startActivity(new Intent(getApplicationContext(), HealthRelatedActivity.class));
+                                finish();
+                            }
 
-                startActivity(new Intent(getApplicationContext(), HealthRelatedActivity.class));
-                finish();
+                            @Override
+                            public void onSetError(Exception error) {
+                                Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
             }
         });
 

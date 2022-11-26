@@ -57,7 +57,7 @@ public class MenuFragment extends Fragment {
         btnBmi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment changeBmi = new Bmi();
+                Fragment changeBmi = new BMIUpdateFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, changeBmi).commit();
             }
@@ -67,7 +67,7 @@ public class MenuFragment extends Fragment {
         btnWeightGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment updateweightGoal = new WeightGoalChange();
+                Fragment updateweightGoal = new WeightGoalChangeFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, updateweightGoal).commit();
             }
@@ -77,7 +77,7 @@ public class MenuFragment extends Fragment {
         btnHealthRelated.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment updateHealt = new HealthRealatedUpdate();
+                Fragment updateHealt = new HealthRelatedUpdateFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, updateHealt).commit();
             }

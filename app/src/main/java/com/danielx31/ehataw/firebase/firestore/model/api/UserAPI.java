@@ -80,23 +80,60 @@ public class UserAPI {
         void onValidatingFailed(Exception e);
     }
 
-    public void setBodySize(Object weight, Object height) {
+    public void setBodySize(Object weight, Object height, OnSetListener onSetListener) {
         HashMap<String, Object> bodySize = new HashMap<>();
         bodySize.put("weight", weight);
         bodySize.put("height", height);
-        userReference.set(bodySize, SetOptions.merge());
+        userReference.set(bodySize, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
     }
 
-    public void setWeightGoal(Object weightGoal) {
+    public void setWeightGoal(Object weightGoal, OnSetListener onSetListener) {
         HashMap<String, Object> weightGoalMap = new HashMap<>();
         weightGoalMap.put("weightGoal", weightGoal);
-        userReference.set(weightGoalMap, SetOptions.merge());
+        userReference.set(weightGoalMap, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
+
     }
 
-    public void setHealthConditions(Object healthConditions) {
+    public void setHealthConditions(Object healthConditions, OnSetListener onSetListener) {
         HashMap<String, Object> healthConditionsMap = new HashMap<>();
         healthConditionsMap.put("healthConditions", healthConditions);
-        userReference.set(healthConditionsMap, SetOptions.merge());
+        userReference.set(healthConditionsMap, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
     }
 
     public void fetchUser(OnFetchUserListener onFetchUserListener) {
@@ -118,6 +155,11 @@ public class UserAPI {
                         onFetchUserListener.onFetchError(e);
                     }
                 });
+    }
+
+    public interface OnSetListener {
+        void onSetSuccess();
+        void onSetError(Exception error);
     }
 
     public interface OnFetchUserListener {

@@ -1,10 +1,19 @@
 package com.danielx31.ehataw;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -17,6 +26,8 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -45,6 +56,10 @@ public class ZumbaActivity extends AppCompatActivity {
     private final String USERS_COLLECTION = "users";
     private final String HISTORY_FIELD = "history";
 
+    private GestureDetector gestureDetector;
+    private ZumbaDescriptionView zumbaDescriptionView;
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +132,35 @@ public class ZumbaActivity extends AppCompatActivity {
         exoPlayer.addMediaItem(mediaItem);
         exoPlayer.prepare();
         exoPlayer.setPlayWhenReady(true);
+
+        ConstraintLayout bottomSheetLayout = findViewById(R.id.zumbavideo_bottomsheet);
+        ZumbaDescriptionView zumbaDescriptionView = new ZumbaDescriptionView(bottomSheetLayout, zumba);
+
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(zumbaDescriptionView.getLayout());
+
+        bottomSheetBehavior.setDraggable(true);
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        gestureDetector = new GestureDetector(this,new OnSwipeListener(){
+            @Override
+            public boolean onSwipe(Direction direction) {
+                if (direction==Direction.up){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                }
+                return true;
+            }
+        });
+
+        styledPlayerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                styledPlayerView.showController();
+                gestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
+
 
     }
 

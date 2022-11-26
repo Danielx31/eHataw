@@ -100,8 +100,8 @@
                 android:layout_marginRight="70dp"
                 android:background="@drawable/button"
                 android:fontFamily="@font/concert_one"
-                android:text="Delete User"
-                android:textSize="20sp" />
+                android:text="Delete Account"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 

@@ -93,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                     email.requestFocus();
                 }
                 else if(TextUtils.isEmpty(fullNameTxt)){
-                    Toast.makeText(RegisterActivity.this, "Please Enter your fullname", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please Enter your Full Name", Toast.LENGTH_SHORT).show();
                     fullName.setError("Full Name is required");
                     fullName.requestFocus();
                 }

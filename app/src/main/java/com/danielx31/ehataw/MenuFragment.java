@@ -147,10 +147,7 @@ public class MenuFragment extends Fragment {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth.signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                showLogoutDialog();
             }
         });
 
@@ -161,7 +158,7 @@ public class MenuFragment extends Fragment {
             Toast.makeText(getContext(), "Something went wrong! user's details are not available at the moment", Toast.LENGTH_SHORT).show();
         }
         else{
-            checkingifEmailVerified(firebaseUser);
+            checkingIfEmailVerified(firebaseUser);
             showUserProfile(firebaseUser);
         }
 
@@ -183,7 +180,7 @@ public class MenuFragment extends Fragment {
     }
 
     //Users coming to Menu after successful registration
-    private void checkingifEmailVerified(FirebaseUser firebaseUser) {
+    private void checkingIfEmailVerified(FirebaseUser firebaseUser) {
         if(!firebaseUser.isEmailVerified()){
             showAlertDialog();
         }
@@ -248,6 +245,33 @@ public class MenuFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void showLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Log Out");
+        builder.setMessage("Are you sure you want to log out?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                auth.signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

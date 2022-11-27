@@ -18,7 +18,7 @@ public class BMITracker {
         UNDERWEIGHT("Underweight", 0, 18.4),
         HEALTHY("Healthy", 18.5, 24.9),
         OVERWEIGHT("Overweight", 25.0, 29.9),
-        OBESE("Obese", 30, 39.9),
+        OBESE("Obeses", 30, 39.9),
         EXTREMELY_OBESE("Extremely Obese", 40, 999);
 
         private String name;

@@ -54,7 +54,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/concert_one"
-            android:text="To properly calibrate the application to suit your needs, please answer the input data from in the following page."
+            android:text="To properly calibrate the application to suit your needs, please answer the required data in the following pages."
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"

@@ -63,7 +63,8 @@ public class WeightGoalChangeFragment extends Fragment {
             @Override
             public void onFetchSuccess(User fetchedUser) {
                 user = fetchedUser;
-                weightGoalEditText.setText(String.valueOf(user.getWeightInKg()));
+//                weightGoalEditText.setText(String.valueOf(user.getWeightInKg()));
+                weightGoalEditText.setText(""+fetchedUser.getWeightGoalInKg());
             }
 
             @Override

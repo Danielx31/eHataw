@@ -174,7 +174,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_toEndOf="@+id/healthRelated_icon"
                         android:fontFamily="@font/concert_one"
-                        android:text="Update Health Related"
+                        android:text="Update Health Conditions"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />

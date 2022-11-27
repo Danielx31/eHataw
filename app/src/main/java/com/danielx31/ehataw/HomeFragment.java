@@ -9,6 +9,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +35,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
+import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
+import com.danielx31.ehataw.firebase.firestore.model.api.ZumbaAPI;
 import com.danielx31.ehataw.firebase.firestore.view.ZumbaPagingAdapter;
 import com.danielx31.ehataw.localData.controller.ZumbaListController;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
@@ -50,7 +55,11 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import kotlin.Unit;
@@ -66,6 +75,7 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore database;
     private CollectionReference zumbasReference;
     private DocumentReference userReference;
+    private ZumbaAPI zumbaAPI;
 
     private final String ZUMBA_COLLECTION = "zumba";
     private final String USERS_COLLECTION = "users";
@@ -75,6 +85,11 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private ZumbaPagingAdapter zumbaPagingAdapter;
+
+    private User user;
+    private boolean isUserLoadFinish;
+
+    private Spinner categorySpinner;
 
     @Nullable
     @Override
@@ -90,6 +105,7 @@ public class HomeFragment extends Fragment {
 
         connectionReceiver = new ConnectionReceiver();
         initializeDatabase();
+        zumbaAPI = new ZumbaAPI();
 
         swipeRefreshLayout = getView().findViewById(R.id.diet_swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -99,13 +115,18 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
         PermissionManager permissionManager = new PermissionManager(getContext(), getActivity());
         permissionManager.setPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 41);
 
-        Spinner categorySpinner = getView().findViewById(R.id.spinner_category);
+        categorySpinner = getView().findViewById(R.id.spinner_category);
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, android.R.layout.simple_spinner_item);
         categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categorySpinnerAdapter);
+
+        setUser();
+
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -115,6 +136,27 @@ public class HomeFragment extends Fragment {
                 recyclerView.smoothScrollToPosition(0);
 
                 switch (category) {
+                    case "Recommended":
+                        if (user == null) {
+                            return;
+                        }
+                        swipeRefreshLayout.setRefreshing(true);
+                        Log.d("Tag" , "RECOMMENDED " + user.getWeightInKg());
+                        zumbaAPI.fetchRecommendation(user.getWeightInKg(), user.getHealthConditions(), new ZumbaAPI.OnFetchRecommendationListener() {
+                            @Override
+                            public void onSuccess(List<Zumba> zumbaList) {
+                                recyclerView.setAdapter(buildZumbaRecyclerAdapter(zumbaList));
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onError(Exception error) {
+                                Toast.makeText(getContext(), "A Network Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
+
+
                     case "Whole Body":
                         query = zumbasReference.whereEqualTo("category", "Whole Body")
                                 .orderBy("createdDate", Query.Direction.DESCENDING);
@@ -138,7 +180,9 @@ public class HomeFragment extends Fragment {
                         query = zumbasReference.orderBy("createdDate", Query.Direction.DESCENDING);
                 }
 
-                resetRecyclerAdapter(query);
+                if (!category.equals("Recommended")) {
+                    resetRecyclerAdapter(query);
+                }
             }
 
             @Override
@@ -173,6 +217,51 @@ public class HomeFragment extends Fragment {
         database = FirebaseFirestore.getInstance();
         zumbasReference = database.collection(ZUMBA_COLLECTION);
         userReference = database.collection(USERS_COLLECTION).document(auth.getCurrentUser().getUid());
+    }
+
+    public void setUser() {
+
+        swipeRefreshLayout.setRefreshing(true);
+
+        isUserLoadFinish = false;
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        UserAPI userAPI = new UserAPI();
+        userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
+            @Override
+            public void onFetchSuccess(User fetchedUser) {
+                user = fetchedUser;
+                zumbaAPI.fetchRecommendation(user.getWeightInKg(), user.getHealthConditions(), new ZumbaAPI.OnFetchRecommendationListener() {
+                    @Override
+                    public void onSuccess(List<Zumba> zumbaList) {
+                        recyclerView.setAdapter(buildZumbaRecyclerAdapter(zumbaList));
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Toast.makeText(getContext(), "A Network Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+
+            @Override
+            public void onFetchNotFound() {
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getContext(), "An Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            }
+
+            @Override
+            public void onFetchError(Exception e) {
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getContext(), "An Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            }
+        });
+
     }
 
     public FirestorePagingOptions<Zumba> createPagingOptions(Query query) {
@@ -250,13 +339,32 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public ZumbaAdapter buildZumbaRecyclerAdapter(List<Zumba> zumbaList) {
+        ZumbaAdapter zumbaAdapter = new ZumbaAdapter(zumbaList);
+
+        zumbaAdapter.setOnItemClickListener(new ZumbaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                watchZumba(zumbaList.get(position));
+            }
+
+            @Override
+            public void onPopupMenuImageButtonClick(View view, int position) {
+                showPopupMenu(view, zumbaList.get(position));
+            }
+        });
+
+        return zumbaAdapter;
+    }
+
     public void buildRecyclerView() {
         if (zumbaPagingAdapter == null) {
             return;
         }
+
         recyclerView = getView().findViewById(R.id.home_recyclerview_zumba);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(zumbaPagingAdapter);
+        recyclerView.setAdapter(buildZumbaRecyclerAdapter(new ArrayList<>()));
 
         SpacingItemDecoration spacingItemDecoration = new SpacingItemDecoration(10);
         recyclerView.addItemDecoration(spacingItemDecoration);

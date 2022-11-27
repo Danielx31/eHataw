@@ -35,7 +35,7 @@ public class HealthRelatedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_health_related);
+        setContentView(R.layout.activity_health_conditions);
 
         RxJavaPlugins.setErrorHandler(e -> {
         });

@@ -45,7 +45,7 @@
         android:text="Health\nConditions"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="23sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline34"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline33"

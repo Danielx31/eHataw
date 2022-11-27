@@ -141,8 +141,10 @@ public class HomeFragment extends Fragment {
                             return;
                         }
                         swipeRefreshLayout.setRefreshing(true);
-                        Log.d("Tag" , "RECOMMENDED " + user.getWeightInKg());
-                        zumbaAPI.fetchRecommendation(user.getWeightInKg(), user.getHealthConditions(), new ZumbaAPI.OnFetchRecommendationListener() {
+                        BMITracker bmiTracker = new BMITracker(user.getWeightInKg(), user.getHeightInCm());
+                        double userBMI = bmiTracker.calculateBMI();
+
+                        zumbaAPI.fetchRecommendation(userBMI, user.getHealthConditions(), new ZumbaAPI.OnFetchRecommendationListener() {
                             @Override
                             public void onSuccess(List<Zumba> zumbaList) {
                                 recyclerView.setAdapter(buildZumbaRecyclerAdapter(zumbaList));
@@ -232,7 +234,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFetchSuccess(User fetchedUser) {
                 user = fetchedUser;
-                zumbaAPI.fetchRecommendation(user.getWeightInKg(), user.getHealthConditions(), new ZumbaAPI.OnFetchRecommendationListener() {
+                BMITracker bmiTracker = new BMITracker(user.getWeightInKg(), user.getHeightInCm());
+                double userBMI = bmiTracker.calculateBMI();
+                zumbaAPI.fetchRecommendation(userBMI, user.getHealthConditions(), new ZumbaAPI.OnFetchRecommendationListener() {
                     @Override
                     public void onSuccess(List<Zumba> zumbaList) {
                         recyclerView.setAdapter(buildZumbaRecyclerAdapter(zumbaList));

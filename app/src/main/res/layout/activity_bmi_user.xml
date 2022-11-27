@@ -57,7 +57,7 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputnumber_height"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -67,9 +67,9 @@
             android:fontFamily="@font/concert_one"
             android:gravity="center_horizontal"
             android:hint="00"
-            android:inputType="number"
+            android:inputType="numberSigned|numberDecimal"
             android:textColor="@color/white"
-            android:textColorHint="#E1E1E1"
+            android:textColorHint="#BDBDBD"
             android:textSize="40sp" />
 
         <TextView
@@ -107,7 +107,7 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputnumber_weight"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -117,9 +117,9 @@
             android:fontFamily="@font/concert_one"
             android:gravity="center_horizontal"
             android:hint="00"
-            android:inputType="number"
+            android:inputType="numberSigned|numberDecimal"
             android:textColor="@color/white"
-            android:textColorHint="#E1E1E1"
+            android:textColorHint="#BDBDBD"
             android:textSize="40sp" />
 
         <TextView

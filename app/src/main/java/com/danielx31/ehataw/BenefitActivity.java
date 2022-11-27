@@ -26,7 +26,7 @@ public class BenefitActivity extends AppCompatActivity {
 
         //Code here
         messageTextView.setText("By Dancing this Zumba, " + benefit);
-        messageTextView_1.setText(kcal + "\nCalories");
+        messageTextView_1.setText(kcal);
         messageTextView_2.setText(duration + "\nDuration");
 
     }

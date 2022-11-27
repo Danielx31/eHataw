@@ -77,7 +77,7 @@ public class MenuFragment extends Fragment {
         btnHealthRelated.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment updateHealt = new HealthRelatedUpdateFragment();
+                Fragment updateHealt = new HealthConditionUpdateFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, updateHealt).commit();
             }

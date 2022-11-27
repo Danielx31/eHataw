@@ -36,9 +36,9 @@ public class ZumbaAPI {
         void onError(Exception error);
     }
 
-    public void fetchRecommendation(double weightInKg, List<String> healthConditions, OnFetchRecommendationListener onFetchRecommendationListener) {
-        zumbasReference.whereLessThanOrEqualTo("systemTags.minWeight", weightInKg)
-                .orderBy("systemTags.minWeight", Query.Direction.DESCENDING)
+    public void fetchRecommendation(double userBMI, List<String> healthConditions, OnFetchRecommendationListener onFetchRecommendationListener) {
+        zumbasReference.whereLessThanOrEqualTo("systemTags.minBMI", userBMI)
+                .orderBy("systemTags.minBMI", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -48,10 +48,9 @@ public class ZumbaAPI {
                             Zumba zumba = zumbaSnapshot.toObject(Zumba.class);
 
                             Map<String, Object> systemTags = zumba.getSystemTags();
-                            Long zumbaMaxWeightInKgLong = (Long) systemTags.get("maxWeight");
-                            Double zumbaMaxWeightInKg = zumbaMaxWeightInKgLong.doubleValue();
+                            Double zumbaMaxBMI = (Double) systemTags.get("maxBMI");
 
-                            if (weightInKg > zumbaMaxWeightInKg) {
+                            if (userBMI > zumbaMaxBMI) {
                                 continue;
                             }
 

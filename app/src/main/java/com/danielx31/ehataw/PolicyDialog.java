@@ -12,13 +12,13 @@ public class PolicyDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Privacy PolicyDialog")
+        builder.setTitle("Privacy Policy")
                 .setMessage("BSIT 4C Group 5 Capstone Team built the eHataw app as a Free app. This service is provided by BSIT 4C Group 5 Capstone Team at no cost and is intended for use as is.\n" +
                         "This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.\n" +
                         "\n" +
                         "If you choose to use our service, then you agree to the collection and use of information in relation to this policy. The personal Information that we collect is used for providing and improving the service. We will not use or share your information with anyone except as described in this Privacy PolicyDialog.\n" +
                         "\n" +
-                        "The terms used in this Privacy PolicyDialog have the same meanings as in our TermsFragment and Conditions, which are accessible at eHataw unless otherwise defined in this Privacy PolicyDialog.\n" +
+                        "The terms used in this Privacy PolicyDialog have the same meanings as in our TermsDialog and Conditions, which are accessible at eHataw unless otherwise defined in this Privacy PolicyDialog.\n" +
                         "\n" +
                         "Information Collection and Use\n" +
                         "For a better experience while using our service, we may require you to provide us with certain personally identifiable information, including but not limited to Full Name. The information that we request will be retained by us and used as described in this Privacy PolicyDialog.\n" +

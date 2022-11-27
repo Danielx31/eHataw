@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
+import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
@@ -39,6 +40,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -48,6 +50,8 @@ public class ZumbaActivity extends AppCompatActivity {
     private ExoPlayer exoPlayer;
     private boolean isOnline;
     private Zumba zumba;
+    private UserAPI userAPI;
+    private User user;
 
     private static final int BACK_PRESS_TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long backPressed;
@@ -58,6 +62,8 @@ public class ZumbaActivity extends AppCompatActivity {
 
     private GestureDetector gestureDetector;
     private ZumbaDescriptionView zumbaDescriptionView;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private ConstraintLayout bottomSheetLayout;
 
     @SuppressLint("ResourceType")
     @Override
@@ -67,6 +73,7 @@ public class ZumbaActivity extends AppCompatActivity {
         RxJavaPlugins.setErrorHandler(e -> { });
 
         styledPlayerView = findViewById(R.id.styledplayerview_zumba);
+        bottomSheetLayout = findViewById(R.id.zumbavideo_bottomsheet);
 
         DefaultTrackSelector defaultTrackSelector = new DefaultTrackSelector(this);
         exoPlayer = new ExoPlayer.Builder(getApplicationContext())
@@ -84,7 +91,7 @@ public class ZumbaActivity extends AppCompatActivity {
         String zumbaJson = extras.getString("zumba");
 
         if (zumbaJson == null || zumbaJson.isEmpty()) {
-            Toast.makeText(this, "Cannot load Video!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot load video!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -92,7 +99,7 @@ public class ZumbaActivity extends AppCompatActivity {
         boolean initializeZumba = initializeZumba(zumbaJson);
 
         if (!initializeZumba) {
-            Toast.makeText(this, "Cannot load Video!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot load video!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -101,6 +108,8 @@ public class ZumbaActivity extends AppCompatActivity {
             addViewCount();
             addToHistory();
         }
+
+
 
         styledPlayerView.setControllerShowTimeoutMs(2000);
         styledPlayerView.setPlayer(exoPlayer);
@@ -133,10 +142,10 @@ public class ZumbaActivity extends AppCompatActivity {
         exoPlayer.prepare();
         exoPlayer.setPlayWhenReady(true);
 
-        ConstraintLayout bottomSheetLayout = findViewById(R.id.zumbavideo_bottomsheet);
-        ZumbaDescriptionView zumbaDescriptionView = new ZumbaDescriptionView(bottomSheetLayout, zumba);
 
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(zumbaDescriptionView.getLayout());
+        zumbaDescriptionView = new ZumbaDescriptionView(bottomSheetLayout, zumba, null);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(zumbaDescriptionView.getLayout());
 
         bottomSheetBehavior.setDraggable(true);
         bottomSheetBehavior.setHideable(true);
@@ -161,16 +170,53 @@ public class ZumbaActivity extends AppCompatActivity {
             }
         });
 
+        setUser();
 
+    }
+
+    public void setUser() {
+        userAPI = new UserAPI();
+
+        userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
+            @Override
+            public void onFetchSuccess(User fetchedUser) {
+                user = fetchedUser;
+                zumbaDescriptionView = new ZumbaDescriptionView(bottomSheetLayout, zumba, user);
+                bottomSheetBehavior = BottomSheetBehavior.from(zumbaDescriptionView.getLayout());
+            }
+
+            @Override
+            public void onFetchNotFound() {
+                Toast.makeText(getApplicationContext(), "A Network Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onFetchError(Exception e) {
+                Toast.makeText(getApplicationContext(), "A Network Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     public void onVideoEnds() {
         // Code Pag Tapos na yung video
         // pwede ka mag start ng activity or
         // gamitin mo description(message) mula sa zumba firebase
+
+        Map<String, Object> systemTags = zumba.getSystemTags();
+
+        Double MET = (Double) systemTags.get("MET");
+        String kcal = MET + "\nMET";
         String benefit = zumba.getBenefit();
-        String kcal = zumba.getCalories();
         String duration = zumba.getDuration();
+
+        if (isOnline && user != null) {
+            String[] durationParts = zumba.getDuration().split("");
+            double minute = Double.parseDouble(durationParts[0]);
+            kcal = calorieBurned(MET, user.getWeightInKg(), minute) + "\nCalories";
+        }
+
 
         Intent intent = new Intent(this, BenefitActivity.class);
         intent.putExtra("message", benefit);
@@ -178,6 +224,11 @@ public class ZumbaActivity extends AppCompatActivity {
         intent.putExtra("duration", duration);
         startActivity(intent);
         finish();
+    }
+
+    private double calorieBurned(double MET, double weightInKg, double minute) {
+        double calorieBurnedPerMinute = (MET * weightInKg * 3.5) / 200;
+        return calorieBurnedPerMinute * minute;
     }
 
     @Override
@@ -207,6 +258,20 @@ public class ZumbaActivity extends AppCompatActivity {
         Gson gson = new Gson();
         this.zumba = gson.fromJson(json, new TypeToken<Zumba>(){}.getType());
         if (zumba == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean initializeUser(String json) {
+        if (json == null || json.isEmpty()) {
+            return false;
+        }
+
+        Gson gson = new Gson();
+        this.user = gson.fromJson(json, new TypeToken<User>(){}.getType());
+        if (user == null) {
             return false;
         }
 

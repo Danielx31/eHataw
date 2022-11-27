@@ -13,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
+
+import java.text.DecimalFormat;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -28,6 +32,8 @@ public class BMIUpdateFragment extends Fragment {
     private Button saveButton;
     private EditText heightEditText;
     private EditText weightEditText;
+
+    private TextView bmiTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,16 +58,85 @@ public class BMIUpdateFragment extends Fragment {
         saveButton = getView().findViewById(R.id.button_save);
         heightEditText = getView().findViewById(R.id.edittext_weightgoal);
         weightEditText = getView().findViewById(R.id.edittext_weight);
+        bmiTextView = getView().findViewById(R.id.textview_bmi);
+
+        userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
+            @Override
+            public void onFetchSuccess(User fetchedUser) {
+                heightEditText.setText(String.valueOf(fetchedUser.getHeightInCm()));
+                weightEditText.setText(String.valueOf(fetchedUser.getWeightInKg()));
+                BMITracker bmiTracker = new BMITracker(fetchedUser.getWeightInKg(), fetchedUser.getHeightInCm());
+
+                bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase());
+            }
+
+            @Override
+            public void onFetchNotFound() {
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFetchError(Exception e) {
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String weight = weightEditText.getText().toString() + " kg";
+
+                if (heightEditText.getText().toString().isEmpty()) {
+                    heightEditText.setError("Please fill out the Input");
+                    return;
+                }
+
+                if (weightEditText.getText().toString().isEmpty()) {
+                    weightEditText.setError("Please fill out the Input");
+                    return;
+                }
+
                 String height = heightEditText.getText().toString() + " cm";
+                String[] heightParts = height.split(" ");
+                double heightGoalInCm = Double.parseDouble(heightParts[0]);
+
+                if (heightGoalInCm <= 0) {
+                    heightEditText.setError("Invalid height");
+                    return;
+                }
+
+
+                String weight = weightEditText.getText().toString() + " kg";
+                String[] weightParts = height.split(" ");
+                double weightGoalInKg = Double.parseDouble(weightParts[0]);
+
+                if (weightGoalInKg <= 0) {
+                    weightEditText.setError("Invalid weight");
+                    return;
+                }
+
                 userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
                     @Override
                     public void onSetSuccess() {
                         Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
+
+                        userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
+                            @Override
+                            public void onFetchSuccess(User fetchedUser) {
+                                BMITracker bmiTracker = new BMITracker(fetchedUser.getWeightInKg(), fetchedUser.getHeightInCm());
+
+                                bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase());
+                            }
+
+                            @Override
+                            public void onFetchNotFound() {
+                                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFetchError(Exception e) {
+                                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override

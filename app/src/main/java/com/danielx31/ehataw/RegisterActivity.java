@@ -159,7 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void openDialog() {
-        TermsFragment terms = new TermsFragment();
+        TermsDialog terms = new TermsDialog();
         terms.show(getSupportFragmentManager(), "Example");
     }
 

@@ -36,7 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/concert_one"
-        android:text="Change BMI"
+        android:gravity="center_horizontal"
+        android:text="Change\nBody Size"
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline22"
@@ -44,112 +45,155 @@
         app:layout_constraintStart_toStartOf="@+id/guideline21"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutChangeHeight"
-        android:layout_width="351dp"
-        android:layout_height="159dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/cardbackground"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline22">
 
-        <TextView
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline24"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/concert_one"
             android:text="Height"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/edittext_weightgoal"
+            app:layout_constraintEnd_toStartOf="@+id/guideline24"
+            app:layout_constraintTop_toTopOf="@+id/edittext_weightgoal" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edittext_weightgoal"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="57dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:fontFamily="@font/concert_one"
             android:gravity="center_horizontal"
             android:hint="00"
-            android:inputType="number"
+            android:inputType="numberSigned|numberDecimal"
             android:textColor="@color/white"
-            android:textColorHint="#E1E1E1"
-            android:textSize="40sp" />
+            android:textColorHint="#BDBDBD"
+            android:textSize="40sp"
+            app:layout_constraintStart_toStartOf="@+id/guideline24"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/edittext_weightgoal"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/concert_one"
             android:text="cm"
             android:textColor="@color/white"
-            android:textSize="20sp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutChangeWeight"
-        android:layout_width="353dp"
-        android:layout_height="164dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/cardbackground"
-        app:layout_constraintEnd_toEndOf="@+id/relativeLayoutChangeHeight"
-        app:layout_constraintStart_toStartOf="@+id/relativeLayoutChangeHeight"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutChangeHeight">
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/edittext_weightgoal"
+            app:layout_constraintStart_toEndOf="@+id/edittext_weightgoal" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/concert_one"
             android:text="Weight"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/edittext_weight"
+            app:layout_constraintEnd_toStartOf="@+id/guideline24"
+            app:layout_constraintTop_toTopOf="@+id/edittext_weight" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edittext_weight"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="57dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/concert_one"
             android:gravity="center_horizontal"
             android:hint="00"
-            android:inputType="number"
+            android:inputType="numberSigned|numberDecimal"
             android:textColor="@color/white"
-            android:textColorHint="#E1E1E1"
-            android:textSize="40sp" />
+            android:textColorHint="#BDBDBD"
+            android:textSize="40sp"
+            app:layout_constraintStart_toStartOf="@+id/guideline24"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_weightgoal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/edittext_weight"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/concert_one"
             android:text="Kg"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/edittext_weight"
+            app:layout_constraintStart_toEndOf="@+id/edittext_weight" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/cardbackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+        <TextView
+            android:id="@+id/textview_bmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/concert_one"
+            android:text="loading..."
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <android.widget.Button
         android:id="@+id/button_save"
         android:layout_width="253dp"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/bg_login"
         android:fontFamily="@font/concert_one"
         android:text="Save"
@@ -158,6 +202,13 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutChangeWeight" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.50" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -118,6 +118,7 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_change_password.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_detail_food.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_forgot_password.xml" value="0.14356884057971014" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_health_conditions.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_health_related.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_home.xml" value="0.2071622846781505" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_login.xml" value="0.22" />
@@ -127,20 +128,21 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_splash2.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_weight_goal.xml" value="0.1956521739130435" />
-        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_welcome.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_welcome.xml" value="0.2" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_zumba.xml" value="0.21" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/activity_zumba1.xml" value="0.20697463768115942" />
-        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/bottom_sheet_zumba_description.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/bottom_sheet_zumba_description.xml" value="0.33" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/change_password_activity.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/custom_player_control.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/detail_food.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_about.xml" value="0.1495433789954338" />
-        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_bmi_update.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_bmi_update.xml" value="0.22" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_delete_acc_activity.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_delete_account.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_diet.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_download_video.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_downloaded_video.xml" value="0.20697463768115942" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_health_condition_update.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_health_realated_update.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_history.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_home.xml" value="0.25" />

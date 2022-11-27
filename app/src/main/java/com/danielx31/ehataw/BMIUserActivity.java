@@ -1,7 +1,9 @@
 package com.danielx31.ehataw;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -25,8 +28,8 @@ public class BMIUserActivity extends AppCompatActivity {
     private UserAPI userAPI;
 
     private Button nextButton;
-    private EditText heightEditText;
-    private EditText weightEditText;
+    private TextInputEditText heightEditText;
+    private TextInputEditText weightEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +51,48 @@ public class BMIUserActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String weight = weightEditText.getText().toString() + " kg";
-                String height = heightEditText.getText().toString() + " cm";
-                userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
-                            @Override
-                            public void onSetSuccess() {
-                                startActivity(new Intent(getApplicationContext(), WeightGoalActivity.class));
-                                finish();
-                            }
 
-                            @Override
-                            public void onSetError(Exception error) {
-                                Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                if (heightEditText.getText().toString().isEmpty()) {
+                    heightEditText.setError("Please fill out the Input");
+                    return;
+                }
+
+                if (weightEditText.getText().toString().isEmpty()) {
+                    weightEditText.setError("Please fill out the Input");
+                    return;
+                }
+
+                String height = heightEditText.getText().toString() + " cm";
+                String[] heightParts = height.split(" ");
+                double heightGoalInCm = Double.parseDouble(heightParts[0]);
+
+                if (heightGoalInCm <= 0) {
+                    heightEditText.setError("Invalid height");
+                    return;
+                }
+
+
+                String weight = weightEditText.getText().toString() + " kg";
+                String[] weightParts = height.split(" ");
+                double weightGoalInKg = Double.parseDouble(weightParts[0]);
+
+                if (weightGoalInKg <= 0) {
+                    weightEditText.setError("Invalid weight");
+                    return;
+                }
+
+                userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
+                    @Override
+                    public void onSetSuccess() {
+                        startActivity(new Intent(getApplicationContext(), HealthConditionActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onSetError(Exception error) {
+                        Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

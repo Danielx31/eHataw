@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_2"
-    tools:context=".HealthRelatedActivity">
+    tools:context=".HealthConditionActivity">
 
     <RelativeLayout
         android:id="@+id/logo"
@@ -16,10 +16,11 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="213dp"
         >
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo_3"/>
+            android:src="@drawable/logo_3" />
 
     </RelativeLayout>
 

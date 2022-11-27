@@ -46,7 +46,7 @@ public class User {
     }
 
     @Exclude
-    public Double getHeightInKg() {
+    public Double getHeightInCm() {
         return getKg(height);
     }
 

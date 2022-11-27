@@ -1,18 +1,12 @@
 package com.danielx31.ehataw;
 
-import android.content.BroadcastReceiver;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -24,47 +18,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import java8.util.Maps;
 
-public class HealthRelatedUpdateFragment extends Fragment {
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
-    private BroadcastReceiver connectionReceiver;
+public class HealthConditionActivity extends AppCompatActivity {
+
+    private ConnectionReceiverPrime connectionReceiverPrime;
 
     private UserAPI userAPI;
 
     private Map<String, CheckBox> healthConditionCheckBoxes;
-    private Button saveButton;
+    private Button nextButton;
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_health_realated_update, container, false);
-
-        // Inflate the layout for this fragment
-        return root;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_health_conditions);
 
         RxJavaPlugins.setErrorHandler(e -> {
         });
 
-        connectionReceiver = new ConnectionReceiver();
+        connectionReceiverPrime = new ConnectionReceiverPrime();
 
         userAPI = new UserAPI();
 
         healthConditionCheckBoxes = new HashMap<>();
 
-        healthConditionCheckBoxes.put("Asthma", getView().findViewById(R.id.cb_asthma));
-        healthConditionCheckBoxes.put("Diabetes", getView().findViewById(R.id.cb_diabetes));
-        healthConditionCheckBoxes.put("Heart Diseases", getView().findViewById(R.id.cb_heartdisease));
-        healthConditionCheckBoxes.put("High Blood", getView().findViewById(R.id.cb_highbloodpressure));
-        healthConditionCheckBoxes.put("Obesity", getView().findViewById(R.id.cb_obesity));
+        healthConditionCheckBoxes.put("Asthma", findViewById(R.id.cb_asthma));
+        healthConditionCheckBoxes.put("Diabetes", findViewById(R.id.cb_diabetes));
+        healthConditionCheckBoxes.put("Heart Diseases", findViewById(R.id.cb_heartdisease));
+        healthConditionCheckBoxes.put("High Blood", findViewById(R.id.cb_highbloodpressure));
+        healthConditionCheckBoxes.put("Obesity", findViewById(R.id.cb_obesity));
 
-        saveButton = getView().findViewById(R.id.button_save);
+        nextButton = findViewById(R.id.button_next);
 
         Maps.forEach(healthConditionCheckBoxes, (name, checkBox) -> {
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -80,24 +68,25 @@ public class HealthRelatedUpdateFragment extends Fragment {
             });
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userAPI.setHealthConditions(getHealthConditions(), new UserAPI.OnSetListener() {
                             @Override
                             public void onSetSuccess() {
-                                Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), WeightGoalActivity.class));
+                                finish();
                             }
 
                             @Override
                             public void onSetError(Exception error) {
-                                Toast.makeText(getContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
-
             }
         });
+
     }
 
     private List<String> getHealthConditions() {
@@ -118,15 +107,16 @@ public class HealthRelatedUpdateFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        getActivity().registerReceiver(connectionReceiver, filter);
+        registerReceiver(connectionReceiverPrime, filter);
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
-        getActivity().unregisterReceiver(connectionReceiver);
+        unregisterReceiver(connectionReceiverPrime);
     }
+
 }

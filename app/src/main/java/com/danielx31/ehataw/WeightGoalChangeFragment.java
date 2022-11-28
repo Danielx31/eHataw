@@ -34,6 +34,7 @@ public class WeightGoalChangeFragment extends Fragment {
 
     private Button saveButton;
     private EditText weightGoalEditText;
+    private EditText noZumba;
 
     private User user;
 
@@ -60,6 +61,7 @@ public class WeightGoalChangeFragment extends Fragment {
 
         saveButton = getView().findViewById(R.id.button_save);
         weightGoalEditText = getView().findViewById(R.id.edittext_weightgoal);
+        noZumba = getView().findViewById(R.id.edittext_NumberZumba);
 
         userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
             @Override

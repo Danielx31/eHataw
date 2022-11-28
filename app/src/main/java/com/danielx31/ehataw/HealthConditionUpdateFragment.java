@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import java8.util.Maps;
+import java8.util.stream.StreamSupport;
 
 public class HealthConditionUpdateFragment extends Fragment {
 
@@ -33,6 +36,7 @@ public class HealthConditionUpdateFragment extends Fragment {
     private UserAPI userAPI;
 
     private Map<String, CheckBox> healthConditionCheckBoxes;
+    private TextView infoTextView;
     private Button saveButton;
 
     @Override
@@ -63,6 +67,8 @@ public class HealthConditionUpdateFragment extends Fragment {
         healthConditionCheckBoxes.put("High Blood", getView().findViewById(R.id.cb_highbloodpressure));
         healthConditionCheckBoxes.put("Obesity", getView().findViewById(R.id.cb_obesity));
 
+        infoTextView = getView().findViewById(R.id.textview_info);
+
         saveButton = getView().findViewById(R.id.button_save);
 
         Maps.forEach(healthConditionCheckBoxes, (name, checkBox) -> {
@@ -77,6 +83,31 @@ public class HealthConditionUpdateFragment extends Fragment {
                     checkBox.setTextColor(getResources().getColor(R.color.white));
                 }
             });
+        });
+
+        setLoading(true);
+
+        userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
+            @Override
+            public void onFetchSuccess(User fetchedUser) {
+                List<String> healthConditions = fetchedUser.getHealthConditions();
+
+                StreamSupport.stream(healthConditions)
+                        .forEach((healthCondition) -> {
+                            healthConditionCheckBoxes.get(healthCondition).setChecked(true);
+                        });
+                setLoading(false);
+            }
+
+            @Override
+            public void onFetchNotFound() {
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFetchError(Exception e) {
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +128,27 @@ public class HealthConditionUpdateFragment extends Fragment {
 
             }
         });
+    }
+
+    private void setLoading(boolean enabled) {
+        if (!enabled) {
+            infoTextView.setText("Choose below if you have been diagnosed with the sickness or disease.");
+
+            Maps.forEach(healthConditionCheckBoxes, (name, checkBox) -> {
+                checkBox.setVisibility(View.VISIBLE);
+            });
+
+            saveButton.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        infoTextView.setText("Loading...");
+
+        Maps.forEach(healthConditionCheckBoxes, (name, checkBox) -> {
+            checkBox.setVisibility(View.GONE);
+        });
+
+        saveButton.setVisibility(View.GONE);
     }
 
     private List<String> getHealthConditions() {

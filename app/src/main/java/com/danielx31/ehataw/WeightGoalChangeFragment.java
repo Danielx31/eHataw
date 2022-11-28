@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 
+import java.text.DecimalFormat;
+
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class WeightGoalChangeFragment extends Fragment {
@@ -63,18 +65,18 @@ public class WeightGoalChangeFragment extends Fragment {
             @Override
             public void onFetchSuccess(User fetchedUser) {
                 user = fetchedUser;
-//                weightGoalEditText.setText(String.valueOf(user.getWeightInKg()));
-                weightGoalEditText.setText(""+fetchedUser.getWeightGoalInKg());
+                DecimalFormat decimalFormat = new DecimalFormat("##.00");
+                weightGoalEditText.setText(decimalFormat.format(fetchedUser.getWeightGoalInKg()));
             }
 
             @Override
             public void onFetchNotFound() {
-                Toast.makeText(getContext(), "A Network Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFetchError(Exception e) {
-                Toast.makeText(getContext(), "A Network Error Occurred! Please Try Again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -82,7 +84,7 @@ public class WeightGoalChangeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (user == null) {
-                    Toast.makeText(getContext(), "Loading... Please Wait!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "A Network Error Occurred! Please try again later.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

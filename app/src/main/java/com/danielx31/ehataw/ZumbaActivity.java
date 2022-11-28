@@ -38,6 +38,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -207,21 +208,24 @@ public class ZumbaActivity extends AppCompatActivity {
         Map<String, Object> systemTags = zumba.getSystemTags();
 
         Double MET = (Double) systemTags.get("MET");
-        String kcal = MET + "\nMET";
+        String stats = MET + "\nMET";
         String benefit = zumba.getBenefit();
         String duration = zumba.getDuration();
 
         if (isOnline && user != null) {
+            DecimalFormat decimalFormat = new DecimalFormat("##.00");
             String[] durationParts = zumba.getDuration().split("");
             double minute = Double.parseDouble(durationParts[0]);
-            kcal = calorieBurned(MET, user.getWeightInKg(), minute) + "\nCalories";
+            double calorieBurned = calorieBurned(MET, user.getWeightInKg(), minute);
+            stats = decimalFormat.format(calorieBurned) + "\nCalories";
         }
 
 
         Intent intent = new Intent(this, BenefitActivity.class);
         intent.putExtra("message", benefit);
-        intent.putExtra("kcal", kcal);
+        intent.putExtra("stats", stats);
         intent.putExtra("duration", duration);
+        intent.putExtra("isOnline", isOnline);
         startActivity(intent);
         finish();
     }

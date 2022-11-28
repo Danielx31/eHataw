@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.Zumba;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,7 +79,8 @@ public class ZumbaDescriptionView {
         if (!isUserNull) {
             double calorieBurned = calorieBurned(MET, user.getWeightInKg(), minute);
 
-            textViewMap.get("calorie").setText("" + calorieBurned);
+            DecimalFormat decimalFormat = new DecimalFormat("##.00");
+            textViewMap.get("calorie").setText(decimalFormat.format(calorieBurned));
             textViewMap.get("calorieConstant").setText("Calories");
 
             if (calorieBurned <= 1) {

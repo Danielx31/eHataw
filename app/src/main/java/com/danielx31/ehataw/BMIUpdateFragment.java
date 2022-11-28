@@ -63,11 +63,15 @@ public class BMIUpdateFragment extends Fragment {
         userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
             @Override
             public void onFetchSuccess(User fetchedUser) {
-                heightEditText.setText(String.valueOf(fetchedUser.getHeightInCm()));
-                weightEditText.setText(String.valueOf(fetchedUser.getWeightInKg()));
+                DecimalFormat decimalFormat = new DecimalFormat("##.00");
+                String userHeightInCm = decimalFormat.format(fetchedUser.getHeightInCm());
+                String userWeightInKg = decimalFormat.format(fetchedUser.getWeightInKg());
+
+                heightEditText.setText(userHeightInCm);
+                weightEditText.setText(userWeightInKg);
                 BMITracker bmiTracker = new BMITracker(fetchedUser.getWeightInKg(), fetchedUser.getHeightInCm());
 
-                bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase());
+                bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase() + ".");
             }
 
             @Override

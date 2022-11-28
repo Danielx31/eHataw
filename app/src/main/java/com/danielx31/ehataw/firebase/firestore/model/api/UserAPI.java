@@ -37,6 +37,10 @@ public class UserAPI {
         return auth.getCurrentUser() != null;
     }
 
+    public boolean isUserEmailVerified() {
+        return auth.getCurrentUser().isEmailVerified();
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -78,6 +82,24 @@ public class UserAPI {
         void onUserCalibrated();
         void onUserNotCalibrated();
         void onValidatingFailed(Exception e);
+    }
+
+    public void setWeight(Object weight, OnSetListener onSetListener) {
+        HashMap<String, Object> bodySize = new HashMap<>();
+        bodySize.put("weight", weight);
+        userReference.set(bodySize, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
     }
 
     public void setBodySize(Object weight, Object height, OnSetListener onSetListener) {

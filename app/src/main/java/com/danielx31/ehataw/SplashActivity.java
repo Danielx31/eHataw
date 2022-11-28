@@ -61,9 +61,15 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startEntryIntent() {
         if (!userAPI.isUserLoggedIn()) {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             finish();
+            return;
+        }
+
+        if (!userAPI.isUserEmailVerified()) {
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            finish();
+            return;
         }
 
         userAPI.onUserCalibrated(new UserAPI.OnUserCalibratedListener() {

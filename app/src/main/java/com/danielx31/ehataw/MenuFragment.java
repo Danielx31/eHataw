@@ -67,7 +67,7 @@ public class MenuFragment extends Fragment {
         btnWeightGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment updateweightGoal = new WeightGoalChangeFragment();
+                Fragment updateweightGoal = new MonitorGoalsFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, updateweightGoal).commit();
             }

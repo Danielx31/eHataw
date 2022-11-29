@@ -1,20 +1,23 @@
 package com.danielx31.ehataw.firebase.firestore.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
     private String id;
     private String weight;
     private String height;
-    private String weightGoal;
     private List<String> healthConditions;
     private List<String> history;
     private List<String> watchlist;
+    private Map<String, Object> goals;
+    private Map<String, Object> systemTags;
 
     public User() {
 
@@ -38,7 +41,26 @@ public class User {
 
     public String getHeight() {return height; }
 
-    public String getWeightGoal() { return weightGoal; }
+    public Map<String, Object> getGoals() {
+        return goals;
+    }
+
+    public Map<String, Object> getSystemTags() {
+        return systemTags;
+    }
+
+    @Exclude
+    public String getWeightGoal() { return String.valueOf(goals.get("weightGoal")); }
+
+    @Exclude
+    public String getWeightGoalFrom() {
+        return String.valueOf(goals.get("weightGoalFrom"));
+    }
+
+    @Exclude
+    public Double getWeightGoalFromInKg() {
+        return getKg(getWeightGoalFrom());
+    }
 
     @Exclude
     public Double getWeightInKg() {
@@ -52,8 +74,54 @@ public class User {
 
     @Exclude
     public Double getWeightGoalInKg() {
-        return getKg(weightGoal);
+        return getKg(getWeightGoal());
     }
+
+    @Exclude
+    public Long getZumbaCountGoalPerDay() {
+        return (Long) goals.get("zumbaCountGoalPerDay");
+    }
+
+    @Exclude
+    public Date getDailyMonitorDate() {
+        return (Date) systemTags.get("dailyMonitorDate");
+    }
+
+    @Exclude
+    public Double getWeightDecreasedPerDayInKg() {
+        if (systemTags == null) {
+            return null;
+        }
+
+        if (systemTags.get("weightDecreasedPerDay") == null) {
+            return null;
+        }
+
+        return getKg((String) systemTags.get("weightDecreasedPerDay"));
+    }
+
+    @Exclude
+    public long getZumbaFollowedCountPerDay() {
+        if (systemTags == null) {
+            return 0;
+        }
+
+        if (systemTags.get("zumbaFollowedCountPerDay") == null) {
+            return 0;
+        }
+
+        return (long) systemTags.get("zumbaFollowedCountPerDay");
+    }
+
+    @Exclude
+    public Timestamp getMonitorDate() {
+        if (systemTags == null) {
+            return null;
+        }
+
+        return (Timestamp) systemTags.get("monitorDate");
+    }
+
 
     @Exclude
     private Double getKg(String data) {

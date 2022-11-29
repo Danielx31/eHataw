@@ -67,7 +67,7 @@ public class HealthConditionUpdateFragment extends Fragment {
         healthConditionCheckBoxes.put("High Blood", getView().findViewById(R.id.cb_highbloodpressure));
         healthConditionCheckBoxes.put("Obesity", getView().findViewById(R.id.cb_obesity));
 
-        infoTextView = getView().findViewById(R.id.textview_info);
+        infoTextView = getView().findViewById(R.id.textview_zumbagoalpercentage);
 
         saveButton = getView().findViewById(R.id.button_save);
 

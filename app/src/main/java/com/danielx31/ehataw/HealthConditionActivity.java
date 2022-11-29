@@ -31,6 +31,7 @@ public class HealthConditionActivity extends AppCompatActivity {
     private Map<String, CheckBox> healthConditionCheckBoxes;
     private Button nextButton;
 
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class HealthConditionActivity extends AppCompatActivity {
 
         nextButton = findViewById(R.id.button_next);
 
+        loadingDialog = new LoadingDialog();
+
         Maps.forEach(healthConditionCheckBoxes, (name, checkBox) -> {
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,15 +74,19 @@ public class HealthConditionActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadingDialog.show(getSupportFragmentManager(), "loadingDialog");
+
                 userAPI.setHealthConditions(getHealthConditions(), new UserAPI.OnSetListener() {
                             @Override
                             public void onSetSuccess() {
+                                loadingDialog.dismiss();
                                 startActivity(new Intent(getApplicationContext(), WeightGoalActivity.class));
                                 finish();
                             }
 
                             @Override
                             public void onSetError(Exception error) {
+                                loadingDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
                             }
                         });

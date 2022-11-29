@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ZumbaDescriptionView {
@@ -36,10 +37,21 @@ public class ZumbaDescriptionView {
 
         ConstraintLayout warningLayout = layout.findViewById(R.id.container_warning);
 
-        Map<String, String> healthConditions = (Map<String, String>) systemTags.get("limitHealthConditions");
+        warningLayout.setVisibility(View.GONE);
 
-        if (!healthConditions.isEmpty()) {
-            warningLayout.setVisibility(View.GONE);
+        if (!isUserNull()) {
+            List<String> userHealthConditions = user.getHealthConditions();
+            BMITracker bmiTracker = new BMITracker(user.getWeightInKg(), user.getHeightInCm());
+
+            Double userBMI = bmiTracker.calculateBMI();
+            Double minBMI = (Double) systemTags.get("minBMI");
+            Double maxBMI = (Double) systemTags.get("maxBMI");
+
+            if (!userHealthConditions.isEmpty() ||
+                userBMI < minBMI ||
+                userBMI > maxBMI) {
+                warningLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         textViewMap = new HashMap<>();

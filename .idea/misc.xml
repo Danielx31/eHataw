@@ -111,6 +111,7 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/ic_person.xml" value="0.2125" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/oblong.xml" value="0.2125" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/plusminus.xml" value="0.2125" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/progress_circle.xml" value="0.2125" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/splash.xml" value="0.2" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/drawable/transparent.xml" value="0.219" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/font/arbutus.xml" value="0.303125" />
@@ -136,6 +137,7 @@
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/change_password_activity.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/custom_player_control.xml" value="0.20697463768115942" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/detail_food.xml" value="0.20697463768115942" />
+        <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/dialog_loading.xml" value="0.1956521739130435" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_about.xml" value="0.1495433789954338" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_bmi_update.xml" value="0.22" />
         <entry key="..\:/Users/PCB/AndroidStudioProjects/eHataw/app/src/main/res/layout/fragment_delete_acc_activity.xml" value="0.20697463768115942" />

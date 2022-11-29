@@ -13,8 +13,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserAPI {
 
@@ -52,12 +54,12 @@ public class UserAPI {
                 User user = fetchedUser;
                 String weight = user.getWeight();
                 String height = user.getHeight();
-                String weightGoal = user.getWeightGoal();
+                Map<String, Object> goals = user.getGoals();
                 List<String> healthConditions = user.getHealthConditions();
 
                 if (weight == null || weight.isEmpty() ||
                         height == null || height.isEmpty() ||
-                        weightGoal == null || weightGoal.isEmpty() ||
+                        goals == null || goals.isEmpty() ||
                         healthConditions == null) {
                     onUserCalibratedListener.onUserNotCalibrated();
                     return;
@@ -84,29 +86,55 @@ public class UserAPI {
         void onValidatingFailed(Exception e);
     }
 
-    public void setWeight(Object weight, OnSetListener onSetListener) {
-        HashMap<String, Object> bodySize = new HashMap<>();
-        bodySize.put("weight", weight);
-        userReference.set(bodySize, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        onSetListener.onSetSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        onSetListener.onSetError(e);
-                    }
-                });
-    }
-
     public void setBodySize(Object weight, Object height, OnSetListener onSetListener) {
-        HashMap<String, Object> bodySize = new HashMap<>();
-        bodySize.put("weight", weight);
-        bodySize.put("height", height);
-        userReference.set(bodySize, SetOptions.merge())
+        fetchUser(new OnFetchUserListener() {
+            @Override
+            public void onFetchSuccess(User fetchedUser) {
+                boolean isWeightGoalFromBiggerThanWeight = fetchedUser.getWeightInKg() < fetchedUser.getWeightGoalFromInKg();
+
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("weight", weight);
+                data.put("height", height);
+
+                if (!isWeightGoalFromBiggerThanWeight) {
+                    HashMap<String, Object> goals = new HashMap<>();
+                    goals.put("weightGoalFrom", weight);
+
+                    data.put("goals", goals);
+                }
+
+                userReference.set(data, SetOptions.merge())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                onSetListener.onSetSuccess();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                onSetListener.onSetError(e);
+                            }
+                        });
+            }
+
+            @Override
+            public void onFetchNotFound() {
+                onSetListener.onSetError(new Exception("User Not Found"));
+            }
+
+            @Override
+            public void onFetchError(Exception e) {
+                onSetListener.onSetError(e);
+            }
+        });
+    }
+
+    public void setGoals(Map<String, Object> goals, OnSetListener onSetListener) {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("goals", goals);
+        userReference.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -121,10 +149,16 @@ public class UserAPI {
                 });
     }
 
-    public void setWeightGoal(Object weightGoal, OnSetListener onSetListener) {
-        HashMap<String, Object> weightGoalMap = new HashMap<>();
-        weightGoalMap.put("weightGoal", weightGoal);
-        userReference.set(weightGoalMap, SetOptions.merge())
+    public void followZumba(Object weight, Object systemTags, OnSetListener onSetListener) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("weight", weight);
+
+        //monitorDate
+        //weightDecreasedPerDay
+        //zumbaFollowedCountPerDay
+
+        data.put("systemTags", systemTags);
+        userReference.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -144,6 +178,42 @@ public class UserAPI {
         HashMap<String, Object> healthConditionsMap = new HashMap<>();
         healthConditionsMap.put("healthConditions", healthConditions);
         userReference.set(healthConditionsMap, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
+    }
+
+    public void setData(Map<String, Object> data, OnSetListener onSetListener) {
+        userReference.set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
+    }
+
+    public void setSystemTags(Map<String, Object> systemTags, OnSetListener onSetListener) {
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("systemTags", systemTags);
+
+        userReference.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

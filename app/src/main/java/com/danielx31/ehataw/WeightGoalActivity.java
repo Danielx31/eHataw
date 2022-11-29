@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class WeightGoalActivity extends AppCompatActivity {
@@ -27,6 +30,8 @@ public class WeightGoalActivity extends AppCompatActivity {
 
     private Button nextButton;
     private EditText weightGoalEditText;
+    private EditText zumbaCountEditText;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +47,18 @@ public class WeightGoalActivity extends AppCompatActivity {
 
         nextButton = findViewById(R.id.button_next);
         weightGoalEditText = findViewById(R.id.edittext_weightgoal);
+        zumbaCountEditText = findViewById(R.id.edittext_zumbacountgoal);
+
+        loadingDialog = new LoadingDialog();
+
+        loadingDialog.show(getSupportFragmentManager(), "loadingDialog");
 
         userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
             @Override
             public void onFetchSuccess(User fetchedUser) {
                 user = fetchedUser;
                 weightGoalEditText.setText(String.valueOf(user.getWeightInKg()));
+                loadingDialog.dismiss();
             }
 
             @Override
@@ -67,7 +78,7 @@ public class WeightGoalActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (user == null) {
-                    Toast.makeText(getApplicationContext(), "Loading... Please Wait!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Loading... Please Try Again Later!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -104,18 +115,41 @@ public class WeightGoalActivity extends AppCompatActivity {
                     return;
                 }
 
-                userAPI.setWeightGoal(weightGoal, new UserAPI.OnSetListener() {
-                            @Override
-                            public void onSetSuccess() {
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                finish();
-                            }
+                String zumbaCountGoalPerDayString = zumbaCountEditText.getText().toString();
 
-                            @Override
-                            public void onSetError(Exception error) {
-                                Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                if (zumbaCountGoalPerDayString == null || zumbaCountGoalPerDayString.isEmpty()) {
+                    zumbaCountEditText.setError("Please fill out required input!");
+                    return;
+                }
+
+                int zumbaCountGoalPerDay = Integer.valueOf(zumbaCountEditText.getText().toString());
+
+                if (zumbaCountGoalPerDay <= 0) {
+                    zumbaCountEditText.setError("Goal must at least have one!");
+                    return;
+                }
+
+                Map<String, Object> goals = new HashMap<>();
+                goals.put("weightGoalFrom", user.getWeight());
+                goals.put("weightGoal", weightGoal);
+                goals.put("zumbaCountGoalPerDay", zumbaCountGoalPerDay);
+
+                loadingDialog.show(getSupportFragmentManager(), "loadingDialog");
+
+                userAPI.setGoals(goals, new UserAPI.OnSetListener() {
+                    @Override
+                    public void onSetSuccess() {
+                        loadingDialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onSetError(Exception error) {
+                        loadingDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

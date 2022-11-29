@@ -30,6 +30,7 @@ public class BMIUserActivity extends AppCompatActivity {
     private Button nextButton;
     private TextInputEditText heightEditText;
     private TextInputEditText weightEditText;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class BMIUserActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.button_next);
         heightEditText = findViewById(R.id.inputnumber_height);
         weightEditText = findViewById(R.id.inputnumber_weight);
+
+        loadingDialog = new LoadingDialog();
 
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -81,15 +84,19 @@ public class BMIUserActivity extends AppCompatActivity {
                     return;
                 }
 
+                loadingDialog.show(getSupportFragmentManager(), "loadingDialog");
+
                 userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
                     @Override
                     public void onSetSuccess() {
+                        loadingDialog.dismiss();
                         startActivity(new Intent(getApplicationContext(), HealthConditionActivity.class));
                         finish();
                     }
 
                     @Override
                     public void onSetError(Exception error) {
+                        loadingDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
                     }
                 });

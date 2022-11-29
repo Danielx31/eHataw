@@ -1,5 +1,7 @@
 package com.danielx31.ehataw;
 
+import android.util.Log;
+
 public class BMITracker {
 
     private double weightInKg;
@@ -55,6 +57,57 @@ public class BMITracker {
         }
 
         return null;
+    }
+
+    public double kgToCalories(double kg) {
+        return kg * 7716.179176;
+    }
+
+    public double caloriesToKg(double calories) {
+        return calories * 0.00013;
+    }
+
+    public int getWeightGoalPercentage(double weightGoalFromInKg, double weightGoalInKg) {
+        double total = weightGoalFromInKg - weightGoalInKg;
+        double progress = weightGoalFromInKg - weightInKg;
+        Log.d("CHECK", "progress: " + progress + " total: " + total);
+        return getPercentage(progress, total);
+    }
+
+    public int getPercentage(double number, double total) {
+        if (number <= 0) {
+            return 0;
+        }
+
+        if (total <= 0) {
+            return 100;
+        }
+
+        int percentage =  new Double(number / total * 100).intValue();
+
+        if (percentage > 100) {
+            return 100;
+        }
+
+        return percentage;
+    }
+
+    public int getPercentage(long number, long total) {
+        if (number <= 0) {
+            return 0;
+        }
+
+        if (total <= 0) {
+            return 100;
+        }
+
+        int percentage =  new Long(number / total * 100).intValue();
+
+        if (percentage > 100) {
+            return 100;
+        }
+
+        return percentage;
     }
 
 

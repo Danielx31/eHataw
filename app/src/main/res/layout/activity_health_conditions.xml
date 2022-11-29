@@ -47,7 +47,7 @@
         android:background="@drawable/cardbackground">
 
         <TextView
-            android:id="@+id/textview_info"
+            android:id="@+id/textview_zumbagoalpercentage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

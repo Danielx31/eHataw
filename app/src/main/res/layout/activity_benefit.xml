@@ -157,11 +157,11 @@
 
         <Button
             android:id="@+id/button_save"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
-            android:text="I Done It"
+            android:text="I Did It"
             app:layout_constraintBottom_toTopOf="@+id/guideline30"
             app:layout_constraintEnd_toStartOf="@+id/guideline27"
             app:layout_constraintStart_toStartOf="@+id/guideline25"
@@ -181,7 +181,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="By Clicking &quot;I Done It&quot;, Your data will be set."
+            android:gravity="center_horizontal"
+            android:text="By Clicking &quot;I Did It&quot;, Your data will be recorded."
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

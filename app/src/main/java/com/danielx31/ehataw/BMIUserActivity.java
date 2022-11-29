@@ -50,7 +50,6 @@ public class BMIUserActivity extends AppCompatActivity {
 
         loadingDialog = new LoadingDialog();
 
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,5 +116,4 @@ public class BMIUserActivity extends AppCompatActivity {
         super.onStop();
         unregisterReceiver(connectionReceiverPrime);
     }
-
 }

@@ -77,12 +77,14 @@ public class MonitorGoalsFragment extends Fragment {
         userAPI = new UserAPI();
 
         weightGoalProgressBar = getView().findViewById(R.id.progressbar_weightgoal);
+        weightGoalProgressBar.setProgress(0);
         weightGoalPercentageTextView = getView().findViewById(R.id.textview_weightgoalpercentage);
         weightGoalInfoTextView = getView().findViewById(R.id.textview_weightgoalinfo);
         weightGoalEditText = getView().findViewById(R.id.edittext_weightgoal);
         changeWeightGoalButton = getView().findViewById(R.id.button_changeweightgoal);
 
         zumbaGoalProgressBar = getView().findViewById(R.id.progressbar_zumbagoal);
+        zumbaGoalProgressBar.setProgress(0);
         zumbaGoalPercentageTextView = getView().findViewById(R.id.textview_zumbagoalpercentage);
         zumbaGoalInfoTextView = getView().findViewById(R.id.textview_zumbagoalinfo);
         zumbaCountGoalEditText = getView().findViewById(R.id.edittext_zumbacountgoal);
@@ -364,11 +366,13 @@ public class MonitorGoalsFragment extends Fragment {
 
         int weightGoalPercentage = bmiTracker.getWeightGoalPercentage(user.getWeightGoalFromInKg(), user.getWeightGoalInKg());
         weightGoalPercentageTextView.setText(weightGoalPercentage + "%");
-        Log.d("WEIGHT", "Weight Percent = " + weightGoalPercentage);
         weightGoalProgressBar.setProgress(weightGoalPercentage);
         weightGoalEditText.setText(decimalFormat.format(user.getWeightGoalInKg()));
 
         double weightLoss = user.getWeightGoalFromInKg() - user.getWeightInKg();
+        if (weightLoss <= -1) {
+            weightLoss = 0;
+        }
         String totalWeightLoss = "Total Weight Loss: " + new DecimalFormat("##.####").format(weightLoss) + " kg";
         String totalCaloriesBurned = "Total Calories Burned: " + new DecimalFormat("0.##").format(bmiTracker.kgToCalories(weightLoss));
         weightGoalInfoTextView.setText(totalWeightLoss);
@@ -442,7 +446,10 @@ public class MonitorGoalsFragment extends Fragment {
             return;
         }
 
-        int zumbaGoalPercentage = bmiTracker.getPercentage(user.getZumbaFollowedCountPerDay(), user.getZumbaFollowedCountPerDay());
+        int zumbaGoalPercentage = bmiTracker.getPercentage(user.getZumbaFollowedCountPerDay(), user.getZumbaCountGoalPerDay());
+        Log.d("TEST", "setZumbaGoalUI: " + zumbaGoalPercentage);
+        Log.d("TEST", "zumba Followed: " + user.getZumbaFollowedCountPerDay());
+        Log.d("TEST", "zumba Goal: " + user.getZumbaCountGoalPerDay());
         zumbaGoalProgressBar.setProgress(zumbaGoalPercentage);
         zumbaGoalPercentageTextView.setText(zumbaGoalPercentage + "%");
 

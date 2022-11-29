@@ -87,47 +87,23 @@ public class UserAPI {
     }
 
     public void setBodySize(Object weight, Object height, OnSetListener onSetListener) {
-        fetchUser(new OnFetchUserListener() {
-            @Override
-            public void onFetchSuccess(User fetchedUser) {
-                boolean isWeightGoalFromBiggerThanWeight = fetchedUser.getWeightInKg() < fetchedUser.getWeightGoalFromInKg();
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("weight", weight);
+        data.put("height", height);
 
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("weight", weight);
-                data.put("height", height);
-
-                if (!isWeightGoalFromBiggerThanWeight) {
-                    HashMap<String, Object> goals = new HashMap<>();
-                    goals.put("weightGoalFrom", weight);
-
-                    data.put("goals", goals);
-                }
-
-                userReference.set(data, SetOptions.merge())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                onSetListener.onSetSuccess();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                onSetListener.onSetError(e);
-                            }
-                        });
-            }
-
-            @Override
-            public void onFetchNotFound() {
-                onSetListener.onSetError(new Exception("User Not Found"));
-            }
-
-            @Override
-            public void onFetchError(Exception e) {
-                onSetListener.onSetError(e);
-            }
-        });
+        userReference.set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onSetListener.onSetSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onSetListener.onSetError(e);
+                    }
+                });
     }
 
     public void setGoals(Map<String, Object> goals, OnSetListener onSetListener) {

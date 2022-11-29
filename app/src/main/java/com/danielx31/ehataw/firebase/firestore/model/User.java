@@ -78,7 +78,7 @@ public class User {
     }
 
     @Exclude
-    public Long getZumbaCountGoalPerDay() {
+    public long getZumbaCountGoalPerDay() {
         return (Long) goals.get("zumbaCountGoalPerDay");
     }
 

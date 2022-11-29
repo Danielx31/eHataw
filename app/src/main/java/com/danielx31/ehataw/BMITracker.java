@@ -70,11 +70,14 @@ public class BMITracker {
     public int getWeightGoalPercentage(double weightGoalFromInKg, double weightGoalInKg) {
         double total = weightGoalFromInKg - weightGoalInKg;
         double progress = weightGoalFromInKg - weightInKg;
-        Log.d("CHECK", "progress: " + progress + " total: " + total);
         return getPercentage(progress, total);
     }
 
     public int getPercentage(double number, double total) {
+        if (number == total) {
+            return 100;
+        }
+
         if (number <= 0) {
             return 0;
         }
@@ -92,7 +95,11 @@ public class BMITracker {
         return percentage;
     }
 
-    public int getPercentage(long number, long total) {
+    public int getPercentageLong(long number, long total) {
+        if (number == total) {
+            return 100;
+        }
+
         if (number <= 0) {
             return 0;
         }
@@ -101,7 +108,7 @@ public class BMITracker {
             return 100;
         }
 
-        int percentage =  new Long(number / total * 100).intValue();
+        int percentage = (int)(number * 100.0 / total + 0.5);
 
         if (percentage > 100) {
             return 100;

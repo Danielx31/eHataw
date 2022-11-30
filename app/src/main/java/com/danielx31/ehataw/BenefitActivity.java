@@ -131,7 +131,7 @@ public class BenefitActivity extends AppCompatActivity {
 
                 systemTags.put("zumbaFollowedCountPerDay", 1);
                 if (user.getZumbaFollowedCountPerDay() > 0 && isSameDateNoTime) {
-                    Long zumbaFollowedCountPerDay = user.getZumbaCountGoalPerDay();
+                    Long zumbaFollowedCountPerDay = user.getZumbaFollowedCountPerDay();
                     systemTags.put("zumbaFollowedCountPerDay", zumbaFollowedCountPerDay + 1);
                 }
 

@@ -1,5 +1,6 @@
 package com.danielx31.ehataw;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java8.util.stream.StreamSupport;
 
 public class ZumbaDescriptionView {
 
@@ -39,17 +42,32 @@ public class ZumbaDescriptionView {
 
         warningLayout.setVisibility(View.GONE);
 
-        if (!isUserNull()) {
+        if (!isUserNull) {
             List<String> userHealthConditions = user.getHealthConditions();
+            Map<String, String> zumbaHealthConditionsLimit = (Map<String, String>) systemTags.get("limitHealthConditions");
+
             BMITracker bmiTracker = new BMITracker(user.getWeightInKg(), user.getHeightInCm());
 
             Double userBMI = bmiTracker.calculateBMI();
             Double minBMI = (Double) systemTags.get("minBMI");
             Double maxBMI = (Double) systemTags.get("maxBMI");
 
-            if (!userHealthConditions.isEmpty() ||
-                !(userBMI >= minBMI ||
-                userBMI <= maxBMI)) {
+            boolean isHealthConditionsNotNull = (userHealthConditions != null && !userHealthConditions.isEmpty()) &&
+                    (zumbaHealthConditionsLimit != null && !zumbaHealthConditionsLimit.isEmpty());
+
+            boolean isHealthConditionsMatch = false;
+
+            if (isHealthConditionsNotNull) {
+                for (String userHealthCondition : userHealthConditions) {
+                    if (zumbaHealthConditionsLimit.containsKey(userHealthCondition)) {
+                        isHealthConditionsMatch = true;
+                    }
+                }
+            }
+
+            if (isHealthConditionsMatch ||
+                userBMI < minBMI ||
+                userBMI > maxBMI) {
                 warningLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -88,6 +106,8 @@ public class ZumbaDescriptionView {
         textViewMap.get("calorie").setText("" + MET);
         textViewMap.get("calorieConstant").setText("MET");
 
+        String estimatedTime = "";
+
         if (!isUserNull) {
             double calorieBurned = calorieBurned(MET, user.getWeightInKg(), minute);
 
@@ -98,8 +118,48 @@ public class ZumbaDescriptionView {
             if (calorieBurned <= 1) {
                 textViewMap.get("calorieConstant").setText("Calorie");
             }
+
+            ZumbaCalculator zumbaCalculator = new ZumbaCalculator();
+
+            double weightDecreasedInKg = zumbaCalculator.caloriesToKg(calorieBurned);
+
+            Long zumbaGoalCountPerDay = user.getZumbaCountGoalPerDay();
+
+            double weightDecreasedInPerDay = zumbaCalculator.caloriesToKg(calorieBurned) * zumbaGoalCountPerDay.doubleValue();
+
+            double weightLeftRemaining = user.getWeightInKg() - user.getWeightGoalInKg();
+
+            Log.d("TEST", "weightDecreasedInPerDay: " + weightDecreasedInPerDay);
+            Log.d("TEST", "weightLeftRemaining: " + weightLeftRemaining);
+
+            if (weightLeftRemaining != 0.0 || weightDecreasedInPerDay != 0.0) {
+                Double estimatedDays = weightLeftRemaining / weightDecreasedInPerDay;
+
+                Log.d("TEST", "ESTIMATED DAYS: " + estimatedDays);
+
+                if (estimatedDays != 0) {
+                    Double estimatedWeeksDouble = estimatedDays / 7;
+                    Double estimatedRemainingDaysDouble = estimatedDays % 7;
+
+                    int estimatedWeeks = estimatedWeeksDouble.intValue();
+                    int estimatedRemainingDays = estimatedRemainingDaysDouble.intValue();
+
+                    estimatedTime = "Estimated Time: " + estimatedWeeks + " weeks and " + estimatedRemainingDays + " days.\n";
+
+                    if (estimatedWeeks < 1 && estimatedDays < 1) {
+                        estimatedTime = "Estimated Time: 1 day\n";
+                    } else if (estimatedWeeks < 1) {
+                        estimatedTime = "Estimated Time: " + estimatedRemainingDays + " days.\n";
+                    } else if (estimatedRemainingDays < 1) {
+                        estimatedTime = "Estimated Time: " + estimatedWeeks + " weeks.\n";
+                    }
+                }
+
+            }
+
         }
-        textViewMap.get("description").setText(zumba.getDescription());
+
+        textViewMap.get("description").setText(estimatedTime + zumba.getDescription());
 
         return layout;
     }

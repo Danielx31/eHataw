@@ -67,6 +67,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         if (!userAPI.isUserEmailVerified()) {
+            userAPI.signOut();
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             finish();
             return;

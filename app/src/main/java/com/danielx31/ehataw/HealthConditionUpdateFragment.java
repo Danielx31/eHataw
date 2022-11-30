@@ -95,6 +95,7 @@ public class HealthConditionUpdateFragment extends Fragment {
                 StreamSupport.stream(healthConditions)
                         .forEach((healthCondition) -> {
                             healthConditionCheckBoxes.get(healthCondition).setChecked(true);
+                            healthConditionCheckBoxes.get(healthCondition).setTextColor(getResources().getColor(R.color.orange));
                         });
                 setLoading(false);
             }

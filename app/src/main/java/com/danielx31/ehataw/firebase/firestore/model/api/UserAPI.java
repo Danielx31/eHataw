@@ -52,6 +52,12 @@ public class UserAPI {
             @Override
             public void onFetchSuccess(User fetchedUser) {
                 User user = fetchedUser;
+
+                if (user == null) {
+                    onUserCalibratedListener.onUserNotCalibrated();
+                    return;
+                }
+
                 String weight = user.getWeight();
                 String height = user.getHeight();
                 Map<String, Object> goals = user.getGoals();
@@ -234,6 +240,10 @@ public class UserAPI {
         void onFetchSuccess(User fetchedUser);
         void onFetchNotFound();
         void onFetchError(Exception e);
+    }
+
+    public void signOut() {
+        auth.signOut();
     }
 
 

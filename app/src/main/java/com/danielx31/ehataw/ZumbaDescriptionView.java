@@ -48,8 +48,8 @@ public class ZumbaDescriptionView {
             Double maxBMI = (Double) systemTags.get("maxBMI");
 
             if (!userHealthConditions.isEmpty() ||
-                userBMI < minBMI ||
-                userBMI > maxBMI) {
+                !(userBMI >= minBMI ||
+                userBMI <= maxBMI)) {
                 warningLayout.setVisibility(View.VISIBLE);
             }
         }

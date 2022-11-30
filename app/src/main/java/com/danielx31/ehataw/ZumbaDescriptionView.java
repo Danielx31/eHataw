@@ -125,17 +125,12 @@ public class ZumbaDescriptionView {
 
             Long zumbaGoalCountPerDay = user.getZumbaCountGoalPerDay();
 
-            double weightDecreasedInPerDay = zumbaCalculator.caloriesToKg(calorieBurned) * zumbaGoalCountPerDay.doubleValue();
+            double weightDecreasedInPerDay = weightDecreasedInKg * zumbaGoalCountPerDay.doubleValue();
 
             double weightLeftRemaining = user.getWeightInKg() - user.getWeightGoalInKg();
 
-            Log.d("TEST", "weightDecreasedInPerDay: " + weightDecreasedInPerDay);
-            Log.d("TEST", "weightLeftRemaining: " + weightLeftRemaining);
-
-            if (weightLeftRemaining != 0.0 || weightDecreasedInPerDay != 0.0) {
+            if (weightLeftRemaining != 0 && weightDecreasedInPerDay != 0 && weightLeftRemaining > 0) {
                 Double estimatedDays = weightLeftRemaining / weightDecreasedInPerDay;
-
-                Log.d("TEST", "ESTIMATED DAYS: " + estimatedDays);
 
                 if (estimatedDays != 0) {
                     Double estimatedWeeksDouble = estimatedDays / 7;

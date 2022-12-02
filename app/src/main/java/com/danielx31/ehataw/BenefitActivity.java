@@ -1,5 +1,7 @@
 package com.danielx31.ehataw;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,9 +18,20 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.danielx31.ehataw.firebase.firestore.model.User;
+import com.danielx31.ehataw.firebase.firestore.model.WeightLossData;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
+import com.danielx31.ehataw.firebase.firestore.model.api.WeightLossMonitorAPI;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -40,6 +53,7 @@ public class BenefitActivity extends AppCompatActivity {
     private Button saveButton, menuButton;
     private TextView saveInfoTextView;
     private UserAPI userAPI;
+    private WeightLossMonitorAPI weightLossMonitorAPI;
     private User user;
 
     @Override
@@ -51,6 +65,7 @@ public class BenefitActivity extends AppCompatActivity {
         });
 
         userAPI = new UserAPI();
+        weightLossMonitorAPI = new WeightLossMonitorAPI();
 
         messageTextView = findViewById(R.id.textview_message);
         messageTextView_1 = findViewById(R.id.textView2);
@@ -135,16 +150,20 @@ public class BenefitActivity extends AppCompatActivity {
                     systemTags.put("zumbaFollowedCountPerDay", zumbaFollowedCountPerDay + 1);
                 }
 
-                userAPI.followZumba(newWeight, systemTags, new UserAPI.OnSetListener() {
+                Map<String, Object> newUserData = new HashMap<>();
+                newUserData.put("weight", newWeight);
+                newUserData.put("systemTags", systemTags);
+
+                executeTransaction(newUserData, user.getWeight(), newWeight, new OnTransactionListener() {
                     @Override
-                    public void onSetSuccess() {
+                    public void onSuccess() {
                         loadingDialog.dismiss();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
                     }
 
                     @Override
-                    public void onSetError(Exception error) {
+                    public void onError(Exception error) {
                         loadingDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "A Network Error Occurred! Please try again later.", Toast.LENGTH_SHORT).show();
                     }
@@ -235,5 +254,90 @@ public class BenefitActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void executeTransaction(Map<String, Object> userData, String newStartWeight, String endWeight, OnTransactionListener onTransactionListener) {
+        // newStartWeight will apply if weight loss data didn't find today's document id
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
+        database.runTransaction(new Transaction.Function<Object>() {
+            @Nullable
+            @Override
+            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                DocumentReference weightLossDataDocumentReference = weightLossMonitorAPI.getDocumentReference();
+                DocumentSnapshot weightLossDataDocumentSnapshot = transaction.get(weightLossDataDocumentReference);
+
+                WeightLossData weightLossData = weightLossDataDocumentSnapshot.toObject(WeightLossData.class);
+
+                if (weightLossData == null) {
+                    WeightLossData newWeightLossData = new WeightLossData(new Date(), newStartWeight, endWeight);
+                    transaction.set(weightLossDataDocumentReference, newWeightLossData, SetOptions.merge());
+                    Log.d("apply", "apply: weightLossData null");
+                } else {
+                    Map<String, Object> newWeightLossDataMap = new HashMap<>();
+                    newWeightLossDataMap.put("endWeight", endWeight);
+                    transaction.set(weightLossDataDocumentReference, newWeightLossDataMap, SetOptions.merge());
+                    Log.d("apply", "apply: weightLossData not null");
+                }
+
+                transaction.set(userAPI.getDocumentReference(), userData, SetOptions.merge());
+
+                return true;
+            }
+        })
+                .addOnSuccessListener(new OnSuccessListener<Object>() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        onTransactionListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onTransactionListener.onError(e);
+                    }
+                });
+    }
+
+    private void executeBatchedWrites(String weight, Map<String, Object> systemTags, String weightLossEndWeight, WeightGoalActivity.OnBatchWriteListener onBatchWriteListener) {
+        //Set weight
+        //Set goals
+        //Set weightLossData
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("weight", weight);
+        data.put("systemTags", systemTags);
+
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        batch.set(userAPI.getDocumentReference(), data, SetOptions.merge());
+
+        Map<String, Object> weightLossData = new HashMap<>();
+        weightLossData.put("endWeight", weightLossEndWeight);
+
+        batch.set(weightLossMonitorAPI.getDocumentReference(), weightLossData, SetOptions.merge());
+
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        onBatchWriteListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onBatchWriteListener.onError(e);
+                    }
+                });
+
+    }
+
+    public interface OnBatchWriteListener {
+        void onSuccess();
+        void onError(Exception error);
+    }
+
+    public interface OnTransactionListener {
+        void onSuccess();
+        void onError(Exception error);
     }
 }

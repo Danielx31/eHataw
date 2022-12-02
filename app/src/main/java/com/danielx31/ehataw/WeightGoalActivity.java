@@ -1,5 +1,6 @@
 package com.danielx31.ehataw;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +15,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.User;
+import com.danielx31.ehataw.firebase.firestore.model.WeightLossData;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
+import com.danielx31.ehataw.firebase.firestore.model.api.WeightLossMonitorAPI;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +35,7 @@ public class WeightGoalActivity extends AppCompatActivity {
     private ConnectionReceiverPrime connectionReceiverPrime;
 
     private UserAPI userAPI;
+    private WeightLossMonitorAPI weightLossMonitorAPI;
     private User user;
 
     private Button nextButton;
@@ -44,6 +54,7 @@ public class WeightGoalActivity extends AppCompatActivity {
         connectionReceiverPrime = new ConnectionReceiverPrime();
 
         userAPI = new UserAPI();
+        weightLossMonitorAPI = new WeightLossMonitorAPI();
 
         nextButton = findViewById(R.id.button_next);
         weightGoalEditText = findViewById(R.id.edittext_weightgoal);
@@ -134,18 +145,20 @@ public class WeightGoalActivity extends AppCompatActivity {
                 goals.put("weightGoal", weightGoal);
                 goals.put("zumbaCountGoalPerDay", zumbaCountGoalPerDay);
 
+                WeightLossData weightLossData = new WeightLossData(new Date(), user.getWeight(), user.getWeight());
+
                 loadingDialog.show(getSupportFragmentManager(), "loadingDialog");
 
-                userAPI.setGoals(goals, new UserAPI.OnSetListener() {
+                executeBatchedWrites(goals, weightLossData, new OnBatchWriteListener() {
                     @Override
-                    public void onSetSuccess() {
+                    public void onSuccess() {
                         loadingDialog.dismiss();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
                     }
 
                     @Override
-                    public void onSetError(Exception error) {
+                    public void onError(Exception error) {
                         loadingDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
                     }
@@ -194,6 +207,36 @@ public class WeightGoalActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(connectionReceiverPrime);
+    }
+
+    private void executeBatchedWrites(Map<String, Object> goals, WeightLossData weightLossData, OnBatchWriteListener onBatchWriteListener) {
+        //Add goals
+        //Add Weight Loss Data
+        Map<String, Object> data = new HashMap<>();
+        data.put("goals", goals);
+
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        batch.set(userAPI.getDocumentReference(), data, SetOptions.merge());
+        batch.set(weightLossMonitorAPI.getDocumentReference(), weightLossData, SetOptions.merge());
+
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                onBatchWriteListener.onSuccess();
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onBatchWriteListener.onError(e);
+            }
+        });
+
+    }
+
+    public interface OnBatchWriteListener {
+        void onSuccess();
+        void onError(Exception error);
     }
 
 }

@@ -1,6 +1,9 @@
 package com.danielx31.ehataw.firebase.firestore.model;
 
+import android.util.Log;
+
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 

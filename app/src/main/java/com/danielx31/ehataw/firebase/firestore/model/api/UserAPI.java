@@ -217,6 +217,7 @@ public class UserAPI {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (!documentSnapshot.exists()) {
                             onFetchUserListener.onFetchNotFound();
+                            return;
                         }
 
                         User user = documentSnapshot.toObject(User.class);
@@ -229,6 +230,10 @@ public class UserAPI {
                         onFetchUserListener.onFetchError(e);
                     }
                 });
+    }
+
+    public DocumentReference getDocumentReference() {
+        return userReference;
     }
 
     public interface OnSetListener {

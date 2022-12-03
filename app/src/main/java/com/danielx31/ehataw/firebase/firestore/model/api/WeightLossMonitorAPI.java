@@ -1,17 +1,23 @@
 package com.danielx31.ehataw.firebase.firestore.model.api;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.danielx31.ehataw.DateManager;
 import com.danielx31.ehataw.firebase.firestore.model.User;
 import com.danielx31.ehataw.firebase.firestore.model.WeightLossData;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
@@ -105,6 +111,10 @@ public class WeightLossMonitorAPI {
         return  dateManager.toString();
     }
 
+    public CollectionReference getWeightLossMonitorReference() {
+        return weightLossMonitorReference;
+    }
+
     public DocumentReference getDocumentReference(String id) {
 
         if (id == null || id.isEmpty()) {
@@ -164,6 +174,37 @@ public class WeightLossMonitorAPI {
                     }
                 });
 
+    }
+
+    public void fetchNearestPreviousDate(Date date, String tag, OnFetchListener onFetchListener) {
+        if (tag == null || tag.isEmpty()) {
+            tag = "Fetch Weight Loss Data = Nearest Previous Date";
+        }
+
+        weightLossMonitorReference.whereLessThan("date", date)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            onFetchListener.onFetchFailed("Document Not Exists");
+                            return;
+                        }
+
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            WeightLossData weightLossData = documentSnapshot.toObject(WeightLossData.class);
+                            onFetchListener.onFetchSuccess(weightLossData);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFetchListener.onFetchError(e);
+                    }
+                });
     }
 
 

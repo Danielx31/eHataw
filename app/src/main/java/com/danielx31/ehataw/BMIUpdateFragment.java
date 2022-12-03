@@ -19,9 +19,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.danielx31.ehataw.firebase.firestore.model.User;
+import com.danielx31.ehataw.firebase.firestore.model.WeightLossData;
 import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
+import com.danielx31.ehataw.firebase.firestore.model.api.WeightLossMonitorAPI;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
+import com.google.protobuf.Internal;
+
+import org.joda.time.LocalDate;
 
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -117,54 +133,53 @@ public class BMIUpdateFragment extends Fragment {
 
         String height = heightEditText.getText().toString() + " cm";
         String[] heightParts = height.split(" ");
-        double heightGoalInCm = Double.parseDouble(heightParts[0]);
+        double heightInCm = Double.parseDouble(heightParts[0]);
 
-        if (heightGoalInCm <= 0) {
+        if (heightInCm <= 0) {
             heightEditText.setError("Invalid height");
             return;
         }
 
-        double weightGoalInKg = Double.parseDouble(weightEditText.getText().toString());
+        double weightInKg = Double.parseDouble(weightEditText.getText().toString());
         String weight = weightEditText.getText().toString() + " kg";
 
-        if (weightGoalInKg <= 0) {
+        if (weightInKg <= 0) {
             weightEditText.setError("Invalid weight");
             return;
         }
 
-        if (weightGoalInKg > user.getWeightGoalFromInKg()) {
-            showWarningDialog(weight, height);
+        HashMap<String, Object> userData = new HashMap<>();
+        userData.put("weight", weight);
+        userData.put("height", height);
+
+        BMITracker bmiTracker = new BMITracker(weightInKg, heightInCm);
+
+        if (weightInKg < user.getWeightGoalFromInKg()) {
+            Map<String, Object> goals = new HashMap<>();
+            goals.put("weightGoal" , weightInKg);
+            goals.put("weightGoalFrom" , weightInKg);
+
+            userData.put("goals", goals);
+            showWarningDialog(userData, bmiTracker);
             return;
         }
 
-        userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
+        saveAndUpdateUI(userData, bmiTracker);
+
+    }
+
+    private void saveAndUpdateUI(Map<String, Object> userData, BMITracker bmiTracker) {
+        runTransaction(userData, new OnTransactionListener() {
             @Override
-            public void onSetSuccess() {
+            public void onSuccess() {
                 Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
 
-                userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
-                    @Override
-                    public void onFetchSuccess(User fetchedUser) {
-                        BMITracker bmiTracker = new BMITracker(fetchedUser.getWeightInKg(), fetchedUser.getHeightInCm());
-
-                        bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase());
-                    }
-
-                    @Override
-                    public void onFetchNotFound() {
-                        Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFetchError(Exception e) {
-                        Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase());
             }
 
             @Override
-            public void onSetError(Exception error) {
-                Toast.makeText(getContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+            public void onError(Exception error) {
+                Toast.makeText(getContext(), "A Network Error Occurred! Please Try again later.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -182,46 +197,16 @@ public class BMIUpdateFragment extends Fragment {
         getActivity().unregisterReceiver(connectionReceiver);
     }
 
-    private void showWarningDialog(Object weight, Object height) {
+    private void showWarningDialog(Map<String, Object> userData, BMITracker bmiTracker) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Warning");
-        builder.setMessage("Your weight is unmatched with the goals! We will reset your weight Goal to sync with your weight! Continue to proceed?");
+        builder.setMessage("Your new weight is less than the weight goal! We will reset your weight Goal to sync with your new weight! Continue to proceed?");
         builder.setCancelable(false);
 
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
-                userAPI.setBodySize(weight, height, new UserAPI.OnSetListener() {
-                    @Override
-                    public void onSetSuccess() {
-                        Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
-
-                        userAPI.fetchUser(new UserAPI.OnFetchUserListener() {
-                            @Override
-                            public void onFetchSuccess(User fetchedUser) {
-                                BMITracker bmiTracker = new BMITracker(fetchedUser.getWeightInKg(), fetchedUser.getHeightInCm());
-
-                                bmiTextView.setText("Your BMI is " + new DecimalFormat("##.00").format(bmiTracker.calculateBMI()) + "\n" + "You are considered " + bmiTracker.classifyBMI().getName().toLowerCase());
-                            }
-
-                            @Override
-                            public void onFetchNotFound() {
-                                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFetchError(Exception e) {
-                                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onSetError(Exception error) {
-                        Toast.makeText(getContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                saveAndUpdateUI(userData, bmiTracker);
             }
         });
 
@@ -234,5 +219,54 @@ public class BMIUpdateFragment extends Fragment {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void runTransaction(Map<String, Object> userData, OnTransactionListener onTransactionListener) {
+        // userData
+        // height (String)
+        // weight (String)
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        LocalDate todayDate = new LocalDate(new Date());
+
+        database.runTransaction(new Transaction.Function<Object>() {
+            @Nullable
+            @Override
+            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                // Check Monitoring Weight Data
+                WeightLossMonitorAPI weightLossMonitorAPI = new WeightLossMonitorAPI();
+                DocumentReference weightLossReference = weightLossMonitorAPI.getDocumentReference();
+                DocumentSnapshot weightLossSnapshot = transaction.get(weightLossReference);
+
+                //Reads First then Set
+                transaction.set(userAPI.getDocumentReference(), userData, SetOptions.merge());
+
+                if (!weightLossSnapshot.exists()) {
+                    WeightLossData todayWeightLossData = new WeightLossData(new Date(),
+                            user.getWeight(),
+                            (String) userData.get("weight"));
+
+                    transaction.set(weightLossMonitorAPI.getDocumentReference(), todayWeightLossData, SetOptions.merge());
+                }
+
+                return true;
+            }
+        })
+                .addOnSuccessListener(new OnSuccessListener<Object>() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        onTransactionListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onTransactionListener.onError(e);
+                    }
+                });
+    }
+
+    public interface OnTransactionListener {
+        void onSuccess();
+        void onError(Exception error);
     }
 }

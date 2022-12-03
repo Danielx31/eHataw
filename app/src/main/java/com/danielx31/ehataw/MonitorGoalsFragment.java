@@ -90,6 +90,9 @@ public class MonitorGoalsFragment extends Fragment {
         zumbaCountGoalEditText = getView().findViewById(R.id.edittext_zumbacountgoal);
         changeZumbaGoalButton = getView().findViewById(R.id.button_changezumbagoal);
 
+        WeightLossMonitoringFragment weightLossMonitoringFragment = new WeightLossMonitoringFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.container_weightlossmonitor, weightLossMonitoringFragment).commit();
+
         changeWeightGoalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,7 +175,7 @@ public class MonitorGoalsFragment extends Fragment {
 
                     @Override
                     public void onSetError(Exception error) {
-                        Toast.makeText(getContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "A Network Error Occurred!\nPlease Try Again later.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -258,7 +261,7 @@ public class MonitorGoalsFragment extends Fragment {
 
             @Override
             public void onSetError(Exception error) {
-                Toast.makeText(getContext(), "A Network Error Occurred!\nPlease Try Again!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "A Network Error Occurred!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -327,7 +330,7 @@ public class MonitorGoalsFragment extends Fragment {
             @Override
             public void onSetError(Exception error) {
                 loadingDialog.dismiss();
-                Toast.makeText(getContext(), "A Network Error Occurred!\nPlease try again later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "A Network Error Occurred!\nPlease try again later.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -370,7 +373,7 @@ public class MonitorGoalsFragment extends Fragment {
         weightGoalEditText.setText(decimalFormat.format(user.getWeightGoalInKg()));
 
         double weightLoss = user.getWeightGoalFromInKg() - user.getWeightInKg();
-        if (weightLoss <= -1) {
+        if (weightLoss < 0) {
             weightLoss = 0;
         }
         String totalWeightLoss = "Total Weight Loss: " + new DecimalFormat("##.####").format(weightLoss) + " kg";
@@ -447,9 +450,6 @@ public class MonitorGoalsFragment extends Fragment {
         }
 
         int zumbaGoalPercentage = bmiTracker.getPercentage(user.getZumbaFollowedCountPerDay(), user.getZumbaCountGoalPerDay());
-        Log.d("TEST", "setZumbaGoalUI: " + zumbaGoalPercentage);
-        Log.d("TEST", "zumba Followed: " + user.getZumbaFollowedCountPerDay());
-        Log.d("TEST", "zumba Goal: " + user.getZumbaCountGoalPerDay());
         zumbaGoalProgressBar.setProgress(zumbaGoalPercentage);
         zumbaGoalPercentageTextView.setText(zumbaGoalPercentage + "%");
 

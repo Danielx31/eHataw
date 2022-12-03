@@ -270,14 +270,12 @@ public class BenefitActivity extends AppCompatActivity {
                 WeightLossData weightLossData = weightLossDataDocumentSnapshot.toObject(WeightLossData.class);
 
                 if (weightLossData == null) {
-                    WeightLossData newWeightLossData = new WeightLossData(new Date(), newStartWeight, endWeight);
+                    WeightLossData newWeightLossData = new WeightLossData(newStartWeight, endWeight);
                     transaction.set(weightLossDataDocumentReference, newWeightLossData, SetOptions.merge());
-                    Log.d("apply", "apply: weightLossData null");
                 } else {
                     Map<String, Object> newWeightLossDataMap = new HashMap<>();
                     newWeightLossDataMap.put("endWeight", endWeight);
                     transaction.set(weightLossDataDocumentReference, newWeightLossDataMap, SetOptions.merge());
-                    Log.d("apply", "apply: weightLossData not null");
                 }
 
                 transaction.set(userAPI.getDocumentReference(), userData, SetOptions.merge());

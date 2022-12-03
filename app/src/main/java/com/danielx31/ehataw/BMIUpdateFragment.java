@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -241,11 +243,15 @@ public class BMIUpdateFragment extends Fragment {
                 transaction.set(userAPI.getDocumentReference(), userData, SetOptions.merge());
 
                 if (!weightLossSnapshot.exists()) {
-                    WeightLossData todayWeightLossData = new WeightLossData(new Date(),
+                    WeightLossData todayWeightLossData = new WeightLossData(
                             user.getWeight(),
                             (String) userData.get("weight"));
 
                     transaction.set(weightLossMonitorAPI.getDocumentReference(), todayWeightLossData, SetOptions.merge());
+                } else {
+                    Map<String, Object> newWeightLossDataMap = new HashMap<>();
+                    newWeightLossDataMap.put("endWeight", userData.get("weight"));
+                    transaction.set(weightLossMonitorAPI.getDocumentReference(), newWeightLossDataMap, SetOptions.merge());
                 }
 
                 return true;

@@ -145,7 +145,7 @@ public class WeightGoalActivity extends AppCompatActivity {
                 goals.put("weightGoal", weightGoal);
                 goals.put("zumbaCountGoalPerDay", zumbaCountGoalPerDay);
 
-                WeightLossData weightLossData = new WeightLossData(new Date(), user.getWeight(), user.getWeight());
+                WeightLossData weightLossData = new WeightLossData(user.getWeight(), user.getWeight());
 
                 loadingDialog.show(getSupportFragmentManager(), "loadingDialog");
 

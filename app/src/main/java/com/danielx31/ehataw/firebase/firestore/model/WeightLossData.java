@@ -2,6 +2,7 @@ package com.danielx31.ehataw.firebase.firestore.model;
 
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +18,11 @@ public class WeightLossData {
 
     }
 
+    public WeightLossData(String startWeight, String endWeight) {
+        this.startWeight = startWeight;
+        this.endWeight = endWeight;
+    }
+
     public WeightLossData(Date date, String startWeight, String endWeight) {
         this.date = date;
         this.startWeight = startWeight;
@@ -28,6 +34,7 @@ public class WeightLossData {
         return id;
     }
 
+    @ServerTimestamp
     public Date getDate() {
         return date;
     }

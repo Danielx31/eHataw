@@ -23,8 +23,10 @@ import com.danielx31.ehataw.firebase.firestore.model.api.UserAPI;
 import com.danielx31.ehataw.firebase.firestore.model.api.WeightLossMonitorAPI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
@@ -144,6 +146,11 @@ public class WeightLossMonitoringFragment extends Fragment {
             @Override
             public void onFetchFailed(String message) {
                 //On Date not Found
+                if (localDate.isAfter(new LocalDate())) {
+                    onFetchListener.onDataNotFound();
+                    return;
+                }
+
                 if (localDate.isBefore(new LocalDate())) {
                     weightLossMonitorAPI.fetchNearestPreviousDate(localDate.toDate(), "Fetch Nearest Previous Date", new WeightLossMonitorAPI.OnFetchListener() {
                         @Override
